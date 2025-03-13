@@ -1,0 +1,156 @@
+class ShowOrdersModel {
+  late final int id;
+  late final int userId;
+  late final String userName;
+  late final String userPhone;
+  late final int providerId;
+  late final int providerRate;
+  late final int providerDebt;
+  late final String providerName;
+  late final String providerPhone;
+  late final String providerAvatar;
+  late final double providerLat;
+  late final double providerLng;
+  late final int providerDistance;
+  late final bool hasDelivery;
+  late final bool myAddress;
+  late final String name;
+  late final String phone;
+  late final String country;
+  late final String city;
+  late final String neighborhood;
+  late final String street;
+  late final String highlights;
+  late final String address;
+  late final double lat;
+  late final double lng;
+  late final String status;
+  late final String statusF;
+  late final String paymentMethod;
+  late final String paymentMethodF;
+  late final int subTotal;
+  late final int delivery;
+  late final int valueAdded;
+  late final int totalBeforePromo;
+  late final int totalAfterPromo;
+  late final bool isPaid;
+  late final bool isRated;
+  late final int rate;
+  late final String desc;
+  late final String notes;
+  late final String date;
+  late final String time;
+  late final String orderDateTime;
+  late final String orderDate;
+  late final String orderDateFormat;
+  late final String orderDuration;
+  late final List<Items> items;
+
+  ShowOrdersModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    userName = json['user_name'];
+    userPhone = json['user_phone'];
+    providerId = json['provider_id'];
+    providerRate = json['provider_rate'];
+    providerDebt = json['provider_debt'];
+    providerName = json['provider_name'];
+    providerPhone = json['provider_phone'];
+    providerAvatar = json['provider_avatar'];
+    providerLat = json['provider_lat'];
+    providerLng = json['provider_lng'];
+    providerDistance = json['provider_distance'];
+    hasDelivery = json['has_delivery'];
+    myAddress = json['my_address'];
+    name = json['name'];
+    phone = json['phone'];
+    country = json['country'];
+    city = json['city'];
+    neighborhood = json['neighborhood'];
+    street = json['street'];
+    highlights = json['highlights'];
+    address = json['address'];
+    lat = json['lat'];
+    lng = json['lng'];
+    status = json['status'];
+    statusF = json['status_f'];
+    paymentMethod = json['payment_method'];
+    paymentMethodF = json['payment_method_f'];
+    subTotal = json['sub_total'];
+    delivery = json['delivery'];
+    valueAdded = json['value_added'];
+    totalBeforePromo = json['total_before_promo'];
+    totalAfterPromo = json['total_after_promo'];
+    isPaid = json['is_paid'];
+    isRated = json['is_rated'];
+    rate = json['rate'];
+    desc = json['desc'];
+    notes = json['notes'];
+    date = json['date'];
+    time = json['time'];
+    orderDateTime = json['order_date_time'];
+    orderDate = json['order_date'];
+    orderDateFormat = json['order_date_format'];
+    orderDuration = json['order_duration'];
+    if (json['items'] != null) {
+      items = <Items>[];
+      json['items'].forEach((v) {
+        items.add(Items.fromJson(v));
+      });
+    }
+  }
+}
+
+class Items {
+  late final int id;
+  late final int count;
+  late final int total;
+  late final int totalWithValue;
+  late final int valueAdded;
+  late final bool hasCertificate;
+  late final String notes;
+  late final int salerId;
+  late final String salerName;
+  late final String salerPhone;
+  late final String salerFullPhone;
+  late final String salerAvatar;
+  late final int salerRate;
+  late final int salerRateCount;
+  late final int serviceId;
+  late final String serviceTitle;
+  late final String serviceDesc;
+  late final int servicePrice;
+  late final int servicePriceWithValue;
+  late final int serviceValueAdded;
+  late final bool serviceIsFav;
+  late final int serviceSectionId;
+  late final String serviceSectionTitle;
+  late final String serviceFirstImage;
+
+  Items.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    count = json['count'];
+    total = json['total'];
+    totalWithValue = json['total_with_value'];
+    valueAdded = json['value_added'];
+    hasCertificate = json['has_certificate'];
+    notes = json['notes'];
+    salerId = json['saler_id'];
+    salerName = json['saler_name'];
+    salerPhone = json['saler_phone'];
+    salerFullPhone = json['saler_full_phone'];
+    salerAvatar = json['saler_avatar'];
+    salerRate = json['saler_rate'];
+    salerRateCount = json['saler_rate_count'];
+    serviceId = json['service_id'];
+    serviceTitle = json['service_title'];
+    serviceDesc = json['service_desc'];
+    servicePrice = json['service_price'];
+    servicePriceWithValue = json['service_price_with_value'];
+    serviceValueAdded = json['service_value_added'];
+    serviceIsFav = json['service_is_fav'];
+    serviceSectionId = json['service_section_id'];
+    serviceSectionTitle = json['service_section_title'];
+    serviceFirstImage = json['service_first_image'];
+  }
+}
