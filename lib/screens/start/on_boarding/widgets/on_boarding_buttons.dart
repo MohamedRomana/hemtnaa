@@ -73,7 +73,9 @@ class CustomOnBoardingButtons extends StatelessWidget {
                               highlightColor: Colors.transparent,
                               onTap: () {
                                 if (currPage == pagesList.length - 1) {
-                                  AppRouter.navigateAndFinish(
+                                  CacheHelper.setLang('ar');
+                                  context.setLocale(const Locale('ar'));
+                                  AppRouter.navigateAndPop(
                                     context,
                                     const TypesView(),
                                   );

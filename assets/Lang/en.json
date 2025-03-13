@@ -471,5 +471,8 @@
       "senior": "Senior",
       "child": "Child",
       "you_are_now_registering_as": "You are now registering as...",
-      "continue_as": "Continue as"
+      "continue_as": "Continue as",
+      "games" : "Games",
+      "activities" : "Activities"
+     
     }

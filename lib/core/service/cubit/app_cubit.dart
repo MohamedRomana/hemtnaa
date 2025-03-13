@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../generated/locale_keys.g.dart';
+import '../../../screens/client_screens/home_layout/activities/activities.dart';
+import '../../../screens/client_screens/home_layout/chats/chats.dart';
+import '../../../screens/client_screens/home_layout/games/games.dart';
+import '../../../screens/client_screens/home_layout/home/home.dart';
 import '../../cache/cache_helper.dart';
 import '../../constants/contsants.dart';
 import '../model/on_boarding_model.dart';
@@ -18,18 +22,18 @@ class AppCubit extends Cubit<AppState> {
 
   static AppCubit get(context) => BlocProvider.of(context);
 
-  // int bottomNavIndex = 1;
-  // List<Widget> bottomNavScreens = [
-  //   const Store(),
-  //   const Home(),
-  //   const Orders(),
-  //   const Chats(),
-  // ];
+  int bottomNavIndex = 1;
+  List<Widget> bottomNavScreens = [
+    const Home(),
+    const Games(),
+    const Chats(),
+    const Activities(),
+  ];
 
-  // void changebottomNavIndex(index) async {
-  //   bottomNavIndex = index;
-  //   emit(ChangeBottomNav());
-  // }
+  void changebottomNavIndex(index) async {
+    bottomNavIndex = index;
+    emit(ChangeBottomNav());
+  }
 
   // int bottomProviderNavIndex = 1;
   // List<Widget> bottomProviderNavScreens = [
@@ -128,10 +132,27 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeIndex());
   }
 
-  int changeFavIndex = 0;
-  void changeFavIndexs({required int index}) {
-    changeFavIndex = index;
+  List<int> selectedIndexes = [];
+
+  void changeActiveIndexs({required int index}) {
+    if (selectedIndexes.contains(index)) {
+      selectedIndexes.remove(index);
+    } else {
+      selectedIndexes.add(index);
+    }
     emit(ChangeIndex());
+  }
+
+  double score = 70.0;
+  final double maxScore = 100.0;
+
+  void increaseScore(double value) {
+    if (score + value <= maxScore) {
+      score += value;
+    } else {
+      score = maxScore;
+    }
+    emit(ScoreUpdated());
   }
 
   int changeTermsIndex = -1;
@@ -140,6 +161,29 @@ class AppCubit extends Cubit<AppState> {
 
     emit(ChangeIndex());
   }
+
+  Set<int> loveIndexes = {}; 
+
+  void changeLoveIndex(int index) {
+    if (loveIndexes.contains(index)) {
+      loveIndexes.remove(index); 
+    } else {
+      loveIndexes.add(index); 
+    }
+    emit(ChangeIndex()); 
+  }
+
+  Set<int> loveVideoIndexes = {}; 
+
+  void changeVideoLoveIndex(int index) {
+    if (loveVideoIndexes.contains(index)) {
+      loveVideoIndexes.remove(index); 
+    } else {
+      loveVideoIndexes.add(index); 
+    }
+    emit(ChangeIndex()); 
+  }
+
 
   List<OnBoardingModel> onBoardingList = [];
   Future intro() async {

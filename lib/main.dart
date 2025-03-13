@@ -15,7 +15,9 @@ import 'screens/start/splash/splash.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
+
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

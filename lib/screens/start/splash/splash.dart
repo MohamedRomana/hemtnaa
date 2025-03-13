@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/widgets/custom_lottie_widget.dart';
+import 'package:hemtnaa/screens/auth/views/login/login.dart';
+import '../../../core/cache/cache_helper.dart';
 import '../../../core/widgets/app_router.dart';
 import '../../../gen/assets.gen.dart';
-import '../language/language_view.dart';
+import '../on_boarding/on_boarding.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -41,10 +43,9 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
         children: [
           Positioned(
             bottom: 150.h,
-            child:  CustomLottieWidget(
+            child: CustomLottieWidget(
               lottieName: Assets.img.start,
               repeat: false,
-              
             ),
           ),
           Center(
@@ -60,8 +61,8 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
                         offset: Offset(_shakeAnimation.value, 0),
                         child: Image.asset(
                           Assets.img.logo.path,
-                          height: 200.w,
-                          width: 170.w,
+                          height: 300.w,
+                          width: 300.w,
                           fit: BoxFit.fill,
                         ),
                       );
@@ -80,7 +81,10 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
     return Future.delayed(const Duration(seconds: 3), () {
       _shakeController.forward();
 
-      AppRouter.navigateAndPop(context, const LanguageView());
+      CacheHelper.getLang() != ""
+          ? AppRouter.navigateAndPop(context, const LogIn())
+          : AppRouter.navigateAndPop(context, const OnBoarding());
+
       // CacheHelper.getLang() != ""
       //     ? CacheHelper.getUserId() != ""
       // ? CacheHelper.getUserType() == "client"

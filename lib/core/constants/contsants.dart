@@ -31,6 +31,11 @@ void shareLocation(double lat, double lng) {
 }
 
 Future<void> makePhoneCall(String phoneNumber) async {
-  final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
-  await launchUrl(launchUri);
+  final Uri phoneUri = Uri.parse('tel:$phoneNumber');
+
+  if (await canLaunchUrl(phoneUri)) {
+    await launchUrl(phoneUri);
+  } else {
+    throw 'تعذر إجراء المكالمة: $phoneNumber';
+  }
 }

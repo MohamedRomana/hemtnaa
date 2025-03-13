@@ -63,8 +63,14 @@ class $AssetsImgGen {
   /// File path: assets/img/doctor.png
   AssetGenImage get doctor => const AssetGenImage('assets/img/doctor.png');
 
+  /// File path: assets/img/doctor2.png
+  AssetGenImage get doctor2 => const AssetGenImage('assets/img/doctor2.png');
+
   /// File path: assets/img/emptyseach.json
   String get emptyseach => 'assets/img/emptyseach.json';
+
+  /// File path: assets/img/images1.png
+  AssetGenImage get images1 => const AssetGenImage('assets/img/images1.png');
 
   /// File path: assets/img/loading.json
   String get loading => 'assets/img/loading.json';
@@ -75,12 +81,21 @@ class $AssetsImgGen {
   /// File path: assets/img/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/img/logo.png');
 
+  /// File path: assets/img/man.png
+  AssetGenImage get man => const AssetGenImage('assets/img/man.png');
+
   /// File path: assets/img/noti_empty.json
   String get notiEmpty => 'assets/img/noti_empty.json';
 
   /// File path: assets/img/onboarding.png
   AssetGenImage get onboarding =>
       const AssetGenImage('assets/img/onboarding.png');
+
+  /// File path: assets/img/pazzel.png
+  AssetGenImage get pazzel => const AssetGenImage('assets/img/pazzel.png');
+
+  /// File path: assets/img/puzzel2.png
+  AssetGenImage get puzzel2 => const AssetGenImage('assets/img/puzzel2.png');
 
   /// File path: assets/img/senior.png
   AssetGenImage get senior => const AssetGenImage('assets/img/senior.png');
@@ -95,16 +110,74 @@ class $AssetsImgGen {
   List<dynamic> get values => [
     alert,
     doctor,
+    doctor2,
     emptyseach,
+    images1,
     loading,
     login,
     logo,
+    man,
     notiEmpty,
     onboarding,
+    pazzel,
+    puzzel2,
     senior,
     start,
     student,
   ];
+}
+
+class $AssetsSvgGen {
+  const $AssetsSvgGen();
+
+  /// File path: assets/svg/activities.svg
+  String get activities => 'assets/svg/activities.svg';
+
+  /// File path: assets/svg/chats.svg
+  String get chats => 'assets/svg/chats.svg';
+
+  /// File path: assets/svg/comment.svg
+  String get comment => 'assets/svg/comment.svg';
+
+  /// File path: assets/svg/games.svg
+  String get games => 'assets/svg/games.svg';
+
+  /// File path: assets/svg/heart.svg
+  String get heart => 'assets/svg/heart.svg';
+
+  /// File path: assets/svg/home.svg
+  String get home => 'assets/svg/home.svg';
+
+  /// File path: assets/svg/phone.svg
+  String get phone => 'assets/svg/phone.svg';
+
+  /// File path: assets/svg/video_call.svg
+  String get videoCall => 'assets/svg/video_call.svg';
+
+  /// List of all assets
+  List<String> get values => [
+    activities,
+    chats,
+    comment,
+    games,
+    heart,
+    home,
+    phone,
+    videoCall,
+  ];
+}
+
+class $AssetsVideoGen {
+  const $AssetsVideoGen();
+
+  /// File path: assets/video/haha.mp4
+  String get haha => 'assets/video/haha.mp4';
+
+  /// File path: assets/video/ramadan.mp4
+  String get ramadan => 'assets/video/ramadan.mp4';
+
+  /// List of all assets
+  List<String> get values => [haha, ramadan];
 }
 
 class Assets {
@@ -113,6 +186,8 @@ class Assets {
   static const $AssetsLangGen lang = $AssetsLangGen();
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsImgGen img = $AssetsImgGen();
+  static const $AssetsSvgGen svg = $AssetsSvgGen();
+  static const $AssetsVideoGen video = $AssetsVideoGen();
 }
 
 class AssetGenImage {

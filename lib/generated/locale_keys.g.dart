@@ -476,5 +476,7 @@ abstract class  LocaleKeys {
   static const child = 'child';
   static const you_are_now_registering_as = 'you_are_now_registering_as';
   static const continue_as = 'continue_as';
+  static const games = 'games';
+  static const activities = 'activities';
 
 }

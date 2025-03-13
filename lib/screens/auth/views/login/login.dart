@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/service/cubit/app_cubit.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_router.dart';
 import '../../../../core/widgets/app_text.dart';
 import '../../../../core/widgets/flash_message.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../../../generated/locale_keys.g.dart';
+import '../../../client_screens/home_layout/home_layout.dart';
 import '../../data/auth_cubit.dart';
 import '../forget_pass/forget_pass.dart';
 import '../register/register.dart';
@@ -70,9 +72,7 @@ class LogIn extends StatelessWidget {
                   },
                   child:
                       state is LogInLoading
-                          ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
+                          ? const CircularProgressIndicator(color: Colors.white)
                           : AppText(
                             text: LocaleKeys.signin.tr(),
                             color: Colors.white,
@@ -83,13 +83,8 @@ class LogIn extends StatelessWidget {
             ),
             AppButton(
               onPressed: () {
-                // if (CacheHelper.getUserType() == 'client') {
-                //   AppCubit.get(context).changebottomNavIndex(1);
-                //   AppRouter.navigateAndFinish(context, const HomeLayout());
-                // } else if (CacheHelper.getUserType() == 'provider') {
-                //   AppCubit.get(context).changebottomProviderNavIndex(1);
-                //   AppRouter.navigateTo(context, const ProviderHomeLayout());
-                // }
+                AppCubit.get(context).changebottomNavIndex(0);
+                AppRouter.navigateAndFinish(context, const HomeLayout());
               },
               child: AppText(
                 textAlign: TextAlign.center,
