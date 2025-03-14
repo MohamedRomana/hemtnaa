@@ -1,63 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import '../../../../../../core/constants/colors.dart';
 import '../../../../../../core/widgets/app_text.dart';
 import '../../../../../../gen/assets.gen.dart';
-
-Future<void> requestPermissions() async {
-  Map<Permission, PermissionStatus> statuses =
-      await [Permission.camera, Permission.microphone].request();
-
-  if (statuses[Permission.camera]!.isDenied ||
-      statuses[Permission.microphone]!.isDenied) {
-    debugPrint(" المستخدم رفض الأذونات! لا يمكن تشغيل الكاميرا.");
-    return;
-  }
-
-  debugPrint(" الأذونات مُعطاة، يمكنك تشغيل الكاميرا.");
-}
 
 class GroubHeader extends StatelessWidget {
   const GroubHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    void startVideoCall() async {
-      await requestPermissions();
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder:
-              (context) => ZegoUIKitPrebuiltCall(
-                appID: 123456789,
-                appSign: 'your_app_sign',
-                callID: 'chat123',
-                userID: 'user1',
-                userName: 'User One',
-                config:
-                    ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
-                      ..turnOnCameraWhenJoining = true
-                      ..turnOnMicrophoneWhenJoining = true
-                      ..bottomMenuBar = ZegoCallBottomMenuBarConfig(
-                        isVisible: true,
-                        buttons: [
-                          ZegoCallMenuBarButtonName.toggleCameraButton,
-                          ZegoCallMenuBarButtonName.toggleMicrophoneButton,
-                          ZegoCallMenuBarButtonName.hangUpButton,
-                          ZegoCallMenuBarButtonName.switchAudioOutputButton,
-                          ZegoCallMenuBarButtonName.switchCameraButton,
-                        ],
-                      ),
-              ),
-        ),
-      );
-    }
-
     return Column(
       children: [
         Container(
@@ -118,9 +71,7 @@ class GroubHeader extends StatelessWidget {
                   InkWell(
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
-                    onTap: () {
-                      startVideoCall();
-                    },
+                    onTap: () {},
                     child: SvgPicture.asset(
                       Assets.svg.videoCall,
                       height: 24.h,

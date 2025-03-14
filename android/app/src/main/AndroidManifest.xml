@@ -14,7 +14,7 @@
     <uses-feature android:name="android.hardware.microphone" android:required="true"/>
 
     <application
-        android:label="Hemtnaa"
+        android:label="همتنا"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         
