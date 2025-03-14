@@ -162,28 +162,27 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeIndex());
   }
 
-  Set<int> loveIndexes = {}; 
+  Set<int> loveIndexes = {};
 
   void changeLoveIndex(int index) {
     if (loveIndexes.contains(index)) {
-      loveIndexes.remove(index); 
+      loveIndexes.remove(index);
     } else {
-      loveIndexes.add(index); 
+      loveIndexes.add(index);
     }
-    emit(ChangeIndex()); 
+    emit(ChangeIndex());
   }
 
-  Set<int> loveVideoIndexes = {}; 
+  Set<int> loveVideoIndexes = {};
 
   void changeVideoLoveIndex(int index) {
     if (loveVideoIndexes.contains(index)) {
-      loveVideoIndexes.remove(index); 
+      loveVideoIndexes.remove(index);
     } else {
-      loveVideoIndexes.add(index); 
+      loveVideoIndexes.add(index);
     }
-    emit(ChangeIndex()); 
+    emit(ChangeIndex());
   }
-
 
   List<OnBoardingModel> onBoardingList = [];
   Future intro() async {
@@ -308,25 +307,25 @@ class AppCubit extends Cubit<AppState> {
     emit(RemoveImageSuccess());
   }
 
-  List<File> orderImages = [];
-  Future<void> getOrderImage(BuildContext context) async {
+  List<File> postImages = [];
+  Future<void> getPostImages(BuildContext context) async {
     final picker = ImagePicker();
     final int? pickedOption = await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(LocaleKeys.select_image_source.tr()),
+          title: const Text("اختر مصدر الصورة"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
                 leading: const Icon(Icons.camera_alt),
-                title: const Text("Camera"),
+                title: const Text("الكاميرا"),
                 onTap: () => Navigator.pop(context, 1),
               ),
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text("Gallery"),
+                title: const Text("المعرض"),
                 onTap: () => Navigator.pop(context, 2),
               ),
             ],
@@ -337,26 +336,81 @@ class AppCubit extends Cubit<AppState> {
 
     if (pickedOption == null) return;
 
-    XFile? pickedImage;
+    List<XFile>? pickedImages = [];
 
     if (pickedOption == 1) {
-      pickedImage = await picker.pickImage(source: ImageSource.camera);
-    } else if (pickedOption == 2) {
-      final pickedImages = await picker.pickMultiImage();
-      if (pickedImages.isNotEmpty) {
-        pickedImage = pickedImages.first;
+      XFile? pickedImage = await picker.pickImage(source: ImageSource.camera);
+      if (pickedImage != null) {
+        pickedImages = [pickedImage];
       }
+    } else if (pickedOption == 2) {
+      pickedImages = await picker.pickMultiImage();
     }
 
-    if (pickedImage != null) {
-      orderImages = [File(pickedImage.path)];
-      emit(ChooseImageSuccess());
+    if (pickedImages.isNotEmpty) {
+      postImages.addAll(pickedImages.map((image) => File(image.path)));
+      emit(ChooseImageSuccess()); 
     }
   }
 
-  void removeOrderImage() {
-    orderImages.clear();
+  void removePostImage(int index) {
+    postImages.removeAt(index);
     emit(RemoveImageSuccess());
+  }
+
+  List<File> postVideos = []; 
+
+  Future<void> getPostVideos(BuildContext context) async {
+    final picker = ImagePicker();
+    final int? pickedOption = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("اختر مصدر الفيديو"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.videocam),
+                title: const Text("الكاميرا"),
+                onTap: () => Navigator.pop(context, 1),
+              ),
+              ListTile(
+                leading: const Icon(Icons.video_library),
+                title: const Text("المعرض"),
+                onTap: () => Navigator.pop(context, 2),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (pickedOption == null) return;
+
+    List<XFile>? pickedVideos = [];
+
+    if (pickedOption == 1) {
+      XFile? pickedVideo = await picker.pickVideo(source: ImageSource.camera);
+      if (pickedVideo != null) {
+        pickedVideos = [pickedVideo];
+      }
+    } else if (pickedOption == 2) {
+      XFile? pickedVideo = await picker.pickVideo(source: ImageSource.gallery);
+      if (pickedVideo != null) {
+        pickedVideos = [pickedVideo];
+      }
+    }
+
+    if (pickedVideos.isNotEmpty) {
+      postVideos.addAll(pickedVideos.map((video) => File(video.path)));
+      emit(ChooseVideoSuccess());
+    }
+  }
+
+  void removePostVideo(int index) {
+    postVideos.removeAt(index);
+    emit(RemoveVideoSuccess());
   }
 
   List<File> messageImage = [];

@@ -46,6 +46,7 @@ class AppInput extends StatelessWidget {
   final TextInputAction? textInputAction;
   final EdgeInsetsGeometry? contentPadding;
   final FocusNode? focusNode;
+  final double? fontSize;
 
   const AppInput({
     super.key,
@@ -90,7 +91,7 @@ class AppInput extends StatelessWidget {
     this.textInputAction,
     this.cursorColor,
     this.contentPadding,
-    this.focusNode,
+    this.focusNode, this.fontSize,
   });
   @override
   Widget build(BuildContext context) {
@@ -175,7 +176,7 @@ class AppInput extends StatelessWidget {
             fontFamily: FontFamily.poppinsBold,
           ),
           hintStyle: TextStyle(
-            fontSize: MediaQuery.of(context).size.width >= 600 ? 12.sp : 14.sp,
+            fontSize:  MediaQuery.of(context).size.width >= 600 ? 12.sp : 14.sp,
             color: hintColor ?? Colors.grey,
             fontFamily: FontFamily.poppinsBold,
           ),

@@ -62,7 +62,7 @@ class _CustomLoginFieldsState extends State<CustomLoginFields> {
             inputType: TextInputType.emailAddress,
             validate: (value) {
               if (value!.isEmpty) {
-                return LocaleKeys.email.tr();
+                return LocaleKeys.yourEmailValidate.tr();
               } else {
                 return null;
               }

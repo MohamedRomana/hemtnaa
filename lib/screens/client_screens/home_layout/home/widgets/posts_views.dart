@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../gen/assets.gen.dart';
+import 'comments_sheet.dart';
 
 class PostsViews extends StatelessWidget {
   final int index;
@@ -36,7 +37,7 @@ class PostsViews extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-               AppCubit.get(context).changeLoveIndex(index);
+                AppCubit.get(context).changeLoveIndex(index);
               },
               child: Row(
                 children: [
@@ -44,7 +45,6 @@ class PostsViews extends StatelessWidget {
                     Assets.svg.heart,
                     color:
                         AppCubit.get(context).loveIndexes.contains(index)
-
                             ? Colors.red
                             : const Color(0xffB9B9B9),
                     height: 18.w,
@@ -57,7 +57,6 @@ class PostsViews extends StatelessWidget {
                     size: 11.sp,
                     color:
                         AppCubit.get(context).loveIndexes.contains(index)
-
                             ? Colors.red
                             : const Color(0xffB9B9B9),
                   ),
@@ -65,22 +64,33 @@ class PostsViews extends StatelessWidget {
               ),
             ),
             SizedBox(width: 12.w),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  Assets.svg.comment,
-                  height: 18.w,
-                  width: 18.w,
-                  fit: BoxFit.cover,
-                  color: const Color(0xffB9B9B9),
-                ),
-                AppText(
-                  start: 5.w,
-                  text: 'تعليق',
-                  size: 11.sp,
-                  color: const Color(0xffB9B9B9),
-                ),
-              ],
+            InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => const CommentsSheet(),
+                );
+              },
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    Assets.svg.comment,
+                    height: 18.w,
+                    width: 18.w,
+                    fit: BoxFit.cover,
+                    color: const Color(0xffB9B9B9),
+                  ),
+                  AppText(
+                    start: 5.w,
+                    text: 'تعليق',
+                    size: 11.sp,
+                    color: const Color(0xffB9B9B9),
+                  ),
+                ],
+              ),
             ),
           ],
         );

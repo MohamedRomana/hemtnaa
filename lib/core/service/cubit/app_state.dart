@@ -11,6 +11,10 @@ final class GetCurrentLocationLoading extends AppState {}
 
 final class GetCurrentLocationSuccess extends AppState {}
 
+final class ChooseVideoSuccess extends AppState {}
+
+final class RemoveVideoSuccess extends AppState {}
+
 final class ServerError extends AppState {}
 
 final class Timeoutt extends AppState {}
