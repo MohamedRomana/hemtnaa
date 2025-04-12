@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/gen/assets.gen.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/service/cubit/app_cubit.dart';
+import '../../../core/widgets/custom_bottom_nav.dart';
 import 'widgets/edit_profile_fields.dart';
 
 final _firstNameController = TextEditingController();
@@ -19,6 +20,7 @@ class ProfileEdit extends StatelessWidget {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return Scaffold(
+          bottomNavigationBar: const CustomBottomNav(),
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
