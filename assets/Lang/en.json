@@ -473,6 +473,9 @@
       "you_are_now_registering_as": "You are now registering as...",
       "continue_as": "Continue as",
       "games" : "Games",
-      "activities" : "Activities"
-     
+      "activities" : "Activities",
+      "age": "Age",
+      "child_issue": "Issue the Child is Facing",
+      "age_required": "Age is Required",
+      "child_issue_required": "Child's Issue is Required"
     }

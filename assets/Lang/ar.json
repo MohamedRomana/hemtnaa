@@ -473,5 +473,9 @@
     "you_are_now_registering_as": "أنت تسجل الآن كـ...",
     "continue_as": "المتابعة كـ",
     "games" : "الالعاب",
-    "activities" : "الانشطه"
+    "activities" : "الانشطه",
+    "age": "السن",
+    "child_issue": "المشكلة التي يواجهها الطفل",
+    "age_required": "السن مطلوب",
+    "child_issue_required": "المشكلة التي يواجهها الطفل مطلوبة"
 }

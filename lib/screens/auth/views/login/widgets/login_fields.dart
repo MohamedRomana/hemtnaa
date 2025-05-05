@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/widgets/app_input.dart';
+import '../../../../../core/widgets/app_text.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../../../data/auth_cubit.dart';
 
@@ -24,19 +25,19 @@ class CustomLoginFields extends StatefulWidget {
 }
 
 class _CustomLoginFieldsState extends State<CustomLoginFields> {
-  final FocusNode phoneFocusNode = FocusNode();
+  final FocusNode emailFocus = FocusNode();
   final FocusNode passFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    phoneFocusNode.addListener(() => setState(() {}));
+    emailFocus.addListener(() => setState(() {}));
     passFocusNode.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
-    phoneFocusNode.dispose();
+    emailFocus.dispose();
     passFocusNode.dispose();
     super.dispose();
   }
@@ -50,10 +51,17 @@ class _CustomLoginFieldsState extends State<CustomLoginFields> {
         children: [
           SizedBox(height: 100.h),
 
+          AppText(
+            text: LocaleKeys.email.tr(),
+            size: 18.sp,
+            fontWeight: FontWeight.bold,
+            bottom: 8.h,
+            start: 18.w,
+          ),
           AppInput(
             bottom: 16.h,
             filled: true,
-            focusNode: phoneFocusNode,
+            focusNode: emailFocus,
             enabledBorderColor: Colors.grey,
             focusedBorderColor: AppColors.primary,
             hint: LocaleKeys.email.tr(),
@@ -69,10 +77,16 @@ class _CustomLoginFieldsState extends State<CustomLoginFields> {
             },
             prefixIcon: Icon(
               Icons.email_outlined,
-              color: phoneFocusNode.hasFocus ? AppColors.primary : Colors.grey,
+              color: emailFocus.hasFocus ? AppColors.primary : Colors.grey,
             ),
           ),
-
+          AppText(
+            text: LocaleKeys.password.tr(),
+            size: 18.sp,
+            fontWeight: FontWeight.bold,
+            bottom: 8.h,
+            start: 18.w,
+          ),
           BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               return AppInput(

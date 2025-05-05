@@ -478,5 +478,9 @@ abstract class  LocaleKeys {
   static const continue_as = 'continue_as';
   static const games = 'games';
   static const activities = 'activities';
+  static const age = 'age';
+  static const child_issue = 'child_issue';
+  static const age_required = 'age_required';
+  static const child_issue_required = 'child_issue_required';
 
 }

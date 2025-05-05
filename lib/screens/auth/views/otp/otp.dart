@@ -42,7 +42,7 @@ class OTPscreen extends StatelessWidget {
                 cursorColor: AppColors.primary,
                 textStyle: TextStyle(
                   fontSize: 24.sp,
-                  color: AppColors.secondray,
+                  color: AppColors.primary,
                   fontFamily: FontFamily.poppinsBold,
                 ),
                 pinTheme: PinTheme(
@@ -50,7 +50,7 @@ class OTPscreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.r),
                   fieldHeight: 60.h,
                   fieldWidth: 60.h,
-                  activeColor: AppColors.secondray,
+                  activeColor: AppColors.primary,
                   inactiveColor: Colors.grey,
                   inactiveFillColor: Colors.white,
                   activeFillColor: Colors.transparent,

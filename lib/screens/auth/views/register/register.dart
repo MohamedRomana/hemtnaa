@@ -18,11 +18,35 @@ final _formKey = GlobalKey<FormState>();
 final _fullNameController = TextEditingController();
 final _phoneController = TextEditingController();
 final _emailController = TextEditingController();
+final _ageDayController = TextEditingController();
+final _ageMonthController = TextEditingController();
+final _ageYearController = TextEditingController();
+final _childIssueController = TextEditingController();
 final _passController = TextEditingController();
 final _confirmPassController = TextEditingController();
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
   const Register({super.key});
+
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  @override
+  void initState() {
+    _fullNameController.clear();
+    _phoneController.clear();
+    _emailController.clear();
+    _ageDayController.clear();
+    _ageMonthController.clear();
+    _ageYearController.clear();
+    _childIssueController.clear();
+    _passController.clear();
+    _confirmPassController.clear();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +55,7 @@ class Register extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         child: Column(
           children: [
-            const CustomAuthHeader(isRegister: true,),
+            const CustomAuthHeader(isRegister: true),
             CustomUserRegisterFields(
               formKey: _formKey,
               phoneController: _phoneController,
@@ -39,6 +63,10 @@ class Register extends StatelessWidget {
               confirmPassController: _confirmPassController,
               emailController: _emailController,
               fullNameController: _fullNameController,
+              childIssueController: _childIssueController,
+              ageDayController: _ageDayController,
+              ageMonthController: _ageMonthController,
+              ageYearController: _ageYearController,
             ),
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
@@ -67,7 +95,7 @@ class Register extends StatelessWidget {
                   top: 24.h,
                   bottom: 2.h,
                   onPressed: () async {
-                  AppRouter.navigateAndPop(context, const OTPscreen());
+                    AppRouter.navigateAndPop(context, const OTPscreen());
 
                     if (_formKey.currentState!.validate()) {
                       await AuthCubit.get(context).register(

@@ -22,8 +22,20 @@ final _emailController = TextEditingController();
 final _passController = TextEditingController();
 String phoneCode = "";
 
-class LogIn extends StatelessWidget {
+class LogIn extends StatefulWidget {
   const LogIn({super.key});
+
+  @override
+  State<LogIn> createState() => _LogInState();
+}
+
+class _LogInState extends State<LogIn> {
+  @override
+  void initState() {
+    _emailController.clear();
+    _passController.clear();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

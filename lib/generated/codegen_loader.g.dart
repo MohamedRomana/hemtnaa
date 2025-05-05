@@ -489,7 +489,11 @@ class CodegenLoader extends AssetLoader{
   "you_are_now_registering_as": "أنت تسجل الآن كـ...",
   "continue_as": "المتابعة كـ",
   "games": "الالعاب",
-  "activities": "الانشطه"
+  "activities": "الانشطه",
+  "age": "السن",
+  "child_issue": "المشكلة التي يواجهها الطفل",
+  "age_required": "السن مطلوب",
+  "child_issue_required": "المشكلة التي يواجهها الطفل مطلوبة"
 };
 static const Map<String,dynamic> _en = {
   "chooseLang": "Choose the appropriate language",
@@ -966,7 +970,11 @@ static const Map<String,dynamic> _en = {
   "you_are_now_registering_as": "You are now registering as...",
   "continue_as": "Continue as",
   "games": "Games",
-  "activities": "Activities"
+  "activities": "Activities",
+  "age": "Age",
+  "child_issue": "Issue the Child is Facing",
+  "age_required": "Age is Required",
+  "child_issue_required": "Child's Issue is Required"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": _ar, "en": _en};
 }
