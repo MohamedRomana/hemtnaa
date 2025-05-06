@@ -151,6 +151,12 @@ class $AssetsSvgGen {
   /// File path: assets/svg/phone.svg
   String get phone => 'assets/svg/phone.svg';
 
+  /// File path: assets/svg/picture 1.svg
+  String get picture1 => 'assets/svg/picture 1.svg';
+
+  /// File path: assets/svg/rates.svg
+  String get rates => 'assets/svg/rates.svg';
+
   /// File path: assets/svg/video_call.svg
   String get videoCall => 'assets/svg/video_call.svg';
 
@@ -163,6 +169,8 @@ class $AssetsSvgGen {
     heart,
     home,
     phone,
+    picture1,
+    rates,
     videoCall,
   ];
 }

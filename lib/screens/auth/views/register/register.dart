@@ -24,6 +24,7 @@ final _ageYearController = TextEditingController();
 final _childIssueController = TextEditingController();
 final _passController = TextEditingController();
 final _confirmPassController = TextEditingController();
+final _specialityController = TextEditingController();
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -67,6 +68,7 @@ class _RegisterState extends State<Register> {
               ageDayController: _ageDayController,
               ageMonthController: _ageMonthController,
               ageYearController: _ageYearController,
+              specialityController: _specialityController,
             ),
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {

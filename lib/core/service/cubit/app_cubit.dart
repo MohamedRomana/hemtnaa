@@ -2,15 +2,18 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_chat/doc_chat.dart';
+import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_rates/doc_rates.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../generated/locale_keys.g.dart';
-import '../../../screens/client_screens/home_layout/activities/activities.dart';
-import '../../../screens/client_screens/home_layout/chats/chats.dart';
-import '../../../screens/client_screens/home_layout/games/games.dart';
-import '../../../screens/client_screens/home_layout/home/home.dart';
+import '../../../screens/child_screens/home_layout/activities/activities.dart';
+import '../../../screens/child_screens/home_layout/chats/chats.dart';
+import '../../../screens/child_screens/home_layout/games/games.dart';
+import '../../../screens/child_screens/home_layout/home/home.dart';
+import '../../../screens/doctor_screens/home_layout/doc_home/doc_home.dart';
 import '../../cache/cache_helper.dart';
 import '../../constants/contsants.dart';
 import '../model/on_boarding_model.dart';
@@ -22,7 +25,7 @@ class AppCubit extends Cubit<AppState> {
 
   static AppCubit get(context) => BlocProvider.of(context);
 
-  int bottomNavIndex = 1;
+  int bottomNavIndex = 0;
   List<Widget> bottomNavScreens = [
     const Home(),
     const Games(),
@@ -32,6 +35,18 @@ class AppCubit extends Cubit<AppState> {
 
   void changebottomNavIndex(index) async {
     bottomNavIndex = index;
+    emit(ChangeBottomNav());
+  }
+
+  int bottomDocNavIndex = 0;
+  List<Widget> bottomDocNavScreens = [
+    const DocHome(),
+    const DocChat(),
+    const DocRates(),
+  ];
+
+  void changebottomDocNavIndex(index) async {
+    bottomDocNavIndex = index;
     emit(ChangeBottomNav());
   }
 
@@ -182,6 +197,58 @@ class AppCubit extends Cubit<AppState> {
       loveVideoIndexes.add(index);
     }
     emit(ChangeIndex());
+  }
+
+List<File> activityImage = [];
+
+  Future<void> getActivityImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final int? pickedOption = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(LocaleKeys.select_image_source.tr()),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text("Camera"),
+                onTap: () => Navigator.pop(context, 1),
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text("Gallery"),
+                onTap: () => Navigator.pop(context, 2),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (pickedOption == null) return;
+
+    XFile? pickedImage;
+
+    if (pickedOption == 1) {
+      pickedImage = await picker.pickImage(source: ImageSource.camera);
+    } else if (pickedOption == 2) {
+      final pickedImages = await picker.pickMultiImage();
+      if (pickedImages.isNotEmpty) {
+        pickedImage = pickedImages.first;
+      }
+    }
+
+    if (pickedImage != null) {
+      activityImage = [File(pickedImage.path)];
+      emit(ChooseImageSuccess());
+    }
+  }
+
+  void removeActivityImage() {
+    activityImage.clear();
+    emit(RemoveImageSuccess());
   }
 
   List<OnBoardingModel> onBoardingList = [];
@@ -349,7 +416,7 @@ class AppCubit extends Cubit<AppState> {
 
     if (pickedImages.isNotEmpty) {
       postImages.addAll(pickedImages.map((image) => File(image.path)));
-      emit(ChooseImageSuccess()); 
+      emit(ChooseImageSuccess());
     }
   }
 
@@ -358,7 +425,7 @@ class AppCubit extends Cubit<AppState> {
     emit(RemoveImageSuccess());
   }
 
-  List<File> postVideos = []; 
+  List<File> postVideos = [];
 
   Future<void> getPostVideos(BuildContext context) async {
     final picker = ImagePicker();

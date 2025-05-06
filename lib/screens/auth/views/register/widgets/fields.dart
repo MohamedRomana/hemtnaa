@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/core/cache/cache_helper.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/service/cubit/app_cubit.dart';
 import '../../../../../core/widgets/app_input.dart';
@@ -20,6 +21,7 @@ class CustomUserRegisterFields extends StatefulWidget {
   final TextEditingController childIssueController;
   final TextEditingController passController;
   final TextEditingController confirmPassController;
+  final TextEditingController specialityController;
 
   const CustomUserRegisterFields({
     super.key,
@@ -33,6 +35,7 @@ class CustomUserRegisterFields extends StatefulWidget {
     required this.ageDayController,
     required this.ageMonthController,
     required this.ageYearController,
+    required this.specialityController,
   });
 
   @override
@@ -48,6 +51,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
   final FocusNode childIssueFocus = FocusNode();
   final FocusNode passFocus = FocusNode();
   final FocusNode confirmPassFocus = FocusNode();
+  final FocusNode specialityFocus = FocusNode();
 
   @override
   void initState() {
@@ -59,6 +63,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
     childIssueFocus.addListener(() => setState(() {}));
     passFocus.addListener(() => setState(() {}));
     confirmPassFocus.addListener(() => setState(() {}));
+    specialityFocus.addListener(() => setState(() {}));
   }
 
   @override
@@ -70,6 +75,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
     childIssueFocus.dispose();
     passFocus.dispose();
     confirmPassFocus.dispose();
+    specialityFocus.dispose();
     super.dispose();
   }
 
@@ -176,234 +182,317 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                 ),
               ),
 
-              AppText(
-                text: LocaleKeys.age.tr(),
-                size: 18.sp,
-                fontWeight: FontWeight.bold,
-                bottom: 8.h,
-                start: 18.w,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: 110.w,
-                    child: AppInput(
-                      enabledBorderColor: Colors.grey,
-                      focusNode: ageFocus,
-                      bottom: 18.h,
-                      start: 0,
-                      end: 0,
-                      filled: true,
-                      hint: 'اليوم',
-                      contentRight: 16.w,
-                      controller: widget.ageDayController,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return 'اليوم مطلوب';
-                        } else {
-                          return null;
-                        }
-                      },
-
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.grey,
-                        size: 25.sp,
+              CacheHelper.getUserType() == 'child'
+                  ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText(
+                        text: 'تاريخ ميلاد الطفل',
+                        size: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        bottom: 8.h,
+                        start: 18.w,
                       ),
-                      read: true,
-                      onTap: () async {
-                        showMenu(
-                          color: Colors.white,
-                          shadowColor: Colors.transparent,
-                          surfaceTintColor: Colors.transparent,
-                          context: context,
-                          position: const RelativeRect.fromLTRB(100, 550, 0, 0),
-                          items: [
-                            PopupMenuItem(
-                              child: Container(
-                                width: 50.w,
-                                height: 200.h,
-                                color: Colors.white,
-                                child: Column(
-                                  children: [
-                                    AppText(text: 'اليوم', bottom: 5.h),
-                                    Expanded(
-                                      child: ListView.builder(
-                                        itemCount: days.length,
-                                        itemBuilder:
-                                            (context, index) => InkWell(
-                                              onTap: () {
-                                                widget.ageDayController.text =
-                                                    days[index];
-                                                Navigator.pop(context);
-                                              },
-                                              child: AppText(
-                                                text: days[index],
-                                                bottom: 3.h,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(
+                            width: 110.w,
+                            child: AppInput(
+                              enabledBorderColor: Colors.grey,
+                              focusNode: ageFocus,
+                              bottom: 18.h,
+                              start: 0,
+                              end: 0,
+                              filled: true,
+                              hint: 'اليوم',
+                              contentRight: 16.w,
+                              controller: widget.ageDayController,
+                              validate: (value) {
+                                if (value!.isEmpty) {
+                                  return 'اليوم مطلوب';
+                                } else {
+                                  return null;
+                                }
+                              },
+
+                              suffixIcon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.grey,
+                                size: 25.sp,
+                              ),
+                              read: true,
+                              onTap: () async {
+                                showMenu(
+                                  color: Colors.white,
+                                  shadowColor: Colors.transparent,
+                                  surfaceTintColor: Colors.transparent,
+                                  context: context,
+                                  position: const RelativeRect.fromLTRB(
+                                    100,
+                                    550,
+                                    0,
+                                    0,
+                                  ),
+                                  items: [
+                                    PopupMenuItem(
+                                      child: Container(
+                                        width: 50.w,
+                                        height: 200.h,
+                                        color: Colors.white,
+                                        child: Column(
+                                          children: [
+                                            AppText(text: 'اليوم', bottom: 5.h),
+                                            Expanded(
+                                              child: ListView.builder(
+                                                itemCount: days.length,
+                                                itemBuilder:
+                                                    (context, index) => InkWell(
+                                                      onTap: () {
+                                                        widget
+                                                            .ageDayController
+                                                            .text = days[index];
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: AppText(
+                                                        text: days[index],
+                                                        bottom: 3.h,
+                                                      ),
+                                                    ),
                                               ),
                                             ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
-                                ),
-                              ),
+                                );
+                              },
                             ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 110.w,
-                    child: AppInput(
-                      start: 0,
-                      end: 0,
-
-                      enabledBorderColor: Colors.grey,
-                      focusNode: ageFocus,
-                      bottom: 18.h,
-                      filled: true,
-                      hint: 'الشهر',
-                      controller: widget.ageMonthController,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return 'الشهر مطلوب';
-                        } else {
-                          return null;
-                        }
-                      },
-
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.grey,
-                        size: 25.sp,
-                      ),
-                      read: true,
-                      onTap: () async {
-                        showMenu(
-                          color: Colors.white,
-                          shadowColor: Colors.transparent,
-                          surfaceTintColor: Colors.transparent,
-                          context: context,
-                          position: const RelativeRect.fromLTRB(
-                            200,
-                            550,
-                            120,
-                            0,
                           ),
-                          items: [
-                            PopupMenuItem(
-                              child: Container(
-                                width: 50.w,
-                                height: 200.h,
-                                color: Colors.white,
-                                child: Column(
-                                  children: [
-                                    AppText(text: 'الشهر', bottom: 5.h),
-                                    Expanded(
-                                      child: ListView.builder(
-                                        itemCount: months.length,
-                                        itemBuilder:
-                                            (context, index) => InkWell(
-                                              onTap: () {
-                                                widget.ageMonthController.text =
-                                                    months[index];
-                                                Navigator.pop(context);
-                                              },
-                                              child: AppText(
-                                                text: months[index],
-                                                bottom: 3.h,
+                          SizedBox(
+                            width: 110.w,
+                            child: AppInput(
+                              start: 0,
+                              end: 0,
+
+                              enabledBorderColor: Colors.grey,
+                              focusNode: ageFocus,
+                              bottom: 18.h,
+                              filled: true,
+                              hint: 'الشهر',
+                              controller: widget.ageMonthController,
+                              validate: (value) {
+                                if (value!.isEmpty) {
+                                  return 'الشهر مطلوب';
+                                } else {
+                                  return null;
+                                }
+                              },
+
+                              suffixIcon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.grey,
+                                size: 25.sp,
+                              ),
+                              read: true,
+                              onTap: () async {
+                                showMenu(
+                                  color: Colors.white,
+                                  shadowColor: Colors.transparent,
+                                  surfaceTintColor: Colors.transparent,
+                                  context: context,
+                                  position: const RelativeRect.fromLTRB(
+                                    200,
+                                    550,
+                                    120,
+                                    0,
+                                  ),
+                                  items: [
+                                    PopupMenuItem(
+                                      child: Container(
+                                        width: 50.w,
+                                        height: 200.h,
+                                        color: Colors.white,
+                                        child: Column(
+                                          children: [
+                                            AppText(text: 'الشهر', bottom: 5.h),
+                                            Expanded(
+                                              child: ListView.builder(
+                                                itemCount: months.length,
+                                                itemBuilder:
+                                                    (context, index) => InkWell(
+                                                      onTap: () {
+                                                        widget
+                                                            .ageMonthController
+                                                            .text = months[index];
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: AppText(
+                                                        text: months[index],
+                                                        bottom: 3.h,
+                                                      ),
+                                                    ),
                                               ),
                                             ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
-                                ),
-                              ),
+                                );
+                              },
                             ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-
-                  SizedBox(
-                    width: 110.w,
-                    child: AppInput(
-                      start: 0,
-                      end: 0,
-                      enabledBorderColor: Colors.grey,
-                      focusNode: ageFocus,
-                      bottom: 18.h,
-                      filled: true,
-                      hint: 'السنه',
-                      controller: widget.ageYearController,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return 'السنه مطلوب';
-                        } else {
-                          return null;
-                        }
-                      },
-
-                      suffixIcon: Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.grey,
-                        size: 25.sp,
-                      ),
-                      read: true,
-                      onTap: () async {
-                        showMenu(
-                          color: Colors.white,
-                          shadowColor: Colors.transparent,
-                          surfaceTintColor: Colors.transparent,
-                          context: context,
-                          position: const RelativeRect.fromLTRB(
-                            200,
-                            550,
-                            120,
-                            0,
                           ),
-                          items: [
-                            PopupMenuItem(
-                              child: Container(
-                                width: 50.w,
-                                height: 200.h,
-                                color: Colors.white,
-                                child: Column(
-                                  children: [
-                                    AppText(text: 'السنه', bottom: 5.h),
-                                    Expanded(
-                                      child: ListView.builder(
-                                        itemCount: years.length,
-                                        itemBuilder:
-                                            (context, index) => InkWell(
-                                              onTap: () {
-                                                widget.ageYearController.text =
-                                                    years[index];
-                                                Navigator.pop(context);
-                                              },
-                                              child: AppText(
-                                                text: years[index],
-                                                bottom: 3.h,
+
+                          SizedBox(
+                            width: 110.w,
+                            child: AppInput(
+                              start: 0,
+                              end: 0,
+                              enabledBorderColor: Colors.grey,
+                              focusNode: ageFocus,
+                              bottom: 18.h,
+                              filled: true,
+                              hint: 'السنه',
+                              controller: widget.ageYearController,
+                              validate: (value) {
+                                if (value!.isEmpty) {
+                                  return 'السنه مطلوب';
+                                } else {
+                                  return null;
+                                }
+                              },
+
+                              suffixIcon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.grey,
+                                size: 25.sp,
+                              ),
+                              read: true,
+                              onTap: () async {
+                                showMenu(
+                                  color: Colors.white,
+                                  shadowColor: Colors.transparent,
+                                  surfaceTintColor: Colors.transparent,
+                                  context: context,
+                                  position: const RelativeRect.fromLTRB(
+                                    200,
+                                    550,
+                                    120,
+                                    0,
+                                  ),
+                                  items: [
+                                    PopupMenuItem(
+                                      child: Container(
+                                        width: 50.w,
+                                        height: 200.h,
+                                        color: Colors.white,
+                                        child: Column(
+                                          children: [
+                                            AppText(text: 'السنه', bottom: 5.h),
+                                            Expanded(
+                                              child: ListView.builder(
+                                                itemCount: years.length,
+                                                itemBuilder:
+                                                    (context, index) => InkWell(
+                                                      onTap: () {
+                                                        widget
+                                                            .ageYearController
+                                                            .text = years[index];
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: AppText(
+                                                        text: years[index],
+                                                        bottom: 3.h,
+                                                      ),
+                                                    ),
                                               ),
                                             ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
-                                ),
-                              ),
+                                );
+                              },
                             ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+                          ),
+                        ],
+                      ),
+                      AppText(
+                        text: LocaleKeys.child_issue.tr(),
+                        size: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        bottom: 8.h,
+                        start: 18.w,
+                      ),
+                      AppInput(
+                        enabledBorderColor: Colors.grey,
+                        focusNode: childIssueFocus,
+                        bottom: 18.h,
+                        filled: true,
+                        hint: LocaleKeys.child_issue.tr(),
+                        controller: widget.childIssueController,
+                        suffixIcon: Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                          size: 25.sp,
+                        ),
+                        read: true,
+                        onTap: () async {
+                          String? value = await showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SimpleDialog(
+                                backgroundColor: AppColors.borderColor,
+                                title: AppText(
+                                  text: LocaleKeys.child_issue.tr(),
+                                  size: 21.sp,
+                                ),
+                                children:
+                                    childrenIssue.map((value) {
+                                      return SimpleDialogOption(
+                                        onPressed: () {
+                                          Navigator.pop(
+                                            context,
+                                            value['title'],
+                                          );
+                                        },
+                                        child: AppText(
+                                          text: value['title'],
+                                          size: 18.sp,
+                                          color: AppColors.primary,
+                                        ),
+                                      );
+                                    }).toList(),
+                              );
+                            },
+                          );
+                          if (value != null) {
+                            widget.childIssueController.text = value;
+                          }
+                        },
+                        validate: (value) {
+                          if (value!.isEmpty) {
+                            return LocaleKeys.child_issue_required.tr();
+                          } else {
+                            return null;
+                          }
+                        },
+                        prefixIcon: Icon(
+                          Icons.accessibility_new_outlined,
+                          color:
+                              childIssueFocus.hasFocus
+                                  ? AppColors.primary
+                                  : Colors.grey,
+                        ),
+                      ),
+                    ],
+                  )
+                  : const SizedBox.shrink(),
               AppText(
-                text: LocaleKeys.child_issue.tr(),
+                text: 'تخصص الدكتور',
                 size: 18.sp,
                 fontWeight: FontWeight.bold,
                 bottom: 8.h,
@@ -411,63 +500,26 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
               ),
               AppInput(
                 enabledBorderColor: Colors.grey,
-                focusNode: childIssueFocus,
+                focusNode: specialityFocus,
                 bottom: 18.h,
                 filled: true,
-                hint: LocaleKeys.child_issue.tr(),
-                controller: widget.childIssueController,
-                suffixIcon: Icon(
-                  Icons.arrow_drop_down,
-                  color: Colors.grey,
-                  size: 25.sp,
-                ),
-                read: true,
-                onTap: () async {
-                  String? value = await showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SimpleDialog(
-                        backgroundColor: AppColors.borderColor,
-                        title: AppText(
-                          text: LocaleKeys.child_issue.tr(),
-                          size: 21.sp,
-                        ),
-                        children:
-                            childrenIssue.map((value) {
-                              return SimpleDialogOption(
-                                onPressed: () {
-                                  Navigator.pop(context, value['title']);
-                                },
-                                child: AppText(
-                                  text: value['title'],
-                                  size: 18.sp,
-                                  color: AppColors.primary,
-                                ),
-                              );
-                            }).toList(),
-                      );
-                    },
-                  );
-                  if (value != null) {
-                    widget.childIssueController.text = value;
-                  }
-                },
+                hint: 'تخصص الدكتور',
+                controller: widget.specialityController,
                 validate: (value) {
                   if (value!.isEmpty) {
-                    return LocaleKeys.child_issue_required.tr();
+                    return 'ادخل تخصص الدكتور';
                   } else {
                     return null;
                   }
                 },
                 prefixIcon: Icon(
-                  Icons.accessibility_new_outlined,
+                  Icons.local_hospital_outlined,
                   color:
-                      childIssueFocus.hasFocus
+                      specialityFocus.hasFocus
                           ? AppColors.primary
                           : Colors.grey,
                 ),
               ),
-
               AppText(
                 text: LocaleKeys.password.tr(),
                 size: 18.sp,

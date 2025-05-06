@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/core/cache/cache_helper.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/service/cubit/app_cubit.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -10,7 +11,8 @@ import '../../../../core/widgets/app_text.dart';
 import '../../../../core/widgets/flash_message.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../../../generated/locale_keys.g.dart';
-import '../../../client_screens/home_layout/home_layout.dart';
+import '../../../child_screens/home_layout/home_layout.dart';
+import '../../../doctor_screens/home_layout/doc_home_layout.dart';
 import '../../data/auth_cubit.dart';
 import '../forget_pass/forget_pass.dart';
 import '../register/register.dart';
@@ -95,8 +97,13 @@ class _LogInState extends State<LogIn> {
             ),
             AppButton(
               onPressed: () {
-                AppCubit.get(context).changebottomNavIndex(0);
-                AppRouter.navigateAndFinish(context, const HomeLayout());
+                if (CacheHelper.getUserType() == 'child') {
+                  AppCubit.get(context).changebottomNavIndex(0);
+                  AppRouter.navigateAndFinish(context, const HomeLayout());
+                } else if (CacheHelper.getUserType() == 'doctor') {
+                  AppCubit.get(context).changebottomDocNavIndex(0);
+                  AppRouter.navigateAndFinish(context, const DocHomeLayout());
+                }
               },
               child: AppText(
                 textAlign: TextAlign.center,

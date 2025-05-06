@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/core/cache/cache_helper.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/widgets/app_router.dart';
 import '../../../core/widgets/app_text.dart';
@@ -18,7 +19,11 @@ class TypesView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AppText(text: LocaleKeys.continue_as.tr(), size: 32.sp, color: AppColors.primary),
+            AppText(
+              text: LocaleKeys.continue_as.tr(),
+              size: 32.sp,
+              color: AppColors.primary,
+            ),
             AppText(
               text: LocaleKeys.you_are_now_registering_as.tr(),
               size: 16.sp,
@@ -29,6 +34,7 @@ class TypesView extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
+                CacheHelper.setUserType('child');
                 AppRouter.navigateAndFinish(context, const LogIn());
               },
               child: Container(
@@ -71,6 +77,7 @@ class TypesView extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
+                CacheHelper.setUserType('senior');
                 AppRouter.navigateAndFinish(context, const LogIn());
               },
               child: Container(
@@ -114,6 +121,7 @@ class TypesView extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
+                CacheHelper.setUserType('doctor');
                 AppRouter.navigateAndFinish(context, const LogIn());
               },
               child: Container(
