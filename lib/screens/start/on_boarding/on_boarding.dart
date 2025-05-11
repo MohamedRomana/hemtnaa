@@ -29,7 +29,6 @@ class _OnBoardingState extends State<OnBoarding> {
   @override
   void initState() {
     super.initState();
-    AppCubit.get(context).intro();
     pageController = PageController(initialPage: 0)..addListener(() {
       setState(() {
         currPage = pageController.page!;

@@ -68,7 +68,7 @@ class _LogInState extends State<LogIn> {
                   showFlashMessage(
                     context: context,
                     type: FlashMessageType.error,
-                    message: state.error,
+                    message: "error",
                   );
                 }
               },
@@ -79,7 +79,7 @@ class _LogInState extends State<LogIn> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       await AuthCubit.get(context).logIn(
-                        phone: _emailController.text,
+                        email: _emailController.text,
                         password: _passController.text,
                       );
                     }
@@ -97,10 +97,10 @@ class _LogInState extends State<LogIn> {
             ),
             AppButton(
               onPressed: () {
-                if (CacheHelper.getUserType() == 'child') {
+                if (CacheHelper.getUserType() == 'Child') {
                   AppCubit.get(context).changebottomNavIndex(0);
                   AppRouter.navigateAndFinish(context, const HomeLayout());
-                } else if (CacheHelper.getUserType() == 'doctor') {
+                } else if (CacheHelper.getUserType() == 'Doctor') {
                   AppCubit.get(context).changebottomDocNavIndex(0);
                   AppRouter.navigateAndFinish(context, const DocHomeLayout());
                 }

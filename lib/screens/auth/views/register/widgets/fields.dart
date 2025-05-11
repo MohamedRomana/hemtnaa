@@ -12,7 +12,8 @@ import '../../../data/auth_cubit.dart';
 
 class CustomUserRegisterFields extends StatefulWidget {
   final GlobalKey<FormState> formKey;
-  final TextEditingController fullNameController;
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
   final TextEditingController phoneController;
   final TextEditingController emailController;
   final TextEditingController ageDayController;
@@ -29,13 +30,14 @@ class CustomUserRegisterFields extends StatefulWidget {
     required this.phoneController,
     required this.passController,
     required this.confirmPassController,
-    required this.fullNameController,
     required this.emailController,
     required this.childIssueController,
     required this.ageDayController,
     required this.ageMonthController,
     required this.ageYearController,
     required this.specialityController,
+    required this.firstNameController,
+    required this.lastNameController,
   });
 
   @override
@@ -44,7 +46,8 @@ class CustomUserRegisterFields extends StatefulWidget {
 }
 
 class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
-  final FocusNode nameFocus = FocusNode();
+  final FocusNode firstnameFocus = FocusNode();
+  final FocusNode lastnameFocus = FocusNode();
   final FocusNode phoneFocus = FocusNode();
   final FocusNode emailFocus = FocusNode();
   final FocusNode ageFocus = FocusNode();
@@ -56,7 +59,8 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
   @override
   void initState() {
     super.initState();
-    nameFocus.addListener(() => setState(() {}));
+    firstnameFocus.addListener(() => setState(() {}));
+    lastnameFocus.addListener(() => setState(() {}));
     phoneFocus.addListener(() => setState(() {}));
     emailFocus.addListener(() => setState(() {}));
     ageFocus.addListener(() => setState(() {}));
@@ -68,7 +72,8 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
 
   @override
   void dispose() {
-    nameFocus.dispose();
+    firstnameFocus.dispose();
+    lastnameFocus.dispose();
     phoneFocus.dispose();
     emailFocus.dispose();
     ageFocus.dispose();
@@ -101,6 +106,33 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
             children: [
               SizedBox(height: 100.h),
               AppText(
+                text: LocaleKeys.firstName.tr(),
+                size: 18.sp,
+                fontWeight: FontWeight.bold,
+                bottom: 8.h,
+                start: 18.w,
+              ),
+              AppInput(
+                enabledBorderColor: Colors.grey,
+                focusNode: firstnameFocus,
+                bottom: 18.h,
+                filled: true,
+                hint: LocaleKeys.firstName.tr(),
+                controller: widget.firstNameController,
+                validate: (value) {
+                  if (value!.isEmpty) {
+                    return LocaleKeys.firstNameValidate.tr();
+                  } else {
+                    return null;
+                  }
+                },
+                prefixIcon: Icon(
+                  Icons.person_outline,
+                  color: firstnameFocus.hasFocus ? AppColors.primary : Colors.grey,
+                  size: 30.sp,
+                ),
+              ),
+              AppText(
                 text: LocaleKeys.fullName.tr(),
                 size: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -109,21 +141,21 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
               ),
               AppInput(
                 enabledBorderColor: Colors.grey,
-                focusNode: nameFocus,
+                focusNode: lastnameFocus,
                 bottom: 18.h,
                 filled: true,
-                hint: LocaleKeys.fullName.tr(),
-                controller: widget.fullNameController,
+                hint: LocaleKeys.lastName.tr(),
+                controller: widget.lastNameController,
                 validate: (value) {
                   if (value!.isEmpty) {
-                    return LocaleKeys.nameValidate.tr();
+                    return LocaleKeys.lastNameValidate.tr();
                   } else {
                     return null;
                   }
                 },
                 prefixIcon: Icon(
                   Icons.person_outline,
-                  color: nameFocus.hasFocus ? AppColors.primary : Colors.grey,
+                  color: lastnameFocus.hasFocus ? AppColors.primary : Colors.grey,
                   size: 30.sp,
                 ),
               ),
@@ -182,7 +214,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                 ),
               ),
 
-              CacheHelper.getUserType() == 'child'
+              CacheHelper.getUserType() == 'Child'
                   ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

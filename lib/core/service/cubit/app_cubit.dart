@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:hemtnaa/core/service/models/games_models.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_chat/doc_chat.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_rates/doc_rates.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../gen/assets.gen.dart';
 import '../../../generated/locale_keys.g.dart';
 import '../../../screens/child_screens/home_layout/activities/activities.dart';
 import '../../../screens/child_screens/home_layout/chats/chats.dart';
@@ -16,8 +18,6 @@ import '../../../screens/child_screens/home_layout/home/home.dart';
 import '../../../screens/doctor_screens/home_layout/doc_home/doc_home.dart';
 import '../../cache/cache_helper.dart';
 import '../../constants/contsants.dart';
-import '../model/on_boarding_model.dart';
-import '../model/chat_messages_model.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
@@ -199,7 +199,7 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeIndex());
   }
 
-List<File> activityImage = [];
+  List<File> activityImage = [];
 
   Future<void> getActivityImage(BuildContext context) async {
     final picker = ImagePicker();
@@ -249,26 +249,6 @@ List<File> activityImage = [];
   void removeActivityImage() {
     activityImage.clear();
     emit(RemoveImageSuccess());
-  }
-
-  List<OnBoardingModel> onBoardingList = [];
-  Future intro() async {
-    emit(GetIntroLoading());
-    http.Response response = await http.post(
-      Uri.parse("${baseUrl}api/intro"),
-      body: {"lang": CacheHelper.getLang()},
-    );
-    Map<String, dynamic> data = jsonDecode(response.body);
-    debugPrint(data["data"].toString());
-    onBoardingList = List<OnBoardingModel>.from(
-      (data["data"] ?? []).map((e) => OnBoardingModel.fromJson(e)),
-    );
-
-    if (data["key"] == 1) {
-      emit(GetIntroSuccess());
-    } else {
-      emit(GetIntroFailure(error: data["msg"]));
-    }
   }
 
   // Get Images
@@ -737,104 +717,135 @@ List<File> activityImage = [];
     }
   }
 
-  List<ChatMessagesModel> chatMessages = [];
-  Map chatDetails = {};
-  Future getChatMessages({
-    required String salerId,
-    String roomId = "",
-    bool isloading = true,
-  }) async {
-    if (isloading) {
-      emit(GetChatMessagesLoading());
-    }
-    try {
-      http.Response response = await http
-          .post(
-            Uri.parse("${baseUrl}api/all-chats"),
-            body: {
-              "lang": CacheHelper.getLang(),
-              "user_id": CacheHelper.getUserId(),
-              "saler_id": salerId,
-              "room_id": roomId,
-            },
-          )
-          .timeout(const Duration(milliseconds: 8000));
+  // List<ChatMessagesModel> chatMessages = [];
+  // Map chatDetails = {};
+  // Future getChatMessages({
+  //   required String salerId,
+  //   String roomId = "",
+  //   bool isloading = true,
+  // }) async {
+  //   if (isloading) {
+  //     emit(GetChatMessagesLoading());
+  //   }
+  //   try {
+  //     http.Response response = await http
+  //         .post(
+  //           Uri.parse("${baseUrl}api/all-chats"),
+  //           body: {
+  //             "lang": CacheHelper.getLang(),
+  //             "user_id": CacheHelper.getUserId(),
+  //             "saler_id": salerId,
+  //             "room_id": roomId,
+  //           },
+  //         )
+  //         .timeout(const Duration(milliseconds: 8000));
 
-      if (response.statusCode == 500) {
-        emit(ServerError());
-      } else {
-        Map<String, dynamic> data = jsonDecode(response.body);
+  //     if (response.statusCode == 500) {
+  //       emit(ServerError());
+  //     } else {
+  //       Map<String, dynamic> data = jsonDecode(response.body);
 
-        if (data["key"] == 1) {
-          chatDetails = data;
-          debugPrint(chatDetails.toString());
-          chatMessages = List<ChatMessagesModel>.from(
-            (data["data"] ?? [])
-                .map((e) => ChatMessagesModel.fromJson(e))
-                .toList()
-                .reversed,
-          );
+  //       if (data["key"] == 1) {
+  //         chatDetails = data;
+  //         debugPrint(chatDetails.toString());
+  //         chatMessages = List<ChatMessagesModel>.from(
+  //           (data["data"] ?? [])
+  //               .map((e) => ChatMessagesModel.fromJson(e))
+  //               .toList()
+  //               .reversed,
+  //         );
 
-          emit(GetChatMessagesSuccess());
-        } else {
-          debugPrint(data["msg"]);
-          emit(GetChatMessagesFailure(error: data["msg"]));
-        }
-      }
-    } catch (error) {
-      if (error is TimeoutException) {
-        debugPrint("Request timed out");
-        emit(Timeoutt());
-      } else {
-        emit(GetChatMessagesFailure(error: error.toString()));
-      }
-    }
-  }
+  //         emit(GetChatMessagesSuccess());
+  //       } else {
+  //         debugPrint(data["msg"]);
+  //         emit(GetChatMessagesFailure(error: data["msg"]));
+  //       }
+  //     }
+  //   } catch (error) {
+  //     if (error is TimeoutException) {
+  //       debugPrint("Request timed out");
+  //       emit(Timeoutt());
+  //     } else {
+  //       emit(GetChatMessagesFailure(error: error.toString()));
+  //     }
+  //   }
+  // }
 
-  Future sendMessage({required String message}) async {
-    emit(SendMessageLoading());
-    try {
-      http.Response response = await http
-          .post(
-            Uri.parse("${baseUrl}api/store-chat"),
-            body: {
-              "lang": CacheHelper.getLang(),
-              "from_id": CacheHelper.getUserId(),
-              "to_id":
-                  CacheHelper.getUserType() == "saler"
-                      ? chatDetails["user_id"].toString()
-                      : chatDetails["saler_id"].toString(),
-              "type": "text",
-              "message": message,
-            },
-          )
-          .timeout(const Duration(milliseconds: 8000));
+  // Future sendMessage({required String message}) async {
+  //   emit(SendMessageLoading());
+  //   try {
+  //     http.Response response = await http
+  //         .post(
+  //           Uri.parse("${baseUrl}api/store-chat"),
+  //           body: {
+  //             "lang": CacheHelper.getLang(),
+  //             "from_id": CacheHelper.getUserId(),
+  //             "to_id":
+  //                 CacheHelper.getUserType() == "saler"
+  //                     ? chatDetails["user_id"].toString()
+  //                     : chatDetails["saler_id"].toString(),
+  //             "type": "text",
+  //             "message": message,
+  //           },
+  //         )
+  //         .timeout(const Duration(milliseconds: 8000));
 
-      if (response.statusCode == 500) {
-        emit(ServerError());
-      } else {
-        Map<String, dynamic> data = jsonDecode(response.body);
+  //     if (response.statusCode == 500) {
+  //       emit(ServerError());
+  //     } else {
+  //       Map<String, dynamic> data = jsonDecode(response.body);
 
-        if (data["key"] == 1) {
-          debugPrint(data["data"].toString());
-          emit(SendMessageSuccess());
-          getChatMessages(
-            salerId: chatDetails["saler_id"].toString(),
-            roomId: chatDetails["room_id"].toString(),
-            isloading: false,
-          );
-        } else {
-          debugPrint(data["msg"]);
-          emit(SendMessageFailure(error: data["msg"]));
-        }
-      }
-    } catch (error) {
-      if (error is TimeoutException) {
-        debugPrint("Request timed out");
-        emit(Timeoutt());
-      } else {
-        emit(SendMessageFailure(error: error.toString()));
-      }
-    }
-  }
+  //       if (data["key"] == 1) {
+  //         debugPrint(data["data"].toString());
+  //         emit(SendMessageSuccess());
+  //         getChatMessages(
+  //           salerId: chatDetails["saler_id"].toString(),
+  //           roomId: chatDetails["room_id"].toString(),
+  //           isloading: false,
+  //         );
+  //       } else {
+  //         debugPrint(data["msg"]);
+  //         emit(SendMessageFailure(error: data["msg"]));
+  //       }
+  //     }
+  //   } catch (error) {
+  //     if (error is TimeoutException) {
+  //       debugPrint("Request timed out");
+  //       emit(Timeoutt());
+  //     } else {
+  //       emit(SendMessageFailure(error: error.toString()));
+  //     }
+  //   }
+  // }
+
+  List<GamesModels> games = [
+    GamesModels(
+      title: 'بازل العباقرة',
+      image: Assets.img.puzzle.path,
+      description:
+          'اختبر مهاراتك في التركيب والتفكير المنطقي مع لعبة بازل ثلاثية الأبعاد! اجمع القطع المتناثرة لتشكّل صورًا مذهلة وتحدّى نفسك في مستويات متعددة الصعوبة.',
+      button: 'Puzzle',
+    ),
+    GamesModels(
+      title: 'تحدي الألغاز',
+      image: Assets.img.mystery.path,
+      description:
+          'أطلق العنان لذكائك مع مئات الألغاز الممتعة والمتنوعة! هل يمكنك حلها جميعًا؟ ألغاز منطقية، رياضية، وأسئلة خفيفة ستُشعل عقلك.',
+      button: 'لعبة الالغاز',
+    ),
+    GamesModels(
+      title: 'عباقرة التفكير',
+      image: Assets.img.brain.path,
+      description:
+          'مرّن دماغك مع ألعاب ذكاء صُمّمت لاختبار مهاراتك في المنطق، التحليل، وسرعة البديهة. مراحل تزداد صعوبة وتحديات جديدة كل يوم!',
+      button: 'لعبة التفكير',
+    ),
+    GamesModels(
+      title: 'ذاكرة حديدية',
+      image: Assets.img.shapes.path,
+      description:
+          'اختبر قوة ذاكرتك! اقلب البطاقات، طابق الصور، وحقق أعلى النتائج. لعبة ممتعة مناسبة لجميع الأعمار لتنشيط العقل وتحسين التركيز.',
+      button: 'لعبة الذاكرة',
+    ),
+  ];
 }

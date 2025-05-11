@@ -105,7 +105,7 @@ class CustomOnBoardingButtons extends StatelessWidget {
                                       size:
                                           CacheHelper.getLang() == 'ar'
                                               ? 16.sp
-                                              : 10.sp,
+                                              : 16.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

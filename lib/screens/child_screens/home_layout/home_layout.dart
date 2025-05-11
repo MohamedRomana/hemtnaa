@@ -100,14 +100,19 @@ class _HomeLayoutState extends State<HomeLayout>
             return shouldPop ?? false;
           },
           child: Scaffold(
-            bottomNavigationBar: Container(
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: Container(
               height: 80.h,
               padding: EdgeInsetsDirectional.symmetric(
                 horizontal: 32.w,
                 vertical: 16.h,
               ),
               decoration: BoxDecoration(
-                color: const Color(0xffF6F6F8),
+                color:
+                    AppCubit.get(context).bottomNavIndex == 1
+                        ? const Color(0xffF6F6F8).withAlpha(50)
+                        : const Color(0xffF6F6F8),
                 borderRadius: BorderRadiusDirectional.only(
                   topEnd: Radius.circular(24.r),
                   topStart: Radius.circular(24.r),

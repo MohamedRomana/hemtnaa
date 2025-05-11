@@ -14,7 +14,12 @@ class PostsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+      padding: EdgeInsetsDirectional.only(
+        start: 24.w,
+        end: 24.w,
+        top: 16.h,
+        bottom: 120.h,
+      ),
       itemCount: 20,
       separatorBuilder: (context, index) => SizedBox(height: 16.h),
       itemBuilder:
@@ -46,7 +51,10 @@ class PostsListView extends StatelessWidget {
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () {
-                    AppRouter.navigateTo(context, const DoctorView(isDoc: false,));
+                    AppRouter.navigateTo(
+                      context,
+                      const DoctorView(isDoc: false),
+                    );
                   },
                   child: Row(
                     children: [

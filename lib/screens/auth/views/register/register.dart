@@ -15,7 +15,8 @@ import '../widgets/auth_header.dart';
 import 'widgets/fields.dart';
 
 final _formKey = GlobalKey<FormState>();
-final _fullNameController = TextEditingController();
+final _firstNameController = TextEditingController();
+final _lastNameController = TextEditingController();
 final _phoneController = TextEditingController();
 final _emailController = TextEditingController();
 final _ageDayController = TextEditingController();
@@ -36,7 +37,8 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   void initState() {
-    _fullNameController.clear();
+    _firstNameController.clear();
+    _lastNameController.clear();
     _phoneController.clear();
     _emailController.clear();
     _ageDayController.clear();
@@ -63,18 +65,20 @@ class _RegisterState extends State<Register> {
               passController: _passController,
               confirmPassController: _confirmPassController,
               emailController: _emailController,
-              fullNameController: _fullNameController,
               childIssueController: _childIssueController,
               ageDayController: _ageDayController,
               ageMonthController: _ageMonthController,
               ageYearController: _ageYearController,
               specialityController: _specialityController,
+              firstNameController: _firstNameController,
+              lastNameController: _lastNameController,
             ),
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state is RegisterSuccess) {
                   AppRouter.navigateAndPop(context, const OTPscreen());
-                  _fullNameController.clear();
+                  _firstNameController.clear();
+                  _lastNameController.clear();
                   _phoneController.clear();
                   _emailController.clear();
                   _passController.clear();
@@ -82,13 +86,13 @@ class _RegisterState extends State<Register> {
                   showFlashMessage(
                     context: context,
                     type: FlashMessageType.success,
-                    message: state.message,
+                    message: 'success',
                   );
                 } else if (state is RegisterFailure) {
                   showFlashMessage(
                     context: context,
                     type: FlashMessageType.error,
-                    message: state.error,
+                    message: 'error',
                   );
                 }
               },
@@ -97,13 +101,16 @@ class _RegisterState extends State<Register> {
                   top: 24.h,
                   bottom: 2.h,
                   onPressed: () async {
-                    AppRouter.navigateAndPop(context, const OTPscreen());
+                    // AppRouter.navigateAndPop(context, const OTPscreen());
 
                     if (_formKey.currentState!.validate()) {
                       await AuthCubit.get(context).register(
-                        fullName: _fullNameController.text,
                         phone: _phoneController.text,
                         password: _passController.text,
+                        firstName: _firstNameController.text,
+                        lastName: _lastNameController.text,
+                        email: _emailController.text,
+                        userType: 'Doctor',
                       );
                     }
                   },

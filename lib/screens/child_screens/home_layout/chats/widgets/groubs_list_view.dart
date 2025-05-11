@@ -12,7 +12,12 @@ class GroubsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+      padding: EdgeInsetsDirectional.only(
+        start: 16.w,
+        end: 16.w,
+        top: 24.h,
+        bottom: 120.h,
+      ),
       itemCount: 20,
       separatorBuilder: (context, index) => SizedBox(height: 16.h),
       itemBuilder:

@@ -60,6 +60,9 @@ class $AssetsImgGen {
   /// File path: assets/img/alert.json
   String get alert => 'assets/img/alert.json';
 
+  /// File path: assets/img/brain.png
+  AssetGenImage get brain => const AssetGenImage('assets/img/brain.png');
+
   /// File path: assets/img/doctor.png
   AssetGenImage get doctor => const AssetGenImage('assets/img/doctor.png');
 
@@ -81,8 +84,27 @@ class $AssetsImgGen {
   /// File path: assets/img/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/img/logo.png');
 
+  /// File path: assets/img/logo_brain.png
+  AssetGenImage get logoBrain =>
+      const AssetGenImage('assets/img/logo_brain.png');
+
+  /// File path: assets/img/logo_mystery.png
+  AssetGenImage get logoMystery =>
+      const AssetGenImage('assets/img/logo_mystery.png');
+
+  /// File path: assets/img/logo_puzzle.png
+  AssetGenImage get logoPuzzle =>
+      const AssetGenImage('assets/img/logo_puzzle.png');
+
+  /// File path: assets/img/logo_shapes.png
+  AssetGenImage get logoShapes =>
+      const AssetGenImage('assets/img/logo_shapes.png');
+
   /// File path: assets/img/man.png
   AssetGenImage get man => const AssetGenImage('assets/img/man.png');
+
+  /// File path: assets/img/mystery.png
+  AssetGenImage get mystery => const AssetGenImage('assets/img/mystery.png');
 
   /// File path: assets/img/noti_empty.json
   String get notiEmpty => 'assets/img/noti_empty.json';
@@ -97,8 +119,17 @@ class $AssetsImgGen {
   /// File path: assets/img/puzzel2.png
   AssetGenImage get puzzel2 => const AssetGenImage('assets/img/puzzel2.png');
 
+  /// File path: assets/img/puzzle.png
+  AssetGenImage get puzzle => const AssetGenImage('assets/img/puzzle.png');
+
+  /// File path: assets/img/score.png
+  AssetGenImage get score => const AssetGenImage('assets/img/score.png');
+
   /// File path: assets/img/senior.png
   AssetGenImage get senior => const AssetGenImage('assets/img/senior.png');
+
+  /// File path: assets/img/shapes.png
+  AssetGenImage get shapes => const AssetGenImage('assets/img/shapes.png');
 
   /// File path: assets/img/start.json
   String get start => 'assets/img/start.json';
@@ -109,6 +140,7 @@ class $AssetsImgGen {
   /// List of all assets
   List<dynamic> get values => [
     alert,
+    brain,
     doctor,
     doctor2,
     emptyseach,
@@ -116,12 +148,20 @@ class $AssetsImgGen {
     loading,
     login,
     logo,
+    logoBrain,
+    logoMystery,
+    logoPuzzle,
+    logoShapes,
     man,
+    mystery,
     notiEmpty,
     onboarding,
     pazzel,
     puzzel2,
+    puzzle,
+    score,
     senior,
+    shapes,
     start,
     student,
   ];

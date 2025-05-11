@@ -49,45 +49,53 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AgreeTermsSuccess());
   }
 
-  String cityId = "";
-  String sectionId = "";
   Future register({
-    required String fullName,
     required String phone,
+    required String firstName,
+    required String lastName,
+    required String email,
     required String password,
+    required String userType,
   }) async {
     emit(RegisterLoading());
-    http.Response response =
-        await http.post(Uri.parse("${baseUrl}api/register"), body: {
-      "lang": CacheHelper.getLang(),
-      "first_name": fullName,
-      "city_id": cityId,
-      "phone": phone,
-      "password": password,
-    });
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}Auth/register"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "phone": phone,
+        "firstName": firstName,
+        "lastName": lastName,
+        "email": email,
+        "password": password,
+        "userType": userType,
+      }),
+    );
+
     Map<String, dynamic> data = jsonDecode(response.body);
     debugPrint(data.toString());
+    debugPrint("Status code: ${response.statusCode}");
+    debugPrint("Response body: ${response.body}");
 
-    if (data["key"] == 1) {
-      cityId = "";
-      sectionId = "";
-      await CacheHelper.setUserId(data["data"]["id"].toString());
-      emit(RegisterSuccess(message: data["msg"]));
+    if (response.statusCode == 200 && data.containsKey("doctorId")) {
+      await CacheHelper.setUserId(data['doctorId'].toString());
+      emit(RegisterSuccess());
     } else {
-      debugPrint(data["msg"]);
-      emit(RegisterFailure(error: data["msg"]));
+      debugPrint("Registration failed: ${data.toString()}");
+      emit(RegisterFailure());
     }
   }
 
   Future otp({required String code}) async {
     emit(OTPLoading());
-    http.Response response =
-        await http.post(Uri.parse("${baseUrl}api/active-account"), body: {
-      "lang": CacheHelper.getLang(),
-      "user_id": CacheHelper.getUserId(),
-      "code": code,
-      "device_id": CacheHelper.getDeviceToken(),
-    });
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}api/active-account"),
+      body: {
+        "lang": CacheHelper.getLang(),
+        "user_id": CacheHelper.getUserId(),
+        "code": code,
+        "device_id": CacheHelper.getDeviceToken(),
+      },
+    );
     Map<String, dynamic> data = jsonDecode(response.body);
     debugPrint(data.toString());
 
@@ -99,40 +107,45 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future logIn({
-    required String phone,
-    required String password,
-  }) async {
+  Future logIn({required String email, required String password}) async {
     emit(LogInLoading());
-    http.Response response =
-        await http.post(Uri.parse("${baseUrl}api/login"), body: {
-      "lang": CacheHelper.getLang(),
-      "phone": phone,
-      "password": password,
-      "device_id": CacheHelper.getDeviceToken(),
-    });
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}Auth/login"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "email": email,
+        "password": password,
+        "userType": "doctor",
+      }),
+    );
     Map<String, dynamic> data = jsonDecode(response.body);
     debugPrint(data.toString());
+    debugPrint("Raw body: '${response.body}'");
 
-    if (data["key"] == 1) {
-      // await CacheHelper.setUserToken(data["data"]["api_token"]);
-      await CacheHelper.setUserType(data["data"]["user_type"]);
-      await CacheHelper.setUserId(data["data"]["id"].toString());
+    if (response.statusCode == 200 && response.body.isNotEmpty) {
+      final data = jsonDecode(response.body);
+      debugPrint(data.toString());
+      await CacheHelper.setUserType(data["userType"]);
+      await CacheHelper.setUserId(data["doctorId"].toString());
 
       emit(LogInSuccess());
     } else {
-      emit(LogInFailure(error: data["msg"]));
+      debugPrint("Status code: ${response.statusCode}");
+      debugPrint("Response body: '${response.body}'");
+      emit(LogInFailure());
     }
   }
 
   Future logOut() async {
     emit(LogOutLoading());
-    http.Response response =
-        await http.post(Uri.parse("${baseUrl}api/logout"), body: {
-      "lang": CacheHelper.getLang(),
-      "user_id": CacheHelper.getUserId(),
-      "device_id": CacheHelper.getDeviceToken(),
-    });
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}api/logout"),
+      body: {
+        "lang": CacheHelper.getLang(),
+        "user_id": CacheHelper.getUserId(),
+        "device_id": CacheHelper.getDeviceToken(),
+      },
+    );
     Map<String, dynamic> data = jsonDecode(response.body);
     debugPrint(data.toString());
 
@@ -148,11 +161,10 @@ class AuthCubit extends Cubit<AuthState> {
   String resetPassId = "";
   Future forgetPass({required String phone}) async {
     emit(ForgetPassLoading());
-    http.Response response =
-        await http.post(Uri.parse("${baseUrl}api/forget-password"), body: {
-      "lang": CacheHelper.getLang(),
-      "phone": phone,
-    });
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}api/forget-password"),
+      body: {"lang": CacheHelper.getLang(), "phone": phone},
+    );
     Map<String, dynamic> data = jsonDecode(response.body);
     if (data["data"] != null) {
       resetPassId = data["data"]["id"].toString();
@@ -169,11 +181,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future resendCode() async {
     emit(ResendCodeLoading());
-    http.Response response =
-        await http.post(Uri.parse("${baseUrl}api/resend-code"), body: {
-      "lang": CacheHelper.getLang(),
-      "user_id": CacheHelper.getUserId(),
-    });
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}api/resend-code"),
+      body: {"lang": CacheHelper.getLang(), "user_id": CacheHelper.getUserId()},
+    );
     Map<String, dynamic> data = jsonDecode(response.body);
     debugPrint(data.toString());
 
@@ -185,18 +196,17 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future resetPass({
-    required String code,
-    required String password,
-  }) async {
+  Future resetPass({required String code, required String password}) async {
     emit(ResetPassLoading());
-    http.Response response =
-        await http.post(Uri.parse("${baseUrl}api/reset-password"), body: {
-      "lang": CacheHelper.getLang(),
-      "user_id": resetPassId,
-      "code": code,
-      "password": password,
-    });
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}api/reset-password"),
+      body: {
+        "lang": CacheHelper.getLang(),
+        "user_id": resetPassId,
+        "code": code,
+        "password": password,
+      },
+    );
     Map<String, dynamic> data = jsonDecode(response.body);
     debugPrint(data.toString());
 
@@ -209,12 +219,14 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future deleteAccount() async {
     emit(DeleteAccountLoading());
-    http.Response response =
-        await http.post(Uri.parse("${baseUrl}api/destroy-user"), body: {
-      "lang": CacheHelper.getLang(),
-      "user_id": CacheHelper.getUserId(),
-      "device_id": CacheHelper.getDeviceToken(),
-    });
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}api/destroy-user"),
+      body: {
+        "lang": CacheHelper.getLang(),
+        "user_id": CacheHelper.getUserId(),
+        "device_id": CacheHelper.getDeviceToken(),
+      },
+    );
     Map<String, dynamic> data = jsonDecode(response.body);
     debugPrint(data.toString());
 
@@ -231,8 +243,10 @@ class AuthCubit extends Cubit<AuthState> {
   String? identityImageUrl;
   Future uploadIdentityImage({required List<File> identityImage}) async {
     emit(UploadImageLoading());
-    final request =
-        http.MultipartRequest('POST', Uri.parse("${baseUrl}api/upload-image"));
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse("${baseUrl}api/upload-image"),
+    );
     request.fields['lang'] = CacheHelper.getLang();
 
     for (var image in identityImage) {
@@ -263,8 +277,10 @@ class AuthCubit extends Cubit<AuthState> {
   String? licenseImageUrl;
   Future uploadLicenseImage({required List<File> licenseImage}) async {
     emit(UploadImageLoading());
-    final request =
-        http.MultipartRequest('POST', Uri.parse("${baseUrl}api/upload-image"));
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse("${baseUrl}api/upload-image"),
+    );
     request.fields['lang'] = CacheHelper.getLang();
 
     for (var image in licenseImage) {
@@ -295,8 +311,10 @@ class AuthCubit extends Cubit<AuthState> {
   String? carImageUrl;
   Future uploadCarImage({required List<File> carImage}) async {
     emit(UploadImageLoading());
-    final request =
-        http.MultipartRequest('POST', Uri.parse("${baseUrl}api/upload-image"));
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse("${baseUrl}api/upload-image"),
+    );
     request.fields['lang'] = CacheHelper.getLang();
 
     for (var image in carImage) {
