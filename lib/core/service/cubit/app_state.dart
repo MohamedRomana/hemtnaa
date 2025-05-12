@@ -133,3 +133,22 @@ final class SendMessageFailure extends AppState {
 
 final class ScoreUpdated extends AppState {}
 
+class QuizInitialState extends AppState {}
+
+class QuizAnsweredState extends AppState {
+  final int currentPage;
+  final int score;
+  final bool answered;
+  final int? selectedIndex;
+
+  QuizAnsweredState(this.currentPage, this.score, this.answered, this.selectedIndex);
+}
+
+class QuizNextQuestionState extends AppState {
+  final int currentPage;
+  final int score;
+  final bool answered;
+  final int? selectedIndex;
+
+  QuizNextQuestionState(this.currentPage, this.score, this.answered, this.selectedIndex);
+}

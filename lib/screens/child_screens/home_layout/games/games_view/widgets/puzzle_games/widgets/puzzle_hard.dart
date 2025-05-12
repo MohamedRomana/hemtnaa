@@ -1,28 +1,32 @@
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
-
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
+import 'package:hemtnaa/screens/child_screens/home_layout/home_layout.dart';
+import '../../../../../../../../core/constants/colors.dart';
+import '../../../../../../../../core/widgets/app_router.dart';
+import '../../../../../../../../core/widgets/app_text.dart';
 
-class MediumPuzzle extends StatefulWidget {
-  const MediumPuzzle({super.key});
+class PuzzleHard extends StatefulWidget {
+  const PuzzleHard({super.key});
 
   @override
-  State<MediumPuzzle> createState() => _MediumPuzzleState();
+  State<PuzzleHard> createState() => _PuzzleHardState();
 }
 
-class _MediumPuzzleState extends State<MediumPuzzle> {
+class _PuzzleHardState extends State<PuzzleHard> {
   late ConfettiController _confettiController;
   List<ui.Image> imagePieces = [];
-  List<int?> topGrid = List.filled(16, null); // حفظ الإندكس للقطعة
-  List<int> availablePieces2 = List.generate(16, (i) => i);
+  List<int?> topGrid = List.filled(25, null);
+  List<int> availablePieces2 = List.generate(25, (i) => i);
 
   void resetGame() {
     setState(() {
-      topGrid = List.filled(16, null);
-      availablePieces2 = List.generate(16, (i) => i)..shuffle();
+      topGrid = List.filled(25, null);
+      availablePieces2 = List.generate(25, (i) => i)..shuffle();
     });
   }
 
@@ -33,7 +37,7 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
       }
     }
 
-    List<int> correctOrder = List.generate(16, (i) => i);
+    List<int> correctOrder = List.generate(25, (i) => i);
 
     for (int i = 0; i < topGrid.length; i++) {
       if (topGrid[i] != correctOrder[i]) {
@@ -43,7 +47,6 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
     return true;
   }
 
-  // تعديل طريقة onAcceptWithDetails بحيث في حالة السقوط، يعرض الترتيب الصحيح
   void handlePuzzleCompletion(BuildContext context) {
     Future.delayed(const Duration(milliseconds: 300), () {
       bool solved = isPuzzleSolved();
@@ -51,29 +54,50 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
       print("TopGrid after check: $topGrid");
       if (!solved) {
         setState(() {
-          topGrid = List.generate(16, (i) => i); // ضبط القطع في الترتيب الصحيح
+          topGrid = List.generate(25, (i) => i);
         });
       } else {
-        _confettiController.play(); // 🎈 شغل البالونات عند النجاح
+        _startRepeatedConfetti();
+        _confettiController.play();
       }
 
       showDialog(
         context: context,
         builder:
             (context) => AlertDialog(
-              title: Text(solved ? '🎉 نجاح!' : '❌ سقوط!'),
-              content: Text(
-                solved
-                    ? 'أحسنت، رتبت اللغز بشكل صحيح!'
-                    : 'للأسف، اللغز غير مرتب بشكل صحيح. سيتم عرض الترتيب الصحيح الآن.',
+              backgroundColor: Colors.white,
+              title: AppText(
+                text: solved ? '🎉 نجاح!' : '❌ سقوط!',
+                size: 20.sp,
+                fontWeight: FontWeight.bold,
+              ),
+              content: AppText(
+                text:
+                    solved
+                        ? 'أحسنت، رتبت جميع الالغاز بشكل صحيح!'
+                        : 'للأسف، اللغز غير مرتب بشكل صحيح. سيتم عرض الترتيب الصحيح الآن.',
+                size: 14.sp,
+                lines: 2,
+                fontWeight: FontWeight.bold,
               ),
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
-                    resetGame();
+                    if (solved) {
+                      AppRouter.pop(context);
+                      AppCubit.get(context).changebottomNavIndex(1);
+                      AppRouter.navigateAndFinish(context, const HomeLayout());
+                    } else {
+                      AppRouter.pop(context);
+                      resetGame();
+                    }
                   },
-                  child: const Text('إعادة المحاولة'),
+                  child: AppText(
+                    text: solved ? 'الانتقال للعبة اخرى' : 'حاول مرة اخرى',
+                    size: 14.sp,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -90,18 +114,26 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
     _splitImage();
   }
 
+  void _startRepeatedConfetti() async {
+    const int repeatCount = 4;
+    for (int i = 0; i < repeatCount; i++) {
+      _confettiController.play();
+      await Future.delayed(const Duration(seconds: 3));
+    }
+  }
+
   Future<void> _splitImage() async {
     final ByteData data = await NetworkAssetBundle(
       Uri.parse(
-        'https://i.pinimg.com/736x/1e/59/f6/1e59f612816a38d1c19cd526b02a270c.jpg',
+        'https://i.pinimg.com/736x/0d/81/95/0d819575508867474e3026b7b9220f5f.jpg',
       ),
     ).load('');
     final codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
     final frame = await codec.getNextFrame();
     final image = frame.image;
 
-    const int rows = 4;
-    const int cols = 4;
+    const int rows = 5;
+    const int cols = 5;
     final width = image.width ~/ cols;
     final height = image.height ~/ rows;
 
@@ -119,24 +151,28 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
       }
     }
 
-    // تبادل الأعمدة 0 مع 3، و1 مع 2
+    List<ui.Image> swappedPieces = List.from(pieces);
+
+    // تبديل الأعمدة الخمسة: 0 <-> 4، 1 <-> 3، 2 يبقى
     for (int row = 0; row < rows; row++) {
-      int i0 = row * cols + 0;
-      int i1 = row * cols + 1;
-      int i2 = row * cols + 2;
-      int i3 = row * cols + 3;
+      int index0 = row * cols + 0;
+      int index4 = row * cols + 4;
+      int index1 = row * cols + 1;
+      int index3 = row * cols + 3;
 
-      var tmp = pieces[i0];
-      pieces[i0] = pieces[i3];
-      pieces[i3] = tmp;
+      // تبديل العمود 0 مع 4
+      var temp = swappedPieces[index0];
+      swappedPieces[index0] = swappedPieces[index4];
+      swappedPieces[index4] = temp;
 
-      tmp = pieces[i1];
-      pieces[i1] = pieces[i2];
-      pieces[i2] = tmp;
+      // تبديل العمود 1 مع 3
+      temp = swappedPieces[index1];
+      swappedPieces[index1] = swappedPieces[index3];
+      swappedPieces[index3] = temp;
     }
 
     setState(() {
-      imagePieces = pieces;
+      imagePieces = swappedPieces;
       availablePieces2.shuffle();
     });
   }
@@ -184,7 +220,7 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
                 children: [
                   const SizedBox(height: 30),
                   const Text(
-                    'بازل متوسط',
+                    'اللغز الصعب',
                     style: TextStyle(
                       fontSize: 22,
                       color: Colors.white,
@@ -198,11 +234,11 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
                     padding: const EdgeInsets.all(20),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
+                          crossAxisCount: 5,
                           crossAxisSpacing: 4,
                           mainAxisSpacing: 4,
                         ),
-                    itemCount: 16,
+                    itemCount: 25,
                     itemBuilder: (context, index) {
                       int? pieceIndex = topGrid[index];
                       return DragTarget<int>(
@@ -245,7 +281,7 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
                     padding: const EdgeInsets.all(20),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
+                          crossAxisCount: 6,
                           crossAxisSpacing: 6,
                           mainAxisSpacing: 6,
                         ),
@@ -284,7 +320,7 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
                       'إعادة المحاولة',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 20,
                       ),
                     ),
                   ),
@@ -296,9 +332,9 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
             alignment: Alignment.topCenter,
             child: ConfettiWidget(
               confettiController: _confettiController,
-              blastDirection: pi / 2,
+              blastDirection: pi / 3,
               emissionFrequency: 0.05,
-              numberOfParticles: 30,
+              numberOfParticles: 300,
               maxBlastForce: 20,
               minBlastForce: 5,
               shouldLoop: false,
@@ -308,6 +344,16 @@ class _MediumPuzzleState extends State<MediumPuzzle> {
                 Colors.blue,
                 Colors.purple,
                 Colors.orange,
+                Colors.pink,
+                Colors.teal,
+                Colors.yellow,
+                Colors.cyan,
+                Colors.amber,
+                Colors.brown,
+                Colors.indigo,
+                Colors.lime,
+                Colors.deepOrange,
+                Colors.deepPurple,
               ],
             ),
           ),

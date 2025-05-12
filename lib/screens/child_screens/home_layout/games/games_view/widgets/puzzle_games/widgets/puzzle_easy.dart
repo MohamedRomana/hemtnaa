@@ -3,6 +3,12 @@ import 'dart:ui' as ui;
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/screens/child_screens/home_layout/games/games_view/widgets/puzzle_games/widgets/puzzle_medium.dart';
+
+import '../../../../../../../../core/constants/colors.dart';
+import '../../../../../../../../core/widgets/app_router.dart';
+import '../../../../../../../../core/widgets/app_text.dart';
 
 class EasyPuzzle extends StatefulWidget {
   const EasyPuzzle({super.key});
@@ -14,7 +20,7 @@ class EasyPuzzle extends StatefulWidget {
 class _EasyPuzzleState extends State<EasyPuzzle> {
   late ConfettiController _confettiController;
   List<ui.Image> imagePieces = [];
-  List<int?> topGrid = List.filled(9, null); // حفظ الإندكس للقطعة
+  List<int?> topGrid = List.filled(9, null);
   List<int> availablePieces = List.generate(9, (i) => i);
 
   void resetGame() {
@@ -41,7 +47,6 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
     return true;
   }
 
-  // تعديل طريقة onAcceptWithDetails بحيث في حالة السقوط، يعرض الترتيب الصحيح
   void handlePuzzleCompletion(BuildContext context) {
     Future.delayed(const Duration(milliseconds: 300), () {
       bool solved = isPuzzleSolved();
@@ -49,29 +54,48 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
       print("TopGrid after check: $topGrid");
       if (!solved) {
         setState(() {
-          topGrid = List.generate(9, (i) => i); // ضبط القطع في الترتيب الصحيح
+          topGrid = List.generate(9, (i) => i);
         });
       } else {
-        _confettiController.play(); // 🎈 شغل البالونات عند النجاح
+        _startRepeatedConfetti();
+        _confettiController.play();
       }
 
       showDialog(
         context: context,
         builder:
             (context) => AlertDialog(
-              title: Text(solved ? '🎉 نجاح!' : '❌ سقوط!'),
-              content: Text(
-                solved
-                    ? 'أحسنت، رتبت اللغز بشكل صحيح!'
-                    : 'للأسف، اللغز غير مرتب بشكل صحيح. سيتم عرض الترتيب الصحيح الآن.',
+              backgroundColor: Colors.white,
+              title: AppText(
+                text: solved ? '🎉 نجاح!' : '❌ سقوط!',
+                size: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+              content: AppText(
+                text:
+                    solved
+                        ? 'أحسنت، رتبت اللغز بشكل صحيح!'
+                        : 'للأسف، اللغز غير مرتب بشكل صحيح. سيتم عرض الترتيب الصحيح الآن.',
+                size: 14.sp,
+                fontWeight: FontWeight.bold,
               ),
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
-                    resetGame();
+                    if (solved) {
+                      AppRouter.pop(context);
+                      AppRouter.navigateTo(context, const MediumPuzzle());
+                    } else {
+                      Navigator.pop(context);
+                      resetGame();
+                    }
                   },
-                  child: const Text('إعادة المحاولة'),
+                  child: AppText(
+                    text: solved ? 'انتقال للمستوى المتوسط' : 'حاول مرة اخرى',
+                    size: 14.sp,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -86,6 +110,14 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
     );
     super.initState();
     _splitImage();
+  }
+
+  void _startRepeatedConfetti() async {
+    const int repeatCount = 4;
+    for (int i = 0; i < repeatCount; i++) {
+      _confettiController.play();
+      await Future.delayed(const Duration(seconds: 3));
+    }
   }
 
   Future<void> _splitImage() async {
@@ -296,9 +328,9 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
             alignment: Alignment.topCenter,
             child: ConfettiWidget(
               confettiController: _confettiController,
-              blastDirection: pi / 2,
+              blastDirection: pi / 3,
               emissionFrequency: 0.05,
-              numberOfParticles: 30,
+              numberOfParticles: 300,
               maxBlastForce: 20,
               minBlastForce: 5,
               shouldLoop: false,
@@ -308,6 +340,16 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
                 Colors.blue,
                 Colors.purple,
                 Colors.orange,
+                Colors.pink,
+                Colors.teal,
+                Colors.yellow,
+                Colors.cyan,
+                Colors.amber,
+                Colors.brown,
+                Colors.indigo,
+                Colors.lime,
+                Colors.deepOrange,
+                Colors.deepPurple,
               ],
             ),
           ),

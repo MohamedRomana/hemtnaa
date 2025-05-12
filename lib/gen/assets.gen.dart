@@ -60,6 +60,9 @@ class $AssetsImgGen {
   /// File path: assets/img/alert.json
   String get alert => 'assets/img/alert.json';
 
+  /// File path: assets/img/apple.png
+  AssetGenImage get apple => const AssetGenImage('assets/img/apple.png');
+
   /// File path: assets/img/brain.png
   AssetGenImage get brain => const AssetGenImage('assets/img/brain.png');
 
@@ -74,6 +77,9 @@ class $AssetsImgGen {
 
   /// File path: assets/img/images1.png
   AssetGenImage get images1 => const AssetGenImage('assets/img/images1.png');
+
+  /// File path: assets/img/lion.jpeg
+  AssetGenImage get lion => const AssetGenImage('assets/img/lion.jpeg');
 
   /// File path: assets/img/loading.json
   String get loading => 'assets/img/loading.json';
@@ -137,14 +143,19 @@ class $AssetsImgGen {
   /// File path: assets/img/student.png
   AssetGenImage get student => const AssetGenImage('assets/img/student.png');
 
+  /// File path: assets/img/tree.jpeg
+  AssetGenImage get tree => const AssetGenImage('assets/img/tree.jpeg');
+
   /// List of all assets
   List<dynamic> get values => [
     alert,
+    apple,
     brain,
     doctor,
     doctor2,
     emptyseach,
     images1,
+    lion,
     loading,
     login,
     logo,
@@ -164,6 +175,7 @@ class $AssetsImgGen {
     shapes,
     start,
     student,
+    tree,
   ];
 }
 

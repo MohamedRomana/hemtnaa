@@ -19,11 +19,6 @@ import '../register/register.dart';
 import '../widgets/auth_header.dart';
 import 'widgets/login_fields.dart';
 
-final _formKey = GlobalKey<FormState>();
-final _emailController = TextEditingController();
-final _passController = TextEditingController();
-String phoneCode = "";
-
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
 
@@ -32,6 +27,9 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
   @override
   void initState() {
     _emailController.clear();

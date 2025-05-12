@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hemtnaa/core/service/models/games_models.dart';
+import 'package:hemtnaa/core/service/models/questions_model.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_chat/doc_chat.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_rates/doc_rates.dart';
 import 'package:http/http.dart' as http;
@@ -848,4 +849,81 @@ class AppCubit extends Cubit<AppState> {
       button: 'لعبة الذاكرة',
     ),
   ];
+
+  List<QuestionsModel> questions = [
+    QuestionsModel(
+      quistion: 'ما الشئ الذي الذي له أوراق ولكنه ليس نباتاً ؟',
+      answers: ['شجرة', 'عشب', 'زهرة', 'كتاب'],
+      correctAnswer: 'كتاب',
+    ),
+    QuestionsModel(
+      quistion: "ما اسم هذا الحيوان ؟",
+      image: Assets.img.lion.path,
+      answers: ['اسد', 'حمار', 'كلب', 'فيل'],
+      correctAnswer: 'اسد',
+    ),
+    QuestionsModel(
+      quistion: "ما الشئ الذي كلما أخذت منه كبر ؟",
+      answers: ['البالون', 'الحفرة', 'الكعكة', 'الكتاب'],
+      correctAnswer: 'الحفرة',
+    ),
+    QuestionsModel(
+      quistion: "ما لون هذه الفاكهة؟",
+      image: Assets.img.apple.path,
+      answers: ['احمر', 'اخضر', 'ازرق', 'اسود'],
+      correctAnswer: 'احمر',
+    ),
+    QuestionsModel(
+      quistion: "ما هو الشئ الذي لا يمكن أن تراه ولكنه يراك؟",
+      answers: ['الضوء', 'الصوت', 'الظل', 'الهواء'],
+      correctAnswer: 'الظل',
+    ),
+    QuestionsModel(
+      quistion: "ما اسم الشكل في الصورة ؟",
+      image: Assets.img.tree.path,
+      answers: ['شجرة', 'حيوان', 'نخلة', 'وردة'],
+      correctAnswer: 'شجرة',
+    ),
+  ];
+
+  int _currentPage = 0;
+  int _score = 0;
+  int? _selectedIndex;
+  bool _answered = false;
+
+  void answerQuestion(int selectedIndex) {
+    if (_answered) return;
+
+    _selectedIndex = selectedIndex;
+    _answered = true;
+
+    final correctAnswer = questions[_currentPage].correctAnswer;
+    final selectedAnswer = questions[_currentPage].answers[selectedIndex];
+
+    if (selectedAnswer == correctAnswer) {
+      _score += 10;
+    }
+
+    emit(QuizAnsweredState(_currentPage, _score, _answered, _selectedIndex));
+  }
+
+  void nextQuestion() {
+    if (_currentPage < questions.length - 1) {
+      _currentPage++;
+      _answered = false;
+      _selectedIndex = null;
+      emit(
+        QuizNextQuestionState(_currentPage, _score, _answered, _selectedIndex),
+      );
+    }
+  }
+
+  void resetQuiz() {
+    _currentPage = 0;
+    _score = 0;
+    _answered = false;
+    _selectedIndex = null;
+    emit(QuizInitialState());
+  }
 }
+
