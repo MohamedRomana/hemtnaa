@@ -61,14 +61,14 @@ class Games extends StatelessWidget {
                           clipBehavior: Clip.none,
                           children: [
                             PositionedDirectional(
-                              start: -70.w,
+                              start: -60.w,
                               top: 30.h,
                               child: Transform.rotate(
                                 angle: 0.2,
                                 child: Image.asset(
                                   AppCubit.get(context).games[index].image,
-                                  height: 160.w,
-                                  width: 160.w,
+                                  height: 130.w,
+                                  width: 130.w,
                                   fit: BoxFit.fill,
                                 ),
                               ),

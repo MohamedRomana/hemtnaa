@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/core/service/models/focus_model.dart';
 import 'package:hemtnaa/core/service/models/games_models.dart';
 import 'package:hemtnaa/core/service/models/questions_model.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_chat/doc_chat.dart';
@@ -839,7 +842,7 @@ class AppCubit extends Cubit<AppState> {
       image: Assets.img.brain.path,
       description:
           'مرّن دماغك مع ألعاب ذكاء صُمّمت لاختبار مهاراتك في المنطق، التحليل، وسرعة البديهة. مراحل تزداد صعوبة وتحديات جديدة كل يوم!',
-      button: 'لعبة التفكير',
+      button: 'لعبة التركيز',
     ),
     GamesModels(
       title: 'ذاكرة حديدية',
@@ -925,5 +928,151 @@ class AppCubit extends Cubit<AppState> {
     _selectedIndex = null;
     emit(QuizInitialState());
   }
+
+  final List<FocusModel> focusList = [
+    FocusModel(
+      question: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(12.r),
+        child: Container(
+          height: 200.w,
+          width: 200.w,
+          margin: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: Colors.yellow,
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+        ),
+      ),
+      answers: [
+        FocusAnswer(
+          id: 1,
+          widget: Container(
+            height: 100.w,
+            width: 100.w,
+            margin: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.yellow,
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+          ),
+        ),
+        FocusAnswer(
+          id: 2,
+          widget: Container(
+            height: 100.w,
+            width: 100.w,
+            margin: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+          ),
+        ),
+        FocusAnswer(
+          id: 3,
+          widget: Container(
+            height: 100.w,
+            width: 100.w,
+            margin: EdgeInsets.all(16.w),
+            decoration: const BoxDecoration(
+              color: Colors.green,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+        FocusAnswer(
+          id: 4,
+          widget: CustomPaint(
+            size: Size(100.w, 100.w),
+            painter: TrianglePainter(),
+          ),
+        ),
+      ],
+      correctAnswerId: 1,
+    ),
+    // سؤال ثاني
+    FocusModel(
+      question: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(12.r),
+        child: Container(
+          height: 200.w,
+          width: 200.w,
+          margin: EdgeInsets.all(16.w),
+          decoration: const BoxDecoration(
+            color: Colors.cyanAccent,
+            shape: BoxShape.circle,
+          ),
+        ),
+      ),
+      answers: [
+        FocusAnswer(
+          id: 1,
+          widget: Container(
+            height: 100.w,
+            width: 100.w,
+            margin: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.yellow,
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+          ),
+        ),
+        FocusAnswer(
+          id: 2,
+          widget: Container(
+            height: 100.w,
+            width: 100.w,
+            margin: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+          ),
+        ),
+        FocusAnswer(
+          id: 3,
+          widget: Container(
+            height: 100.w,
+            width: 100.w,
+            margin: EdgeInsets.all(16.w),
+            decoration: const BoxDecoration(
+              color: Colors.cyanAccent,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+        FocusAnswer(
+          id: 4,
+          widget: CustomPaint(
+            size: Size(100.w, 100.w),
+            painter: TrianglePainter(),
+          ),
+        ),
+      ],
+      correctAnswerId: 3,
+    ),
+  ];
 }
 
+class TrianglePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint =
+        Paint()
+          ..color = Colors.blue
+          ..style = PaintingStyle.fill;
+
+    final path = Path();
+    path.moveTo(size.width / 2, 0);
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
+    path.close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}

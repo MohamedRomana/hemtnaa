@@ -39,6 +39,7 @@ dependencies:
   dotted_border: ^2.1.0
   easy_localization: ^3.0.7
   flash: ^3.1.1
+  flip_card: ^0.7.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.0

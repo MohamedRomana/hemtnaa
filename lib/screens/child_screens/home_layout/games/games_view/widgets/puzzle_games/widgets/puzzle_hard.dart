@@ -198,7 +198,20 @@ class _PuzzleHardState extends State<PuzzleHard> {
   @override
   Widget build(BuildContext context) {
     if (imagePieces.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [Color(0xffAAD8FC), Color(0xffFCAADA)],
+          ),
+        ),
+        child: const Center(
+          child: CircularProgressIndicator(color: AppColors.primary),
+        ),
+      );
     }
 
     return Scaffold(
