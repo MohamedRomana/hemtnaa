@@ -21,9 +21,22 @@ class _OnBoardingState extends State<OnBoarding> {
   double currPage = 0.0;
   PageController pageController = PageController(initialPage: 0);
   List pagesList = [
-    {"image1": Assets.img.onboarding.path},
-    {"image1": Assets.img.onboarding.path},
-    {"image1": Assets.img.onboarding.path},
+    {
+      "image1": Assets.img.onboarding.path,
+      "title": "أنا أتعلم بطريقتي!",
+      "desc":
+          "نساعد الأطفال على التعبير عن أنفسهم بالكلمات، الإشارات، واللعب، مهما كانت طريقتهم.",
+    },
+    {
+      "image1": Assets.img.onboarding.path,
+      "title": "كل صوت يهم!",
+      "desc": "لكل طفل صوته الخاص، ونحن هنا لنسمعه وندعمه خطوة بخطوة.",
+    },
+    {
+      "image1": Assets.img.onboarding.path,
+      "title": "معًا نفهم بعضنا أفضل",
+      "desc": "بيئة آمنة ومحفزة لكل طفل يتعلم بطريقته – نحتفل بكل تقدم صغير.",
+    },
   ];
 
   @override
@@ -57,7 +70,7 @@ class _OnBoardingState extends State<OnBoarding> {
             children: [
               PageView.builder(
                 controller: pageController,
-                itemCount: 3,
+                itemCount: pagesList.length,
                 itemBuilder: (context, index) {
                   return Stack(
                     children: [
@@ -88,7 +101,7 @@ class _OnBoardingState extends State<OnBoarding> {
                               textAlign: TextAlign.center,
                               top: 48.h,
                               bottom: 20.h,
-                              text: ' إلى كل طفل يواجه صعوبة في النطق',
+                              text: pagesList[index]['title'],
                               lines: 2,
                               size: 30.sp,
                               color: Colors.black,
@@ -96,8 +109,7 @@ class _OnBoardingState extends State<OnBoarding> {
                             ),
                             AppText(
                               textAlign: TextAlign.center,
-                              text:
-                                  '*"إلى كل طفل يواجه صعوبة في النطق، أنت بطل يخطو خطوة جديدة كل يوم   لأولياء الأمور والمعلمين: صعوبات النطق لا تعني نهاية ا',
+                              text: pagesList[index]['desc'],
                               lines: 4,
                               size: 14.sp,
                               color: Colors.grey,

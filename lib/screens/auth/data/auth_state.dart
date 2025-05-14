@@ -13,7 +13,10 @@ final class RegisterLoading extends AuthState {}
 
 final class RegisterSuccess extends AuthState {}
 
-final class RegisterFailure extends AuthState {}
+final class RegisterFailure extends AuthState {
+  final String error;
+  RegisterFailure({required this.error});
+}
 
 final class ProviderRegisterLoading extends AuthState {}
 
@@ -40,7 +43,10 @@ final class LogInLoading extends AuthState {}
 
 final class LogInSuccess extends AuthState {}
 
-final class LogInFailure extends AuthState {}
+final class LogInFailure extends AuthState {
+  final String error;
+  LogInFailure({required this.error});
+}
 
 final class ForgetPassLoading extends AuthState {}
 

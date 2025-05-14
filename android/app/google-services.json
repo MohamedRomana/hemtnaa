@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "114324179405",
+    "project_id": "hemtnaa",
+    "storage_bucket": "hemtnaa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114324179405:android:e0419dd9c0d03b4e029c84",
+        "android_client_info": {
+          "package_name": "com.example.hemtnaa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzs05c5d35qUh-bObFzBnPj1QGBygwqcE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

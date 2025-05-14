@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/cache/cache_helper.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_router.dart';
@@ -10,7 +11,7 @@ import '../../../../core/widgets/flash_message.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../../../generated/locale_keys.g.dart';
 import '../../data/auth_cubit.dart';
-import '../otp/otp.dart';
+import '../login/login.dart';
 import '../widgets/auth_header.dart';
 import 'widgets/fields.dart';
 
@@ -47,7 +48,7 @@ class _RegisterState extends State<Register> {
     _childIssueController.clear();
     _passController.clear();
     _confirmPassController.clear();
-
+    _specialityController.clear();
     super.initState();
   }
 
@@ -76,13 +77,18 @@ class _RegisterState extends State<Register> {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state is RegisterSuccess) {
-                  AppRouter.navigateAndPop(context, const OTPscreen());
+                  AppRouter.navigateTo(context, const LogIn());
                   _firstNameController.clear();
                   _lastNameController.clear();
                   _phoneController.clear();
                   _emailController.clear();
                   _passController.clear();
                   _confirmPassController.clear();
+                  _ageDayController.clear();
+                  _ageMonthController.clear();
+                  _ageYearController.clear();
+                  _childIssueController.clear();
+                  _specialityController.clear();
                   showFlashMessage(
                     context: context,
                     type: FlashMessageType.success,
@@ -92,7 +98,7 @@ class _RegisterState extends State<Register> {
                   showFlashMessage(
                     context: context,
                     type: FlashMessageType.error,
-                    message: 'error',
+                    message: state.error,
                   );
                 }
               },
@@ -110,7 +116,12 @@ class _RegisterState extends State<Register> {
                         firstName: _firstNameController.text,
                         lastName: _lastNameController.text,
                         email: _emailController.text,
-                        userType: 'Doctor',
+                        userType: CacheHelper.getUserType(),
+                        ageDay: _ageDayController.text,
+                        ageMonth: _ageMonthController.text,
+                        ageYear: _ageYearController.text,
+                        childIssue: _childIssueController.text,
+                        speciality: _specialityController.text,
                       );
                     }
                   },

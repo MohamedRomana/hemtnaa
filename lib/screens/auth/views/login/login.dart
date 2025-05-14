@@ -53,8 +53,13 @@ class _LogInState extends State<LogIn> {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state is LogInSuccess) {
-                  // AppCubit.get(context).changebottomNavIndex(1);
-                  // AppRouter.navigateAndFinish(context, const HomeLayout());
+                  if (CacheHelper.getUserType() == 'Child') {
+                    AppCubit.get(context).changebottomNavIndex(0);
+                    AppRouter.navigateAndFinish(context, const HomeLayout());
+                  } else if (CacheHelper.getUserType() == 'Doctor') {
+                    AppCubit.get(context).changebottomNavIndex(0);
+                    AppRouter.navigateAndFinish(context, const DocHomeLayout());
+                  }
                   _emailController.clear();
                   _passController.clear();
                   showFlashMessage(

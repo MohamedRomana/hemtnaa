@@ -32,12 +32,15 @@ dependencies:
   bloc: ^8.1.0
   cached_network_image: ^3.3.1
   card_swiper: ^3.0.1
+  cloud_firestore: ^5.6.7
   confetti: ^0.8.0
   custom_rating_bar: ^3.0.0
   dio: ^4.0.6
   dots_indicator: ^2.1.0
   dotted_border: ^2.1.0
   easy_localization: ^3.0.7
+  firebase_auth: ^5.5.3
+  firebase_core: ^3.13.0
   flash: ^3.1.1
   flip_card: ^0.7.0
   flutter:

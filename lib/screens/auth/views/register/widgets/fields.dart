@@ -128,7 +128,8 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                 },
                 prefixIcon: Icon(
                   Icons.person_outline,
-                  color: firstnameFocus.hasFocus ? AppColors.primary : Colors.grey,
+                  color:
+                      firstnameFocus.hasFocus ? AppColors.primary : Colors.grey,
                   size: 30.sp,
                 ),
               ),
@@ -155,7 +156,8 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                 },
                 prefixIcon: Icon(
                   Icons.person_outline,
-                  color: lastnameFocus.hasFocus ? AppColors.primary : Colors.grey,
+                  color:
+                      lastnameFocus.hasFocus ? AppColors.primary : Colors.grey,
                   size: 30.sp,
                 ),
               ),
@@ -522,36 +524,40 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                       ),
                     ],
                   )
-                  : const SizedBox.shrink(),
-              AppText(
-                text: 'تخصص الدكتور',
-                size: 18.sp,
-                fontWeight: FontWeight.bold,
-                bottom: 8.h,
-                start: 18.w,
-              ),
-              AppInput(
-                enabledBorderColor: Colors.grey,
-                focusNode: specialityFocus,
-                bottom: 18.h,
-                filled: true,
-                hint: 'تخصص الدكتور',
-                controller: widget.specialityController,
-                validate: (value) {
-                  if (value!.isEmpty) {
-                    return 'ادخل تخصص الدكتور';
-                  } else {
-                    return null;
-                  }
-                },
-                prefixIcon: Icon(
-                  Icons.local_hospital_outlined,
-                  color:
-                      specialityFocus.hasFocus
-                          ? AppColors.primary
-                          : Colors.grey,
-                ),
-              ),
+                  : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText(
+                        text: 'تخصص الدكتور',
+                        size: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        bottom: 8.h,
+                        start: 18.w,
+                      ),
+                      AppInput(
+                        enabledBorderColor: Colors.grey,
+                        focusNode: specialityFocus,
+                        bottom: 18.h,
+                        filled: true,
+                        hint: 'تخصص الدكتور',
+                        controller: widget.specialityController,
+                        validate: (value) {
+                          if (value!.isEmpty) {
+                            return 'ادخل تخصص الدكتور';
+                          } else {
+                            return null;
+                          }
+                        },
+                        prefixIcon: Icon(
+                          Icons.local_hospital_outlined,
+                          color:
+                              specialityFocus.hasFocus
+                                  ? AppColors.primary
+                                  : Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
               AppText(
                 text: LocaleKeys.password.tr(),
                 size: 18.sp,

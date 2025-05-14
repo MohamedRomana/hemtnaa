@@ -1,10 +1,12 @@
 // ignore_for_file: deprecated_member_use
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/constants/colors.dart';
+import 'firebase_options.dart';
 import 'screens/auth/data/auth_cubit.dart';
 import 'core/cache/cache_helper.dart';
 import 'core/service/bloc_observer.dart';
@@ -23,7 +25,7 @@ void main() async {
   ]);
   await CacheHelper.init();
   Bloc.observer = MyBlocObserver();
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // await NotificationHelper.init();
   await EasyLocalization.ensureInitialized();
   debugPrint("userId is ${CacheHelper.getUserId()}");

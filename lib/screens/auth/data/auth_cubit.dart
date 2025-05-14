@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,39 +51,49 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AgreeTermsSuccess());
   }
 
-  Future register({
+  Future<void> register({
     required String phone,
+    required String password,
     required String firstName,
     required String lastName,
     required String email,
-    required String password,
     required String userType,
+    required String ageDay,
+    required String ageMonth,
+    required String ageYear,
+    required String childIssue,
+    required String speciality,
   }) async {
     emit(RegisterLoading());
-    http.Response response = await http.post(
-      Uri.parse("${baseUrl}Auth/register"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "phone": phone,
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "password": password,
-        "userType": userType,
-      }),
-    );
 
-    Map<String, dynamic> data = jsonDecode(response.body);
-    debugPrint(data.toString());
-    debugPrint("Status code: ${response.statusCode}");
-    debugPrint("Response body: ${response.body}");
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-    if (response.statusCode == 200 && data.containsKey("doctorId")) {
-      await CacheHelper.setUserId(data['doctorId'].toString());
+      final uid = userCredential.user!.uid;
+
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'uid': uid,
+        'firstName': firstName,
+        'lastName': lastName,
+        'phone': phone,
+        'email': email,
+        'userType': userType,
+        'ageDay': ageDay,
+        'ageMonth': ageMonth,
+        'ageYear': ageYear,
+        'childIssue': childIssue,
+        'speciality': speciality,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
       emit(RegisterSuccess());
-    } else {
-      debugPrint("Registration failed: ${data.toString()}");
-      emit(RegisterFailure());
+    } on FirebaseAuthException catch (e) {
+      print('FirebaseAuthException: ${e.code} - ${e.message}');
+      emit(RegisterFailure(error: "${e.message}"));
+    } catch (e) {
+      print('Unknown Error: $e');
+      emit(RegisterFailure(error: e.toString()));
     }
   }
 
@@ -107,34 +119,45 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future logIn({required String email, required String password}) async {
-    emit(LogInLoading());
-    http.Response response = await http.post(
-      Uri.parse("${baseUrl}Auth/login"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "email": email,
-        "password": password,
-        "userType": "doctor",
-      }),
-    );
-    Map<String, dynamic> data = jsonDecode(response.body);
-    debugPrint(data.toString());
-    debugPrint("Raw body: '${response.body}'");
+  Future<void> logIn({
+  required String email,
+  required String password,
+}) async {
+  emit(LogInLoading());
 
-    if (response.statusCode == 200 && response.body.isNotEmpty) {
-      final data = jsonDecode(response.body);
-      debugPrint(data.toString());
-      await CacheHelper.setUserType(data["userType"]);
-      await CacheHelper.setUserId(data["doctorId"].toString());
+  try {
+    // تسجيل الدخول باستخدام Firebase
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+
+    final uid = userCredential.user!.uid;
+
+    // جلب بيانات المستخدم من Firestore
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+
+    if (userDoc.exists) {
+      final userData = userDoc.data()!;
+      debugPrint("User data: $userData");
+
+      await CacheHelper.setUserType(userData["userType"]);
+      await CacheHelper.setUserId(userData["uid"]);
 
       emit(LogInSuccess());
     } else {
-      debugPrint("Status code: ${response.statusCode}");
-      debugPrint("Response body: '${response.body}'");
-      emit(LogInFailure());
+      debugPrint("User document not found in Firestore.");
+      emit(LogInFailure(error: "لم يتم العثور على بيانات المستخدم."));
     }
+  } on FirebaseAuthException catch (e) {
+    debugPrint('FirebaseAuthException: ${e.code} - ${e.message}');
+    emit(LogInFailure(error: e.message ?? "فشل تسجيل الدخول"));
+  } catch (e) {
+    debugPrint('Unknown Error: $e');
+    emit(LogInFailure(error: "حدث خطأ غير متوقع أثناء تسجيل الدخول"));
   }
+}
 
   Future logOut() async {
     emit(LogOutLoading());
