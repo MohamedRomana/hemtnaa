@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/widgets/app_input.dart';
-import 'package:hemtnaa/core/widgets/custom_bottom_nav.dart';
 import 'package:hemtnaa/gen/assets.gen.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/widgets/app_text.dart';
@@ -82,8 +81,6 @@ class _ChatDetailsState extends State<ChatDetails> with WidgetsBindingObserver {
         ),
         hint: 'اكتب رسالة',
       ),
-
-      bottomNavigationBar: const CustomBottomNav(),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -122,11 +122,9 @@ class DocHome extends StatelessWidget {
                                   focusedBorderColor: AppColors.borderColor,
                                   color: AppColors.borderColor,
                                   onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      builder:
-                                          (context) => const PublishPostSheet(),
+                                    AppRouter.navigateTo(
+                                      context,
+                                      const PublishPostSheet(),
                                     );
                                   },
                                 ),

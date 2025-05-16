@@ -19,8 +19,7 @@ class ProfileEdit extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
-        return Scaffold(
-          bottomNavigationBar: const CustomBottomNav(),
+        return CustomBottomNav(
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(

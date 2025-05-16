@@ -11,7 +11,8 @@ import '../../../core/constants/colors.dart';
 import '../../../gen/assets.gen.dart';
 
 class HomeLayout extends StatefulWidget {
-  const HomeLayout({super.key});
+  final bool? isGame;
+  const HomeLayout({super.key, this.isGame});
 
   @override
   State<HomeLayout> createState() => _HomeLayoutState();
@@ -102,65 +103,56 @@ class _HomeLayoutState extends State<HomeLayout>
           child: Scaffold(
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: Container(
-              height: 80.h,
-              padding: EdgeInsetsDirectional.symmetric(
-                horizontal: 32.w,
-                vertical: 16.h,
-              ),
-              decoration: BoxDecoration(
-                color:
-                    AppCubit.get(context).bottomNavIndex == 1
-                        ? const Color(0xffF6F6F8).withAlpha(50)
-                        : const Color(0xffF6F6F8),
-                borderRadius: BorderRadiusDirectional.only(
-                  topEnd: Radius.circular(24.r),
-                  topStart: Radius.circular(24.r),
+            resizeToAvoidBottomInset: false,
+            extendBody: true,
+            floatingActionButton: InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () {
+                AppCubit.get(context).changebottomNavIndex(0);
+              },
+              child: Container(
+                height: 65.w,
+                width: 65.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color:
+                      AppCubit.get(context).bottomNavIndex == 1
+                          ? Colors.black.withAlpha(100)
+                          : AppColors.primary,
                 ),
-                border: Border.all(color: const Color(0xffE3E3E3)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AnimatedBuilder(
+                child: Center(
+                  child: AnimatedBuilder(
                     animation: _animation,
                     builder: (context, child) {
                       return Transform.translate(
-                        offset: Offset(_animation.value, 0),
+                        offset: Offset(0, _animation.value),
                         child: child,
                       );
                     },
-                    child: InkWell(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () {
-                        AppCubit.get(context).changebottomNavIndex(0);
-                      },
-                      child: Column(
-                        children: [
-                          SvgPicture.asset(
-                            Assets.svg.home,
-                            height: 24.w,
-                            width: 24.w,
-                            color:
-                                AppCubit.get(context).bottomNavIndex == 0
-                                    ? AppColors.primary
-                                    : const Color(0xffB8B8B8),
-                          ),
-                          AppText(
-                            top: 3.h,
-                            text: LocaleKeys.home.tr(),
-                            size: 12.sp,
-                            color:
-                                AppCubit.get(context).bottomNavIndex == 0
-                                    ? AppColors.primary
-                                    : const Color(0xffB8B8B8),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ],
-                      ),
+                    child: SvgPicture.asset(
+                      Assets.svg.home,
+                      height: 25.w,
+                      width: 25.w,
+                      color: Colors.white,
+                      fit: BoxFit.cover,
                     ),
                   ),
+                ),
+              ),
+            ),
+            bottomNavigationBar: BottomAppBar(
+              elevation: 5,
+              notchMargin: 13.r,
+              clipBehavior: Clip.antiAlias,
+              color:
+                  AppCubit.get(context).bottomNavIndex == 1
+                      ? Colors.black.withAlpha(100)
+                      : AppColors.primary,
+              shape: const CircularNotchedRectangle(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   AnimatedBuilder(
                     animation: _animation,
                     builder: (context, child) {
@@ -183,8 +175,8 @@ class _HomeLayoutState extends State<HomeLayout>
                             width: 24.w,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 1
-                                    ? AppColors.primary
-                                    : const Color(0xffB8B8B8),
+                                    ? AppColors.borderColor
+                                    : Colors.white,
                           ),
                           AppText(
                             top: 3.h,
@@ -192,8 +184,8 @@ class _HomeLayoutState extends State<HomeLayout>
                             size: 12.sp,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 1
-                                    ? AppColors.primary
-                                    : const Color(0xffB8B8B8),
+                                    ? AppColors.borderColor
+                                    : Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
                         ],
@@ -222,8 +214,8 @@ class _HomeLayoutState extends State<HomeLayout>
                             width: 24.w,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 2
-                                    ? AppColors.primary
-                                    : const Color(0xffB8B8B8),
+                                    ? AppColors.borderColor
+                                    : Colors.white,
                           ),
                           AppText(
                             top: 3.h,
@@ -231,14 +223,16 @@ class _HomeLayoutState extends State<HomeLayout>
                             size: 12.sp,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 2
-                                    ? AppColors.primary
-                                    : const Color(0xffB8B8B8),
+                                    ? AppColors.borderColor
+                                    : Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
                         ],
                       ),
                     ),
                   ),
+                  const SizedBox(),
+                  const SizedBox(),
                   AnimatedBuilder(
                     animation: _animation,
                     builder: (context, child) {
@@ -261,8 +255,8 @@ class _HomeLayoutState extends State<HomeLayout>
                             width: 24.w,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 3
-                                    ? AppColors.primary
-                                    : const Color(0xffB8B8B8),
+                                    ? AppColors.borderColor
+                                    : Colors.white,
                           ),
                           AppText(
                             top: 3.h,
@@ -270,8 +264,45 @@ class _HomeLayoutState extends State<HomeLayout>
                             size: 12.sp,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 3
-                                    ? AppColors.primary
-                                    : const Color(0xffB8B8B8),
+                                    ? AppColors.borderColor
+                                    : Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  AnimatedBuilder(
+                    animation: _animation,
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(_animation.value, 0),
+                        child: child,
+                      );
+                    },
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () {
+                        AppCubit.get(context).changebottomNavIndex(4);
+                      },
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.emergency,
+                            color:
+                                AppCubit.get(context).bottomNavIndex == 4
+                                    ? AppColors.borderColor
+                                    : Colors.white,
+                          ),
+                          AppText(
+                            top: 3.h,
+                            text: 'دكتور',
+                            size: 12.sp,
+                            color:
+                                AppCubit.get(context).bottomNavIndex == 4
+                                    ? AppColors.borderColor
+                                    : Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
                         ],

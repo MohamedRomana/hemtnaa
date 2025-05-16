@@ -1,10 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/widgets/app_input.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/custom_doc_bottom_nav.dart';
 import '../../../../../gen/assets.gen.dart';
+import '../../../../../generated/locale_keys.g.dart';
 import 'widgets/doc_chat_header.dart';
 
 final _messageSendController = TextEditingController();
@@ -65,7 +68,38 @@ class _DocChatDetailsState extends State<DocChatDetails>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  WillPopScope(
+          onWillPop: () async {
+            bool? shouldPop = await showDialog<bool>(
+              context: context,
+              builder:
+                  (context) => AlertDialog(
+                    title: Text(
+                      LocaleKeys.doYouWantToLeaveThisApp.tr(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    content: Text(
+                      LocaleKeys.areYouSure.tr(),
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => SystemNavigator.pop(),
+                        child: Text(LocaleKeys.yes.tr()),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(LocaleKeys.no.tr()),
+                      ),
+                    ],
+                  ),
+            );
+            return shouldPop ?? false;
+          },
+          child: Scaffold(
       resizeToAvoidBottomInset: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AppInput(
@@ -172,7 +206,7 @@ class _DocChatDetailsState extends State<DocChatDetails>
           ),
         ],
       ),
-    );
+    ));
   }
 }
 

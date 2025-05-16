@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/models/focus_model.dart';
 import 'package:hemtnaa/core/service/models/games_models.dart';
 import 'package:hemtnaa/core/service/models/questions_model.dart';
+import 'package:hemtnaa/screens/child_screens/home_layout/doctors/doctors.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_chat/doc_chat.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_rates/doc_rates.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +26,7 @@ import '../../constants/contsants.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
+  
   AppCubit() : super(AppInitial());
 
   static AppCubit get(context) => BlocProvider.of(context);
@@ -35,6 +37,7 @@ class AppCubit extends Cubit<AppState> {
     const Games(),
     const Chats(),
     const Activities(),
+    const Doctors(),
   ];
 
   void changebottomNavIndex(index) async {

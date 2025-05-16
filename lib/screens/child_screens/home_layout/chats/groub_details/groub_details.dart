@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/widgets/app_input.dart';
-import 'package:hemtnaa/core/widgets/custom_bottom_nav.dart';
 import 'package:hemtnaa/gen/assets.gen.dart';
 import 'package:hemtnaa/screens/child_screens/home_layout/chats/groub_details/widgets/groub_header.dart';
 import '../../../../../core/constants/colors.dart';
@@ -84,7 +83,6 @@ class _GroubDetailsState extends State<GroubDetails>
         hint: 'اكتب رسالة',
       ),
 
-      bottomNavigationBar: const CustomBottomNav(),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

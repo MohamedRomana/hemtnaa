@@ -10,18 +10,28 @@ import '../../../../core/widgets/flash_message.dart';
 import '../../../../core/widgets/logout_dialog.dart';
 import '../../../auth/data/auth_cubit.dart';
 import '../../../auth/views/login/login.dart';
+import '../../drawer/drawer.dart';
 import 'widgets/custom_child_score.dart';
 import 'widgets/posts_list_view.dart';
 import 'widgets/videos_list_view.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return Scaffold(
+          key: scaffoldKey,
+          drawer: const CustomDrawer(),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(90.h),
             child: Container(
@@ -40,6 +50,12 @@ class Home extends StatelessWidget {
                 padding: EdgeInsets.only(top: 20.h),
                 child: Row(
                   children: [
+                    IconButton(
+                      onPressed: () {
+                        scaffoldKey.currentState?.openDrawer();
+                      },
+                      icon: const Icon(Icons.list, color: Colors.white),
+                    ),
                     AppText(
                       text: 'الرئيسية',
                       size: 20.sp,
