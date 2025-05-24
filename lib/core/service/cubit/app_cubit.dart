@@ -26,16 +26,15 @@ import '../../constants/contsants.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
-  
   AppCubit() : super(AppInitial());
 
   static AppCubit get(context) => BlocProvider.of(context);
 
-  int bottomNavIndex = 0;
+  int bottomNavIndex = 2;
   List<Widget> bottomNavScreens = [
-    const Home(),
     const Games(),
     const Chats(),
+    const Home(),
     const Activities(),
     const Doctors(),
   ];

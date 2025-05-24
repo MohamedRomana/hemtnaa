@@ -12,18 +12,23 @@ import '../../../../core/widgets/logout_dialog.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../auth/data/auth_cubit.dart';
 import '../../../auth/views/login/login.dart';
+import '../../../child_screens/drawer/drawer.dart';
+import '../../doc_profile/profile.dart';
 import 'widgets/publish_post_sheet.dart';
 import 'widgets/doc_posts_list.dart';
-import 'widgets/doc_videos_list_view.dart';
 
 class DocHome extends StatelessWidget {
   const DocHome({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return Scaffold(
+          key: scaffoldKey,
+          drawer: const CustomDrawer(),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(90.h),
             child: Container(
@@ -42,6 +47,12 @@ class DocHome extends StatelessWidget {
                 padding: EdgeInsets.only(top: 20.h),
                 child: Row(
                   children: [
+                    IconButton(
+                      onPressed: () {
+                        scaffoldKey.currentState?.openDrawer();
+                      },
+                      icon: const Icon(Icons.menu, color: Colors.white),
+                    ),
                     AppText(
                       text: 'الرئيسية',
                       size: 20.sp,
@@ -90,76 +101,52 @@ class DocHome extends StatelessWidget {
               ),
             ),
           ),
-          body: DefaultTabController(
-            length: 2,
-            child: NestedScrollView(
-              headerSliverBuilder:
-                  (context, innerBoxIsScrolled) => [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(width: 16.w),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8.r),
-                                child: Image.asset(
-                                  Assets.img.doctor2.path,
-                                  height: 48.w,
-                                  width: 48.w,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              SizedBox(width: 8.w),
-                              SizedBox(
-                                width: 300.w,
-                                child: AppInput(
-                                  start: 0,
-                                  end: 16.w,
-                                  hint: 'بماذا تفكر؟ ',
-                                  read: true,
-                                  enabledBorderColor: AppColors.borderColor,
-                                  focusedBorderColor: AppColors.borderColor,
-                                  color: AppColors.borderColor,
-                                  onTap: () {
-                                    AppRouter.navigateTo(
-                                      context,
-                                      const PublishPostSheet(),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            margin: EdgeInsetsDirectional.only(start: 35.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5.r),
-                            ),
-                            child: TabBar(
-                              physics: const BouncingScrollPhysics(),
-                              isScrollable: true,
-                              splashBorderRadius: BorderRadius.circular(5.r),
-                              dividerColor: Colors.transparent,
-                              indicatorColor: AppColors.primary,
-                              labelColor: AppColors.primary,
-                              unselectedLabelColor: Colors.grey,
-                              labelStyle: TextStyle(fontSize: 16.sp),
-                              tabs: const [
-                                Tab(text: 'المنشورات'),
-                                Tab(text: 'الفيديوهات'),
-                              ],
-                            ),
-                          ),
-                        ],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(width: 16.w),
+                    InkWell(
+                      onTap: () {
+                        AppRouter.navigateTo(
+                          context,
+                          const DocProfile(),
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: Image.asset(
+                          Assets.img.doctor2.path,
+                          height: 48.w,
+                          width: 48.w,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    SizedBox(
+                      width: 300.w,
+                      child: AppInput(
+                        start: 0,
+                        end: 16.w,
+                        hint: 'بماذا تفكر؟ ',
+                        read: true,
+                        enabledBorderColor: AppColors.borderColor,
+                        focusedBorderColor: AppColors.borderColor,
+                        color: AppColors.borderColor,
+                        onTap: () {
+                          AppRouter.navigateTo(
+                            context,
+                            const PublishPostSheet(),
+                          );
+                        },
                       ),
                     ),
                   ],
-              body: const TabBarView(
-                physics: BouncingScrollPhysics(),
-                children: [DocPostsList(), DocVideosListView()],
-              ),
+                ),
+                const DocPostsList(),
+              ],
             ),
           ),
         );

@@ -5,7 +5,7 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/widgets/app_router.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../../child_screens/doctor_view/doctor_view.dart';
+import '../../../doc_doctor_view/doctor_view.dart';
 import 'doc_posts_views.dart';
 
 class DocPostsList extends StatelessWidget {
@@ -16,6 +16,8 @@ class DocPostsList extends StatelessWidget {
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
       itemCount: 20,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       separatorBuilder: (context, index) => SizedBox(height: 16.h),
       itemBuilder:
           (context, index) => Container(
@@ -48,7 +50,7 @@ class DocPostsList extends StatelessWidget {
                   onTap: () {
                     AppRouter.navigateTo(
                       context,
-                      const DoctorView(isDoc: true),
+                      const CustomDoctorView(),
                     );
                   },
                   child: Row(

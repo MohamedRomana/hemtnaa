@@ -109,7 +109,7 @@ class _HomeLayoutState extends State<HomeLayout>
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-                AppCubit.get(context).changebottomNavIndex(0);
+                AppCubit.get(context).changebottomNavIndex(2);
               },
               child: Container(
                 height: 65.w,
@@ -117,7 +117,7 @@ class _HomeLayoutState extends State<HomeLayout>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color:
-                      AppCubit.get(context).bottomNavIndex == 1
+                      AppCubit.get(context).bottomNavIndex == 0
                           ? Colors.black.withAlpha(100)
                           : AppColors.primary,
                 ),
@@ -146,7 +146,7 @@ class _HomeLayoutState extends State<HomeLayout>
               notchMargin: 13.r,
               clipBehavior: Clip.antiAlias,
               color:
-                  AppCubit.get(context).bottomNavIndex == 1
+                  AppCubit.get(context).bottomNavIndex == 0
                       ? Colors.black.withAlpha(100)
                       : AppColors.primary,
               shape: const CircularNotchedRectangle(),
@@ -165,7 +165,7 @@ class _HomeLayoutState extends State<HomeLayout>
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () {
-                        AppCubit.get(context).changebottomNavIndex(1);
+                        AppCubit.get(context).changebottomNavIndex(0);
                       },
                       child: Column(
                         children: [
@@ -174,7 +174,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             height: 24.w,
                             width: 24.w,
                             color:
-                                AppCubit.get(context).bottomNavIndex == 1
+                                AppCubit.get(context).bottomNavIndex == 0
                                     ? AppColors.borderColor
                                     : Colors.white,
                           ),
@@ -183,7 +183,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             text: LocaleKeys.games.tr(),
                             size: 12.sp,
                             color:
-                                AppCubit.get(context).bottomNavIndex == 1
+                                AppCubit.get(context).bottomNavIndex == 0
                                     ? AppColors.borderColor
                                     : Colors.white,
                             fontWeight: FontWeight.w500,
@@ -204,7 +204,7 @@ class _HomeLayoutState extends State<HomeLayout>
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () {
-                        AppCubit.get(context).changebottomNavIndex(2);
+                        AppCubit.get(context).changebottomNavIndex(1);
                       },
                       child: Column(
                         children: [
@@ -213,7 +213,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             height: 24.w,
                             width: 24.w,
                             color:
-                                AppCubit.get(context).bottomNavIndex == 2
+                                AppCubit.get(context).bottomNavIndex == 1
                                     ? AppColors.borderColor
                                     : Colors.white,
                           ),
@@ -222,7 +222,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             text: LocaleKeys.chats.tr(),
                             size: 12.sp,
                             color:
-                                AppCubit.get(context).bottomNavIndex == 2
+                                AppCubit.get(context).bottomNavIndex == 1
                                     ? AppColors.borderColor
                                     : Colors.white,
                             fontWeight: FontWeight.w500,

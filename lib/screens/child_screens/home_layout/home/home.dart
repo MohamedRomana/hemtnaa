@@ -13,7 +13,6 @@ import '../../../auth/views/login/login.dart';
 import '../../drawer/drawer.dart';
 import 'widgets/custom_child_score.dart';
 import 'widgets/posts_list_view.dart';
-import 'widgets/videos_list_view.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -54,7 +53,7 @@ class _HomeState extends State<Home> {
                       onPressed: () {
                         scaffoldKey.currentState?.openDrawer();
                       },
-                      icon: const Icon(Icons.list, color: Colors.white),
+                      icon: const Icon(Icons.menu, color: Colors.white),
                     ),
                     AppText(
                       text: 'الرئيسية',
@@ -104,45 +103,8 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          body: DefaultTabController(
-            length: 2,
-            child: NestedScrollView(
-              headerSliverBuilder:
-                  (context, innerBoxIsScrolled) => [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          const CustomChildScore(),
-                          Container(
-                            margin: EdgeInsetsDirectional.only(start: 35.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5.r),
-                            ),
-                            child: TabBar(
-                              physics: const BouncingScrollPhysics(),
-                              isScrollable: true,
-                              splashBorderRadius: BorderRadius.circular(5.r),
-                              dividerColor: Colors.transparent,
-                              indicatorColor: AppColors.primary,
-                              labelColor: AppColors.primary,
-                              unselectedLabelColor: Colors.grey,
-                              labelStyle: TextStyle(fontSize: 16.sp),
-                              tabs: const [
-                                Tab(text: 'المنشورات'),
-                                Tab(text: 'الفيديوهات'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-              body: const TabBarView(
-                physics: BouncingScrollPhysics(),
-                children: [PostsListView(), VideosListView()],
-              ),
-            ),
+          body: const SingleChildScrollView(
+            child: Column(children: [CustomChildScore(), PostsListView()]),
           ),
         );
       },

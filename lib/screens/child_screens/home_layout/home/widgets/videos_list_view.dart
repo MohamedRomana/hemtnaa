@@ -203,7 +203,7 @@ class _VideosListViewState extends State<VideosListView> {
                   onTap: () {
                     AppRouter.navigateTo(
                       context,
-                      const DoctorView(isDoc: false),
+                      const DoctorView(),
                     );
                   },
                   child: Row(

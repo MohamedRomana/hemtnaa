@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/screens/doctor_screens/doc_doctor_view/doctor_view.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/widgets/app_router.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../../child_screens/doctor_view/doctor_view.dart';
 import '../../../../child_screens/home_layout/home/widgets/videos_shimmer_loading.dart';
 import 'doc_videos_views.dart';
 
@@ -198,7 +198,7 @@ class _DocVideosListViewState extends State<DocVideosListView> {
                   onTap: () {
                     AppRouter.navigateTo(
                       context,
-                      const DoctorView(isDoc: true),
+                      const CustomDoctorView(),
                     );
                   },
                   child: Row(

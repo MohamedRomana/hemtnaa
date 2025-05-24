@@ -17,9 +17,10 @@ class PostsListView extends StatelessWidget {
       padding: EdgeInsetsDirectional.only(
         start: 24.w,
         end: 24.w,
-        top: 16.h,
         bottom: 120.h,
       ),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: 20,
       separatorBuilder: (context, index) => SizedBox(height: 16.h),
       itemBuilder:
@@ -53,7 +54,7 @@ class PostsListView extends StatelessWidget {
                   onTap: () {
                     AppRouter.navigateTo(
                       context,
-                      const DoctorView(isDoc: false),
+                      const DoctorView(),
                     );
                   },
                   child: Row(

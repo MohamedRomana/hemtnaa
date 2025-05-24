@@ -101,7 +101,7 @@ class _LogInState extends State<LogIn> {
             AppButton(
               onPressed: () {
                 if (CacheHelper.getUserType() == 'Child') {
-                  AppCubit.get(context).changebottomNavIndex(0);
+                  AppCubit.get(context).changebottomNavIndex(2);
                   AppRouter.navigateAndFinish(context, const HomeLayout());
                 } else if (CacheHelper.getUserType() == 'Doctor') {
                   AppCubit.get(context).changebottomDocNavIndex(0);

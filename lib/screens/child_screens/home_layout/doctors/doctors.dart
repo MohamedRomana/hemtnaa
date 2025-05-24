@@ -36,7 +36,7 @@ class Doctors extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-                AppRouter.navigateTo(context, const DoctorView(isDoc: false));
+                AppRouter.navigateTo(context, const DoctorView());
               },
               child: Container(
                 width: 343.w,

@@ -21,6 +21,7 @@ class CustomChildScore extends StatelessWidget {
         padding: EdgeInsetsDirectional.only(
           start: 24.w,
           bottom: 35.h,
+          top: 20.h,
         ),
         child: Row(
           children: [
