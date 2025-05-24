@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
+import '../../drawer/drawer.dart';
 import 'widgets/chats_list_view.dart';
 import 'widgets/groubs_list_view.dart';
 
@@ -9,7 +11,15 @@ class Chats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: scaffoldKey,
+      drawer: const CustomDrawer(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(90.h),
+        child: CustomAppBar(scaffoldKey: scaffoldKey, title: 'المحادثات'),
+      ),
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
@@ -19,23 +29,25 @@ class Chats extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsetsDirectional.only(
-                          start: 35.w,
-                          top: 60.h,
-                        ),
+                        width: 343.w,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5.r),
+                          borderRadius: BorderRadius.circular(10.r),
+                          color: AppColors.borderColor.withAlpha(100),
                         ),
                         child: TabBar(
-                          physics: const BouncingScrollPhysics(),
-                          isScrollable: true,
-                          splashBorderRadius: BorderRadius.circular(5.r),
                           dividerColor: Colors.transparent,
                           indicatorColor: AppColors.primary,
-                          labelColor: AppColors.primary,
+                          labelColor: Colors.white,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          indicator: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
                           unselectedLabelColor: Colors.grey,
-                          labelStyle: TextStyle(fontSize: 16.sp),
+                          labelStyle: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
                           tabs: const [
                             Tab(text: 'المحادثات'),
                             Tab(text: 'المجموعات'),

@@ -297,7 +297,7 @@ class _HomeLayoutState extends State<HomeLayout>
                           ),
                           AppText(
                             top: 3.h,
-                            text: 'دكتور',
+                            text: 'الاطباء',
                             size: 12.sp,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 4

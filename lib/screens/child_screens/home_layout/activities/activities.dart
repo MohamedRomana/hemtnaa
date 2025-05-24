@@ -6,19 +6,30 @@ import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:hemtnaa/core/widgets/app_button.dart';
 import 'package:hemtnaa/core/widgets/app_text.dart';
 
+import '../../../../core/widgets/custom_app_bar.dart';
+import '../../drawer/drawer.dart';
+
 class Activities extends StatelessWidget {
   const Activities({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return Scaffold(
+          key: scaffoldKey,
+          drawer: const CustomDrawer(),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(90.h),
+            child: CustomAppBar(scaffoldKey: scaffoldKey, title: 'الانشطه'),
+          ),
+
           body: Stack(
             children: [
               ListView.separated(
                 padding: EdgeInsetsDirectional.only(
-                  top: 60.h,
                   start: 24.w,
                   end: 24.w,
                   bottom: 120.h,

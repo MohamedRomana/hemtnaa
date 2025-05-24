@@ -4,6 +4,8 @@ import 'package:hemtnaa/core/widgets/app_input.dart';
 import 'package:hemtnaa/gen/assets.gen.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/widgets/app_text.dart';
+import '../../../../../core/widgets/custom_app_bar.dart';
+import '../../../drawer/drawer.dart';
 import 'widgets/chat_header.dart';
 
 final _messageSendController = TextEditingController();
@@ -63,7 +65,15 @@ class _ChatDetailsState extends State<ChatDetails> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+      final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: scaffoldKey,
+      drawer: const CustomDrawer(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(90.h),
+        child: CustomAppBar(scaffoldKey: scaffoldKey, title: 'المحادثه'),
+      ),
       resizeToAvoidBottomInset: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AppInput(

@@ -12,11 +12,23 @@ import 'app_text.dart';
 
 class CustomBottomNav extends StatelessWidget {
   final Widget? body;
-  const CustomBottomNav({super.key, this.body});
+  final Key? skey;
+  final PreferredSizeWidget? appBar;
+  final Widget? drawer;
+  const CustomBottomNav({
+    super.key,
+    this.body,
+    this.skey,
+    this.appBar,
+    this.drawer,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: skey,
+      appBar: appBar,
+      drawer: drawer,
       body: body,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       resizeToAvoidBottomInset: false,
@@ -25,7 +37,7 @@ class CustomBottomNav extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () {
-          AppCubit.get(context).changebottomNavIndex(0);
+          AppCubit.get(context).changebottomNavIndex(2);
           AppRouter.navigateAndFinish(context, const HomeLayout());
         },
         child: Container(
@@ -59,7 +71,7 @@ class CustomBottomNav extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-                AppCubit.get(context).changebottomNavIndex(1);
+                AppCubit.get(context).changebottomNavIndex(0);
                 AppRouter.navigateAndFinish(context, const HomeLayout());
               },
               child: Column(
@@ -68,19 +80,13 @@ class CustomBottomNav extends StatelessWidget {
                     Assets.svg.games,
                     height: 24.w,
                     width: 24.w,
-                    color:
-                        AppCubit.get(context).bottomNavIndex == 1
-                            ? AppColors.borderColor
-                            : Colors.white,
+                    color: Colors.white,
                   ),
                   AppText(
                     top: 3.h,
                     text: LocaleKeys.games.tr(),
                     size: 12.sp,
-                    color:
-                        AppCubit.get(context).bottomNavIndex == 1
-                            ? AppColors.borderColor
-                            : Colors.white,
+                    color: Colors.white,
                     fontWeight: FontWeight.w500,
                   ),
                 ],
@@ -90,7 +96,7 @@ class CustomBottomNav extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-                AppCubit.get(context).changebottomNavIndex(2);
+                AppCubit.get(context).changebottomNavIndex(1);
                 AppRouter.navigateAndFinish(context, const HomeLayout());
               },
               child: Column(
@@ -99,19 +105,13 @@ class CustomBottomNav extends StatelessWidget {
                     Assets.svg.chats,
                     height: 24.w,
                     width: 24.w,
-                    color:
-                        AppCubit.get(context).bottomNavIndex == 2
-                            ? AppColors.borderColor
-                            : Colors.white,
+                    color: Colors.white,
                   ),
                   AppText(
                     top: 3.h,
                     text: LocaleKeys.chats.tr(),
                     size: 12.sp,
-                    color:
-                        AppCubit.get(context).bottomNavIndex == 2
-                            ? AppColors.borderColor
-                            : Colors.white,
+                    color: Colors.white,
                     fontWeight: FontWeight.w500,
                   ),
                 ],
@@ -132,19 +132,13 @@ class CustomBottomNav extends StatelessWidget {
                     Assets.svg.activities,
                     height: 24.w,
                     width: 24.w,
-                    color:
-                        AppCubit.get(context).bottomNavIndex == 3
-                            ? AppColors.borderColor
-                            : Colors.white,
+                    color: Colors.white,
                   ),
                   AppText(
                     top: 3.h,
                     text: LocaleKeys.activities.tr(),
                     size: 12.sp,
-                    color:
-                        AppCubit.get(context).bottomNavIndex == 3
-                            ? AppColors.borderColor
-                            : Colors.white,
+                    color: Colors.white,
                     fontWeight: FontWeight.w500,
                   ),
                 ],
@@ -159,21 +153,12 @@ class CustomBottomNav extends StatelessWidget {
               },
               child: Column(
                 children: [
-                  Icon(
-                    Icons.emergency,
-                    color:
-                        AppCubit.get(context).bottomNavIndex == 4
-                            ? AppColors.borderColor
-                            : Colors.white,
-                  ),
+                  const Icon(Icons.emergency, color: Colors.white),
                   AppText(
                     top: 3.h,
-                    text: 'دكتور',
+                    text: 'الاطباء',
                     size: 12.sp,
-                    color:
-                        AppCubit.get(context).bottomNavIndex == 4
-                            ? AppColors.borderColor
-                            : Colors.white,
+                    color: Colors.white,
                     fontWeight: FontWeight.w500,
                   ),
                 ],

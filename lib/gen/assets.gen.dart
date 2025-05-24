@@ -185,6 +185,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/activities.svg
   String get activities => 'assets/svg/activities.svg';
 
+  /// File path: assets/svg/arrowleftcircle.svg
+  String get arrowleftcircle => 'assets/svg/arrowleftcircle.svg';
+
   /// File path: assets/svg/chats.svg
   String get chats => 'assets/svg/chats.svg';
 
@@ -215,6 +218,7 @@ class $AssetsSvgGen {
   /// List of all assets
   List<String> get values => [
     activities,
+    arrowleftcircle,
     chats,
     comment,
     games,

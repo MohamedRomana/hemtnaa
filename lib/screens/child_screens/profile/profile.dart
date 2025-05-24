@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:hemtnaa/core/widgets/custom_bottom_nav.dart';
+import 'package:hemtnaa/screens/child_screens/drawer/drawer.dart';
+import '../../../core/widgets/custom_app_bar.dart';
 import 'widgets/child_problem_container.dart';
 import 'widgets/profile_container.dart';
 import 'widgets/score_container.dart';
@@ -12,18 +14,29 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return CustomBottomNav(
-          body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
+          skey: scaffoldKey,
+          drawer: const CustomDrawer(),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(90.h),
+            child: CustomAppBar(
+              scaffoldKey: scaffoldKey,
+              title: 'الملف الشخصي',
+              isHome: true,
+            ),
+          ),
+          body: const SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
-                  SizedBox(height: 44.h),
-                  const ProfileContainer(),
-                  const ChildProblemContainer(),
-                  const ScoreContainer(),
+                  ProfileContainer(),
+                  ChildProblemContainer(),
+                  ScoreContainer(),
+                  SizedBox(height: 120),
                 ],
               ),
             ),

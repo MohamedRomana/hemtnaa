@@ -4,23 +4,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/constants/colors.dart';
 import 'package:hemtnaa/core/widgets/app_router.dart';
 import 'package:hemtnaa/core/widgets/app_text.dart';
+import 'package:hemtnaa/core/widgets/custom_app_bar.dart';
 import 'package:hemtnaa/screens/child_screens/doctor_view/doctor_view.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../drawer/drawer.dart';
 
 class Doctors extends StatelessWidget {
   const Doctors({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primary,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.logout, color: AppColors.primary),
-          ),
-        ],
+      key: scaffoldKey,
+      drawer: const CustomDrawer(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(90.h),
+        child: CustomAppBar(scaffoldKey: scaffoldKey, title: 'الاطباء',),
       ),
       body: ListView.separated(
         padding: EdgeInsetsDirectional.only(

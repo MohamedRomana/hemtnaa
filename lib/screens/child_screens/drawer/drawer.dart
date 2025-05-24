@@ -13,7 +13,9 @@ import '../../../core/widgets/alert_dialog.dart';
 import '../../../core/widgets/app_router.dart';
 import '../../../core/widgets/app_text.dart';
 import '../../../core/widgets/logout_dialog.dart';
+import '../../../gen/fonts.gen.dart';
 import '../../../generated/locale_keys.g.dart';
+import '../../auth/views/login/login.dart';
 import '../home_layout/home_layout.dart';
 import '../profile/profile.dart';
 
@@ -33,6 +35,7 @@ class _CustomDrawerState extends State<CustomDrawer>
   late Animation<double> _animation3;
   late Animation<double> _animation7;
   late Animation<double> _animation8;
+  late Animation<double> _animation9;
   late Animation<Offset> _slideAnimation;
 
   @override
@@ -77,6 +80,10 @@ class _CustomDrawerState extends State<CustomDrawer>
 
     _animation8 = Tween<double>(
       begin: CacheHelper.getLang() == 'en' ? -1600.0 : 1600.0,
+      end: 0.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _animation9 = Tween<double>(
+      begin: CacheHelper.getLang() == 'en' ? -1800.0 : 1800.0,
       end: 0.0,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
@@ -155,7 +162,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                     onTap: () {
                       AppCubit.get(context).changedrawerIndex(index: 0);
                       if (CacheHelper.getUserType() == "Child") {
-                        AppCubit.get(context).changebottomNavIndex(0);
+                        AppCubit.get(context).changebottomNavIndex(2);
                         AppRouter.navigateTo(context, const HomeLayout());
                       } else {
                         AppCubit.get(context).changebottomDocNavIndex(0);
@@ -212,7 +219,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                     highlightColor: Colors.transparent,
                     onTap: () {
                       AppCubit.get(context).changedrawerIndex(index: 1);
-                      if (CacheHelper.getUserType() == "client") {
+                      if (CacheHelper.getUserType() == "Child") {
                         AppRouter.pop(context);
                         AppRouter.navigateTo(context, const Profile());
                       } else {
@@ -236,7 +243,13 @@ class _CustomDrawerState extends State<CustomDrawer>
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.person),
+                          Icon(
+                            Icons.person,
+                            color:
+                                AppCubit.get(context).drawerIndex == 1
+                                    ? Colors.white
+                                    : Colors.black,
+                          ),
                           AppText(
                             start: 6.w,
                             text: LocaleKeys.profile.tr(),
@@ -294,7 +307,68 @@ class _CustomDrawerState extends State<CustomDrawer>
                     ),
                   ),
                 ),
-
+                AnimatedBuilder(
+                  animation: _animation9,
+                  builder: (context, child) {
+                    return Transform.translate(
+                      offset: Offset(_animation9.value, 0),
+                      child: child,
+                    );
+                  },
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      AppCubit.get(context).changedrawerIndex(index: 7);
+                      if (CacheHelper.getUserType() == "Child") {
+                        CacheHelper.setUserType('Doctor');
+                        AppRouter.navigateTo(context, const LogIn());
+                      } else {
+                        CacheHelper.setUserType('Child');
+                        AppRouter.navigateTo(context, const LogIn());
+                      }
+                    },
+                    child: Container(
+                      width: 250.w,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 8.h,
+                      ),
+                      margin: EdgeInsetsDirectional.only(bottom: 8.h),
+                      decoration: BoxDecoration(
+                        color:
+                            AppCubit.get(context).drawerIndex == 7
+                                ? AppColors.primary
+                                : Colors.transparent,
+                        borderRadius: BorderRadius.circular(100.r),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.logout,
+                            color:
+                                AppCubit.get(context).drawerIndex == 7
+                                    ? Colors.white
+                                    : Colors.black,
+                          ),
+                          AppText(
+                            start: 6.w,
+                            text:
+                                CacheHelper.getUserType() == 'Child'
+                                    ? 'تسجيل كطبيب'
+                                    : 'تسجيل كطفل',
+                            color:
+                                AppCubit.get(context).drawerIndex == 7
+                                    ? Colors.white
+                                    : Colors.black,
+                            size: 16.sp,
+                            family: FontFamily.lexendBold,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
                 AnimatedBuilder(
                   animation: _animation8,
                   builder: (context, child) {

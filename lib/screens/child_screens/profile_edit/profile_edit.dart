@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/gen/assets.gen.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/service/cubit/app_cubit.dart';
+import '../../../core/widgets/custom_app_bar.dart';
 import '../../../core/widgets/custom_bottom_nav.dart';
+import '../drawer/drawer.dart';
 import 'widgets/edit_profile_fields.dart';
 
 final _firstNameController = TextEditingController();
@@ -17,14 +19,24 @@ class ProfileEdit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return CustomBottomNav(
+          skey: scaffoldKey,
+          drawer: const CustomDrawer(),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(90.h),
+            child: CustomAppBar(
+              scaffoldKey: scaffoldKey,
+              title: 'تعديل الملف الشخصي',
+            )
+          ),
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                SizedBox(height: 120.h),
+                SizedBox(height: 24.h),
                 AppCubit.get(context).profileImage.isEmpty
                     ? InkWell(
                       onTap:

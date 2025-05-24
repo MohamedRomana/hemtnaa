@@ -1,50 +1,131 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../gen/assets.gen.dart';
+import '../../screens/child_screens/profile/profile.dart';
+import '../cache/cache_helper.dart';
+import '../constants/colors.dart';
+import 'app_router.dart';
 import 'app_text.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String title;
-  final bool? isBack;
-  const CustomAppBar({super.key, required this.title, this.isBack = false});
+  final bool isHome;
+  const CustomAppBar({
+    super.key,
+    required this.scaffoldKey,
+    required this.title,
+    this.isHome = false,
+  });
+
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 90.h,
       width: double.infinity,
+      padding: EdgeInsets.all(16.r),
+      margin: EdgeInsets.only(bottom: 15.h),
       decoration: BoxDecoration(
-        color: const Color(0xffF6F6F8),
+        color: AppColors.primary,
         borderRadius: BorderRadiusDirectional.only(
-          bottomEnd: Radius.circular(24.r),
-          bottomStart: Radius.circular(24.r),
+          bottomEnd: Radius.circular(15.r),
+          bottomStart: Radius.circular(15.r),
         ),
-        border: Border.all(color: const Color(0xffE3E3E3)),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xffE3E3E3).withOpacity(0.7),
-            blurRadius: 5.r,
-            spreadRadius: 1.r,
-            offset: Offset(0, 5.r),
-          ),
-        ],
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: 16.h),
+        padding: EdgeInsets.only(top: 20.h),
         child: Row(
           children: [
+            IconButton(
+              onPressed: () {
+                scaffoldKey.currentState?.openDrawer();
+              },
+              icon: const Icon(Icons.menu, color: Colors.white),
+            ),
             AppText(
+              top: 8.h,
               text: title,
-              size: 30.sp,
+              size: 20.sp,
+              color: Colors.white,
               fontWeight: FontWeight.bold,
-              start: 24.w,
             ),
             const Spacer(),
-            isBack!
-                ? Padding(
-                  padding: EdgeInsetsDirectional.only(end: 24.w),
-                  child: const Icon(Icons.arrow_forward_ios_rounded),
-                )
-                : const SizedBox(),
+
+            // BlocConsumer<AuthCubit, AuthState>(
+            //   listener: (context, state) {
+            //     if (state is LogOutLoading) {
+            //       showLoadingDialog(context: context, isLottie: true);
+            //     } else if (state is LogOutSuccess) {
+            //       showFlashMessage(
+            //         context: context,
+            //         type: FlashMessageType.success,
+            //         message: state.message,
+            //       );
+            //       AppRouter.navigateAndFinish(context, const LogIn());
+            //     } else if (state is LogOutFailure) {
+            //       AppRouter.pop(context);
+            //       showFlashMessage(
+            //         context: context,
+            //         type: FlashMessageType.error,
+            //         message: state.error,
+            //       );
+            //     }
+            //   },
+            //   builder: (context, state) {
+            //     return IconButton(
+            //       onPressed: () {
+            //         customAlertDialog(
+            //           context: context,
+            //           dialogBackGroundColor: AppColors.borderColor,
+            //           child: const LogoutDialog(),
+            //         );
+            //       },
+            //       icon: const Icon(Icons.logout_outlined, color: Colors.white),
+            //     );
+            //   },
+            // ),
+            InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () {
+                AppRouter.navigateTo(context, const Profile());
+              },
+              child: Icon(
+                Icons.help_outline_rounded,
+                size: 24.sp,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 7.w),
+            if (isHome)
+              InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () {
+                  AppRouter.pop(context);
+                },
+                child:
+                    CacheHelper.getLang() == "en"
+                        ? Transform.scale(
+                          scaleX: -1,
+                          child: SvgPicture.asset(
+                            Assets.svg.arrowleftcircle,
+                            color: Colors.white,
+                            height: 24.w,
+                            width: 24.w,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                        : SvgPicture.asset(
+                          Assets.svg.arrowleftcircle,
+                          color: Colors.white,
+                          height: 24.w,
+                          width: 24.w,
+                          fit: BoxFit.cover,
+                        ),
+              ),
           ],
         ),
       ),
