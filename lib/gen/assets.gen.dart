@@ -63,6 +63,9 @@ class $AssetsImgGen {
   /// File path: assets/img/apple.png
   AssetGenImage get apple => const AssetGenImage('assets/img/apple.png');
 
+  /// File path: assets/img/audio.png
+  AssetGenImage get audio => const AssetGenImage('assets/img/audio.png');
+
   /// File path: assets/img/brain.png
   AssetGenImage get brain => const AssetGenImage('assets/img/brain.png');
 
@@ -140,6 +143,9 @@ class $AssetsImgGen {
   /// File path: assets/img/start.json
   String get start => 'assets/img/start.json';
 
+  /// File path: assets/img/strories.png
+  AssetGenImage get strories => const AssetGenImage('assets/img/strories.png');
+
   /// File path: assets/img/student.png
   AssetGenImage get student => const AssetGenImage('assets/img/student.png');
 
@@ -150,6 +156,7 @@ class $AssetsImgGen {
   List<dynamic> get values => [
     alert,
     apple,
+    audio,
     brain,
     doctor,
     doctor2,
@@ -174,6 +181,7 @@ class $AssetsImgGen {
     senior,
     shapes,
     start,
+    strories,
     student,
     tree,
   ];
@@ -234,14 +242,49 @@ class $AssetsSvgGen {
 class $AssetsVideoGen {
   const $AssetsVideoGen();
 
+  /// File path: assets/video/ashab_elfeel.mp4
+  String get ashabElfeel => 'assets/video/ashab_elfeel.mp4';
+
+  /// File path: assets/video/ber_walden.mp4
+  String get berWalden => 'assets/video/ber_walden.mp4';
+
+  /// File path: assets/video/eidelfetr.mp4
+  String get eidelfetr => 'assets/video/eidelfetr.mp4';
+
+  /// File path: assets/video/elteflwelnaby.mp4
+  String get elteflwelnaby => 'assets/video/elteflwelnaby.mp4';
+
   /// File path: assets/video/haha.mp4
   String get haha => 'assets/video/haha.mp4';
+
+  /// File path: assets/video/ibrahim.mp4
+  String get ibrahim => 'assets/video/ibrahim.mp4';
+
+  /// File path: assets/video/noh.mp4
+  String get noh => 'assets/video/noh.mp4';
 
   /// File path: assets/video/ramadan.mp4
   String get ramadan => 'assets/video/ramadan.mp4';
 
+  /// File path: assets/video/yones.mp4
+  String get yones => 'assets/video/yones.mp4';
+
+  /// File path: assets/video/youssef.mp4
+  String get youssef => 'assets/video/youssef.mp4';
+
   /// List of all assets
-  List<String> get values => [haha, ramadan];
+  List<String> get values => [
+    ashabElfeel,
+    berWalden,
+    eidelfetr,
+    elteflwelnaby,
+    haha,
+    ibrahim,
+    noh,
+    ramadan,
+    yones,
+    youssef,
+  ];
 }
 
 class Assets {

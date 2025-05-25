@@ -67,8 +67,8 @@ class Games extends StatelessWidget {
                                 angle: 0.2,
                                 child: Image.asset(
                                   AppCubit.get(context).games[index].image,
-                                  height: 130.w,
-                                  width: 130.w,
+                                  height: 150.w,
+                                  width: 150.w,
                                   fit: BoxFit.fill,
                                 ),
                               ),
@@ -84,7 +84,7 @@ class Games extends StatelessWidget {
                                         AppCubit.get(
                                           context,
                                         ).games[index].title,
-                                    size: 26.sp,
+                                    size: index == 5 ? 20.sp : 26.sp,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     bottom: 10.h,
@@ -126,7 +126,12 @@ class Games extends StatelessWidget {
                                 child: AppText(
                                   text:
                                       AppCubit.get(context).games[index].button,
-                                  size: 14.sp,
+                                  size:
+                                      index == 4
+                                          ? 12.sp
+                                          : index == 5
+                                          ? 11.sp
+                                          : 14.sp,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),

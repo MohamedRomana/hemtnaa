@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/stories/custom_stories.dart';
 import 'widgets/focus_games/focus_games.dart';
 import 'widgets/memory_game/memory_game.dart';
 import 'widgets/mystery_games/mystery_games.dart';
@@ -20,6 +21,8 @@ class GamesView extends StatelessWidget {
               ? const FocusGames()
               : index == 3
               ? const MemoryGame()
+              : index == 4
+              ? const CustomStories()
               : Container(),
     );
   }

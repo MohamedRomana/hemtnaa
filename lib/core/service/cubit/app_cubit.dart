@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/models/focus_model.dart';
 import 'package:hemtnaa/core/service/models/games_models.dart';
 import 'package:hemtnaa/core/service/models/questions_model.dart';
+import 'package:hemtnaa/core/service/models/stories_model.dart';
 import 'package:hemtnaa/screens/child_screens/home_layout/doctors/doctors.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_chat/doc_chat.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_rates/doc_rates.dart';
@@ -853,6 +854,21 @@ class AppCubit extends Cubit<AppState> {
           'اختبر قوة ذاكرتك! اقلب البطاقات، طابق الصور، وحقق أعلى النتائج. لعبة ممتعة مناسبة لجميع الأعمار لتنشيط العقل وتحسين التركيز.',
       button: 'لعبة الذاكرة',
     ),
+    GamesModels(
+      title: 'قصص ممتعه',
+      image: Assets.img.strories.path,
+      description:
+          'اكتشف عالمًا من القصص الشيقة والمسلية التي تناسب جميع أعمار الأطفال. استمع إلى قصص تعليمية وترفيهية تساعد على تنمية الخيال واللغة، وتزرع القيم الجميلة في قلوب الصغار.',
+      button: 'سماع القصص',
+    ),
+
+    GamesModels(
+      title: 'استمتع وتعلّم بالأصوات',
+      image: Assets.img.audio.path,
+      description:
+          'مرحبًا بك في عالم السمعيات المدهش! في هذا القسم، يستمتع الأطفال بسماع القصص، والأناشيد، والأصوات التعليمية الممتعة التي تنمّي مهاراتهم اللغوية والسمعية. محتوى ممتع، آمن، ومناسب لجميع الأعمار يساعد الأطفال على التعلّم بطريقة مرحة وسهلة',
+      button: 'عالم السمعيات',
+    ),
   ];
 
   List<QuestionsModel> questions = [
@@ -888,6 +904,26 @@ class AppCubit extends Cubit<AppState> {
       image: Assets.img.tree.path,
       answers: ['شجرة', 'حيوان', 'نخلة', 'وردة'],
       correctAnswer: 'شجرة',
+    ),
+  ];
+
+  List<StoriesModel> stories = [
+    StoriesModel(name: "اصحاب الفيل", video: "assets/video/ashab_elfeel.mp4"),
+    StoriesModel(name: "بر الوالدين", video: "assets/video/ber_walden.mp4"),
+    StoriesModel(name: "عيد الفطر", video: "assets/video/eidelfetr.mp4"),
+    StoriesModel(name: "الطفل والنبي", video: "assets/video/elteflwelnaby.mp4"),
+    StoriesModel(
+      name: "سيدنا ابراهيم عليه السلام",
+      video: "assets/video/ibrahim.mp4",
+    ),
+    StoriesModel(name: "سيدنا نوح عليه السلام", video: "assets/video/noh.mp4"),
+    StoriesModel(
+      name: "سيدنا يونس عليه السلام",
+      video: "assets/video/yones.mp4",
+    ),
+    StoriesModel(
+      name: "سيدنا يوسف عليه السلام",
+      video: "assets/video/youssef.mp4",
     ),
   ];
 
