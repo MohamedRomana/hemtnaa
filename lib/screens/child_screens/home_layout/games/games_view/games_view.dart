@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/hearing/hearing.dart';
 import 'widgets/stories/custom_stories.dart';
 import 'widgets/focus_games/focus_games.dart';
 import 'widgets/memory_game/memory_game.dart';
@@ -23,7 +24,9 @@ class GamesView extends StatelessWidget {
               ? const MemoryGame()
               : index == 4
               ? const CustomStories()
-              : Container(),
+              : index == 5
+              ? const Hearing()
+              : const SizedBox.shrink(),
     );
   }
 }

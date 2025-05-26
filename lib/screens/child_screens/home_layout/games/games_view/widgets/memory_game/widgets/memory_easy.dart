@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:confetti/confetti.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/widgets/app_router.dart';
 import 'package:hemtnaa/gen/fonts.gen.dart';
 import 'package:hemtnaa/screens/child_screens/home_layout/games/games_view/widgets/memory_game/widgets/memory_medium.dart';
-
 import '../../../../../../../../core/constants/colors.dart';
 import '../../../../../../../../core/widgets/app_text.dart';
 import '../../../../../../../../gen/assets.gen.dart';

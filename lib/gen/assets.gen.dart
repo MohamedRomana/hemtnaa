@@ -125,9 +125,6 @@ class $AssetsImgGen {
   /// File path: assets/img/pazzel.png
   AssetGenImage get pazzel => const AssetGenImage('assets/img/pazzel.png');
 
-  /// File path: assets/img/puzzel2.png
-  AssetGenImage get puzzel2 => const AssetGenImage('assets/img/puzzel2.png');
-
   /// File path: assets/img/puzzle.png
   AssetGenImage get puzzle => const AssetGenImage('assets/img/puzzle.png');
 
@@ -175,7 +172,6 @@ class $AssetsImgGen {
     notiEmpty,
     onboarding,
     pazzel,
-    puzzel2,
     puzzle,
     score,
     senior,
@@ -239,54 +235,6 @@ class $AssetsSvgGen {
   ];
 }
 
-class $AssetsVideoGen {
-  const $AssetsVideoGen();
-
-  /// File path: assets/video/ashab_elfeel.mp4
-  String get ashabElfeel => 'assets/video/ashab_elfeel.mp4';
-
-  /// File path: assets/video/ber_walden.mp4
-  String get berWalden => 'assets/video/ber_walden.mp4';
-
-  /// File path: assets/video/eidelfetr.mp4
-  String get eidelfetr => 'assets/video/eidelfetr.mp4';
-
-  /// File path: assets/video/elteflwelnaby.mp4
-  String get elteflwelnaby => 'assets/video/elteflwelnaby.mp4';
-
-  /// File path: assets/video/haha.mp4
-  String get haha => 'assets/video/haha.mp4';
-
-  /// File path: assets/video/ibrahim.mp4
-  String get ibrahim => 'assets/video/ibrahim.mp4';
-
-  /// File path: assets/video/noh.mp4
-  String get noh => 'assets/video/noh.mp4';
-
-  /// File path: assets/video/ramadan.mp4
-  String get ramadan => 'assets/video/ramadan.mp4';
-
-  /// File path: assets/video/yones.mp4
-  String get yones => 'assets/video/yones.mp4';
-
-  /// File path: assets/video/youssef.mp4
-  String get youssef => 'assets/video/youssef.mp4';
-
-  /// List of all assets
-  List<String> get values => [
-    ashabElfeel,
-    berWalden,
-    eidelfetr,
-    elteflwelnaby,
-    haha,
-    ibrahim,
-    noh,
-    ramadan,
-    yones,
-    youssef,
-  ];
-}
-
 class Assets {
   const Assets._();
 
@@ -294,7 +242,6 @@ class Assets {
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsImgGen img = $AssetsImgGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
-  static const $AssetsVideoGen video = $AssetsVideoGen();
 }
 
 class AssetGenImage {

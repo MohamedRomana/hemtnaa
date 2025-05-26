@@ -19,7 +19,10 @@ class DocVideosListView extends StatefulWidget {
 class _DocVideosListViewState extends State<DocVideosListView> {
   List<VideoPlayerController> controllers = [];
   Map<int, int> visibleItemCounts = {};
-  final List<String> videoPaths = [Assets.video.ramadan, Assets.video.haha];
+  final List<String> videoPaths = [
+    // Assets.video.ramadan,
+    //  Assets.video.haha
+     ];
   @override
   void initState() {
     super.initState();
