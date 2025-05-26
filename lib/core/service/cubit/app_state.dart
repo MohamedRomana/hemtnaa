@@ -152,3 +152,9 @@ class QuizNextQuestionState extends AppState {
 
   QuizNextQuestionState(this.currentPage, this.score, this.answered, this.selectedIndex);
 }
+
+class PostsViewLoading extends AppState {}
+
+class PostsViewSuccess extends AppState {}
+
+class PostsViewFailure extends AppState {}

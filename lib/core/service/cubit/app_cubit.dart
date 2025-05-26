@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/models/focus_model.dart';
 import 'package:hemtnaa/core/service/models/games_models.dart';
+import 'package:hemtnaa/core/service/models/hearing_model.dart';
 import 'package:hemtnaa/core/service/models/questions_model.dart';
 import 'package:hemtnaa/core/service/models/stories_model.dart';
 import 'package:hemtnaa/screens/child_screens/home_layout/doctors/doctors.dart';
@@ -908,23 +909,50 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   List<StoriesModel> stories = [
-    StoriesModel(name: "اصحاب الفيل", video: "assets/video/ashab_elfeel.mp4"),
-    StoriesModel(name: "بر الوالدين", video: "assets/video/ber_walden.mp4"),
-    StoriesModel(name: "عيد الفطر", video: "assets/video/eidelfetr.mp4"),
-    StoriesModel(name: "الطفل والنبي", video: "assets/video/elteflwelnaby.mp4"),
     StoriesModel(
-      name: "سيدنا ابراهيم عليه السلام",
-      video: "assets/video/ibrahim.mp4",
-    ),
-    StoriesModel(name: "سيدنا نوح عليه السلام", video: "assets/video/noh.mp4"),
-    StoriesModel(
-      name: "سيدنا يونس عليه السلام",
-      video: "assets/video/yones.mp4",
+      name: "اصحاب الفيل",
+      video: "https://www.youtube.com/watch?v=YcwgwTUkxsM",
+      thumbnail: 'https://img.youtube.com/vi/YcwgwTUkxsM/hqdefault.jpg',
     ),
     StoriesModel(
-      name: "سيدنا يوسف عليه السلام",
-      video: "assets/video/youssef.mp4",
+      name: "بر الوالدين",
+      video: "https://www.youtube.com/watch?v=4CLcuR3Tp0c",
+      thumbnail: 'https://img.youtube.com/vi/4CLcuR3Tp0c/hqdefault.jpg',
     ),
+    StoriesModel(
+      name: "النبي والطفل",
+      video: "https://www.youtube.com/watch?v=67VgFvJ18Hk&t=126s",
+      thumbnail: 'https://img.youtube.com/vi/67VgFvJ18Hk/hqdefault.jpg',
+    ),
+    StoriesModel(
+      name: "ابراهيم عليه السلام",
+      video: "https://www.youtube.com/watch?v=RirEWHlQ8dI",
+      thumbnail: 'https://img.youtube.com/vi/RirEWHlQ8dI/hqdefault.jpg',
+    ),
+    StoriesModel(
+      name: "يوسف عليه السلام",
+      video: "https://www.youtube.com/watch?v=RkiD_W5ffhU",
+      thumbnail: 'https://img.youtube.com/vi/RkiD_W5ffhU/hqdefault.jpg',
+    ),
+    StoriesModel(
+      name: "يونس عليه السلام",
+      video: "https://www.youtube.com/watch?v=sRqm3DNsFps",
+      thumbnail: 'https://img.youtube.com/vi/sRqm3DNsFps/hqdefault.jpg',
+    ),
+    StoriesModel(
+      name: "نوح عليه السلام",
+      video: "https://www.youtube.com/watch?v=wbMT-i-GU-A",
+      thumbnail: 'https://img.youtube.com/vi/wbMT-i-GU-A/hqdefault.jpg',
+    ),
+    StoriesModel(
+      name: "عيد الفطر",
+      video: "https://www.youtube.com/watch?v=jqVbzms4A2k",
+      thumbnail: 'https://img.youtube.com/vi/jqVbzms4A2k/hqdefault.jpg',
+    ),
+  ];
+
+  List<HearingModel> hearings = [
+    HearingModel(videoUrl: '', questions: [''], answers: ''),
   ];
 
   int _currentPage = 0;
@@ -1029,7 +1057,6 @@ class AppCubit extends Cubit<AppState> {
       ],
       correctAnswerId: 1,
     ),
-    // سؤال ثاني
     FocusModel(
       question: DottedBorder(
         borderType: BorderType.RRect,
@@ -1092,6 +1119,22 @@ class AppCubit extends Cubit<AppState> {
       correctAnswerId: 3,
     ),
   ];
+
+  List postsList = [];
+  Future postsView() async {
+    emit(PostsViewLoading());
+    http.Response response = await http.get(Uri.parse("${baseUrl}api/posts"));
+    debugPrint('Response status: ${response.statusCode}');
+    debugPrint('Response body: ${response.body}');
+    List<dynamic> data = jsonDecode(response.body);
+    debugPrint(data.toString());
+    postsList = data;
+    if (response.statusCode == 200) {
+      emit(PostsViewSuccess());
+    } else {
+      emit(PostsViewFailure());
+    }
+  }
 }
 
 class TrianglePainter extends CustomPainter {
