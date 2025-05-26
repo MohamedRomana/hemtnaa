@@ -6,7 +6,6 @@ import '../../../../../core/widgets/app_button.dart';
 import '../../../../../core/widgets/app_input.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../../child_screens/home_layout/home/widgets/video_player_widget.dart';
 
 final _postController = TextEditingController();
 
@@ -154,43 +153,6 @@ class _PublishPostSheetState extends State<PublishPostSheet> {
                       )
                       : const SizedBox.shrink(),
             
-                  AppCubit.get(context).postVideos.isNotEmpty
-                      ? SizedBox(
-                        height: 120.h,
-                        child: ListView.separated(
-                          padding: EdgeInsets.only(bottom: 16.h),
-                          itemCount: AppCubit.get(context).postVideos.length,
-                          scrollDirection: Axis.horizontal,
-                          separatorBuilder:
-                              (context, index) => SizedBox(width: 16.w),
-                          itemBuilder: (context, index) {
-                            final videoFile =
-                                AppCubit.get(context).postVideos[index];
-            
-                            return Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                VideoPlayerWidget(videoFile: videoFile),
-                                PositionedDirectional(
-                                  start: -13.w,
-                                  top: -13.h,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      AppCubit.get(context).removePostVideo(index);
-                                    },
-                                    icon: Icon(
-                                      Icons.close,
-                                      color: Colors.red,
-                                      size: 24.sp,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      )
-                      : const SizedBox.shrink(),
             
                   InkWell(
                     onTap: () {

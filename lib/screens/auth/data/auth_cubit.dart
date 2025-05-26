@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../core/cache/cache_helper.dart';
 import '../../../core/constants/contsants.dart';
 part 'auth_state.dart';
