@@ -951,8 +951,44 @@ class AppCubit extends Cubit<AppState> {
     ),
   ];
 
-  List<HearingModel> hearings = [
-    HearingModel(videoUrl: '', questions: [''], answers: ''),
+  List<HearingModel> hearing = [
+    HearingModel(
+      quistionText: 'ما هو الرقم في الفيديو ؟',
+      quistion: 'https://www.youtube.com/watch?v=rS9sIfMtAmE',
+      answers: ['3', '1', '9', '2'],
+      correctAnswer: '1',
+    ),
+    HearingModel(
+      quistionText: 'ما هو الرقم في الفيديو ؟',
+      quistion: "https://www.youtube.com/watch?v=n3xzvX4QZfg",
+      answers: ['1', '5', '2', '3'],
+      correctAnswer: '2',
+    ),
+    HearingModel(
+      quistionText: 'ما هي اسم الفاكهه في الفيديو ؟',
+      quistion: "https://www.youtube.com/watch?v=OPrAI2pLWUA",
+      answers: ['اناناس', 'خوخ', 'موزه', 'تفاحه'],
+      correctAnswer: 'اناناس',
+    ),
+    HearingModel(
+      quistionText: 'ما هي اسم الفاكهه في الفيديو ؟',
+      quistion: "https://www.youtube.com/watch?v=W2KwzTpj63s",
+      image: Assets.img.apple.path,
+      answers: ['اناناس', 'خوخ', 'موزه', 'تفاحه'],
+      correctAnswer: 'موزه',
+    ),
+    HearingModel(
+      quistionText: 'ما هو اسم الشكل في الصورة ؟',
+      quistion: "https://www.youtube.com/watch?v=gLXJlZ0CHrw",
+      answers: ['كتاب', 'زهرة', 'عشب', 'شجره'],
+      correctAnswer: 'شجره',
+    ),
+    HearingModel(
+      quistionText: 'ما هو اسم الحيوان في الصورة ؟',
+      quistion: "https://www.youtube.com/watch?v=ENH4iNtiTWk",
+      answers: ['نمر', 'فيل', 'قطه', 'اسد'],
+      correctAnswer: 'قطه',
+    ),
   ];
 
   int _currentPage = 0;

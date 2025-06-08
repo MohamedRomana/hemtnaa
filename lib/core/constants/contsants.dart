@@ -3,7 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 String? token;
 String? userId;
-const String baseUrl = "http://192.168.1.4:5000/";
+const String baseUrl = "https://524f-156-197-196-147.ngrok-free.app/";
 void openGoogleMap(double lat, double lng) async {
   Uri googleMapUrl = Uri.parse(
     "https://www.google.com/maps/search/?api=1&query=$lat,$lng",

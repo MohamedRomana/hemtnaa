@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import '../../../../../../../core/widgets/custom_app_bar.dart';
+
 class CustomStories extends StatefulWidget {
   const CustomStories({super.key});
 
@@ -40,31 +42,24 @@ class _CustomStoriesState extends State<CustomStories> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
-        return Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [Color(0xffAAD8FC), Color(0xffFCAADA)],
-            ),
+        return Scaffold(
+          key: scaffoldKey,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(90.h),
+            child: CustomAppBar(scaffoldKey: scaffoldKey, title: 'القصص'),
           ),
-          child: GridView.builder(
+          body: ListView.separated(
             padding: EdgeInsets.only(
               right: 16.w,
               left: 16.w,
               bottom: 24.h,
-              top: 40.h,
+              top: 24.h,
             ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 10.0,
-              childAspectRatio: 1.0,
-            ),
+            separatorBuilder: (context, index) => SizedBox(height: 16.w),
             itemCount: _controller.length,
             itemBuilder: (context, index) {
               return InkWell(
@@ -117,6 +112,7 @@ class StoryVideo extends StatelessWidget {
     return AlertDialog(
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.all(0),
       content: ClipRRect(
         borderRadius: BorderRadius.circular(12.r),
         child: YoutubePlayer(
@@ -126,7 +122,8 @@ class StoryVideo extends StatelessWidget {
           progressColors: const ProgressBarColors(
             playedColor: Colors.red,
             handleColor: Colors.red,
-          ),),
+          ),
+        ),
       ),
     );
   }
