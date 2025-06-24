@@ -1,11 +1,15 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:hemtnaa/core/widgets/custom_bottom_nav.dart';
 import 'package:hemtnaa/screens/child_screens/drawer/drawer.dart';
+import '../../../core/constants/colors.dart';
+import '../../../core/widgets/app_text.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import 'widgets/child_problem_container.dart';
+import 'widgets/custom_profile_information.dart';
 import 'widgets/profile_container.dart';
 import 'widgets/score_container.dart';
 
@@ -28,15 +32,112 @@ class Profile extends StatelessWidget {
               isHome: true,
             ),
           ),
-          body: const SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
-                  ProfileContainer(),
-                  ChildProblemContainer(),
-                  ScoreContainer(),
-                  SizedBox(height: 120),
+                  const ProfileContainer(),
+                  Container(
+                    width: 343.w,
+                    padding: EdgeInsets.all(16.r),
+                    margin: EdgeInsets.all(16.r),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(18.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withOpacity(0.2),
+                          spreadRadius: 1.r,
+                          blurRadius: 5.r,
+                          offset: Offset(0, 5.r),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          text: 'نبذة شخصية',
+                          color: AppColors.primary,
+                          size: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          bottom: 14.h,
+                        ),
+                        const Divider(color: Color(0xffE0E0E0)),
+                        SizedBox(height: 10.h),
+                        Row(
+                          children: [
+                            AppText(
+                              text: 'التعليم',
+                              size: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              width: 200.w,
+                              child: AppText(
+                                textAlign: TextAlign.end,
+                                text: 'ابتدائي',
+                                size: 12.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey.shade500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          children: [
+                            AppText(
+                              text: 'البلد',
+                              size: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              width: 200.w,
+                              child: AppText(
+                                textAlign: TextAlign.end,
+                                text: 'مصر',
+                                size: 12.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey.shade500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          children: [
+                            AppText(
+                              text: 'تاريخ الميلاد',
+                              size: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              width: 200.w,
+                              child: AppText(
+                                textAlign: TextAlign.end,
+                                text: '20 مارس 2020',
+                                size: 12.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey.shade500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const CustomProfileInformation(),
+                  const ChildProblemContainer(),
+                  const ScoreContainer(),
+                  const SizedBox(height: 120),
                 ],
               ),
             ),

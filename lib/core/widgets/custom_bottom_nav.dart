@@ -15,12 +15,14 @@ class CustomBottomNav extends StatelessWidget {
   final Key? skey;
   final PreferredSizeWidget? appBar;
   final Widget? drawer;
+  final bool? resizeToAvoidBottomInset;
   const CustomBottomNav({
     super.key,
     this.body,
     this.skey,
     this.appBar,
     this.drawer,
+    this.resizeToAvoidBottomInset,
   });
 
   @override
@@ -31,7 +33,7 @@ class CustomBottomNav extends StatelessWidget {
       drawer: drawer,
       body: body,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset ?? false,
       extendBody: true,
       floatingActionButton: InkWell(
         splashColor: Colors.transparent,

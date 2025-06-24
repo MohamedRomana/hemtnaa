@@ -1,3 +1,6 @@
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_pickers.dart';
+import 'package:country_pickers/utils/utils.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +12,7 @@ import '../../../../../core/widgets/app_input.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../../../data/auth_cubit.dart';
+import '../register.dart';
 
 class CustomUserRegisterFields extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -17,12 +21,11 @@ class CustomUserRegisterFields extends StatefulWidget {
   final TextEditingController phoneController;
   final TextEditingController emailController;
   final TextEditingController ageDayController;
-  final TextEditingController ageMonthController;
-  final TextEditingController ageYearController;
   final TextEditingController childIssueController;
   final TextEditingController passController;
   final TextEditingController confirmPassController;
   final TextEditingController specialityController;
+  final TextEditingController levelController;
 
   const CustomUserRegisterFields({
     super.key,
@@ -33,11 +36,10 @@ class CustomUserRegisterFields extends StatefulWidget {
     required this.emailController,
     required this.childIssueController,
     required this.ageDayController,
-    required this.ageMonthController,
-    required this.ageYearController,
     required this.specialityController,
     required this.firstNameController,
     required this.lastNameController,
+    required this.levelController,
   });
 
   @override
@@ -55,6 +57,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
   final FocusNode passFocus = FocusNode();
   final FocusNode confirmPassFocus = FocusNode();
   final FocusNode specialityFocus = FocusNode();
+  final FocusNode levelFocus = FocusNode();
 
   @override
   void initState() {
@@ -68,6 +71,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
     passFocus.addListener(() => setState(() {}));
     confirmPassFocus.addListener(() => setState(() {}));
     specialityFocus.addListener(() => setState(() {}));
+    levelFocus.addListener(() => setState(() {}));
   }
 
   @override
@@ -81,23 +85,23 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
     passFocus.dispose();
     confirmPassFocus.dispose();
     specialityFocus.dispose();
+    levelFocus.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> days = List.generate(30, (index) => (index + 1).toString());
-    List<String> months = List.generate(12, (index) => (index + 1).toString());
-    List<String> years = List.generate(
-      31,
-      (index) => (2000 + index).toString(),
-    );
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         List childrenIssue = [
           {'title': 'توحد', 'id': 0},
           {'title': 'ضعف سمع', 'id': 1},
           {'title': 'ضعف بصر', 'id': 2},
+        ];
+        List level = [
+          {'title': 'حضانه', 'id': 0},
+          {'title': 'ابتدائي', 'id': 1},
+          {'title': 'اعدادي', 'id': 2},
         ];
         return Form(
           key: widget.formKey,
@@ -134,7 +138,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                 ),
               ),
               AppText(
-                text: LocaleKeys.fullName.tr(),
+                text: LocaleKeys.lastName.tr(),
                 size: 18.sp,
                 fontWeight: FontWeight.bold,
                 bottom: 8.h,
@@ -183,9 +187,41 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                     return null;
                   }
                 },
-                prefixIcon: Icon(
-                  Icons.phone_outlined,
-                  color: phoneFocus.hasFocus ? AppColors.primary : Colors.grey,
+                prefixIcon: SizedBox(
+                  width: 130.w,
+                  child: FittedBox(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 16.w),
+                          child: CountryPickerDropdown(
+                            initialValue: 'EG',
+                            itemBuilder: _buildDropdownItem,
+                            sortComparator:
+                                (Country a, Country b) =>
+                                    a.isoCode.compareTo(b.isoCode),
+                            onValuePicked: (Country country) {
+                              userRegisterPhoneCode = country.phoneCode;
+                              debugPrint(userRegisterPhoneCode);
+                            },
+                          ),
+                        ),
+                        Container(
+                          height: 24.h,
+                          width: 1.w,
+                          decoration: const BoxDecoration(color: Colors.grey),
+                        ),
+                        SizedBox(width: 8.w),
+                        Icon(
+                          Icons.phone_outlined,
+                          color:
+                              phoneFocus.hasFocus
+                                  ? AppColors.primary
+                                  : Colors.grey,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               AppText(
@@ -227,232 +263,63 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                         bottom: 8.h,
                         start: 18.w,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SizedBox(
-                            width: 110.w,
-                            child: AppInput(
-                              enabledBorderColor: Colors.grey,
-                              focusNode: ageFocus,
-                              bottom: 18.h,
-                              start: 0,
-                              end: 0,
-                              filled: true,
-                              hint: 'اليوم',
-                              contentRight: 16.w,
-                              controller: widget.ageDayController,
-                              validate: (value) {
-                                if (value!.isEmpty) {
-                                  return 'اليوم مطلوب';
-                                } else {
-                                  return null;
-                                }
-                              },
+                      AppInput(
+                        enabledBorderColor: Colors.grey,
+                        prefixIcon: Icon(
+                          Icons.calendar_month_outlined,
+                          color:
+                              ageFocus.hasFocus
+                                  ? AppColors.primary
+                                  : Colors.grey,
+                        ),
+                        focusNode: ageFocus,
+                        bottom: 18.h,
+                        filled: true,
+                        hint: 'تاريخ ميلاد الطفل',
+                        contentRight: 16.w,
+                        controller: widget.ageDayController,
+                        validate: (value) {
+                          if (value!.isEmpty) {
+                            return 'تاريخ ميلاد الطفل مطلوب';
+                          } else {
+                            return null;
+                          }
+                        },
 
-                              suffixIcon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.grey,
-                                size: 25.sp,
-                              ),
-                              read: true,
-                              onTap: () async {
-                                showMenu(
-                                  color: Colors.white,
-                                  shadowColor: Colors.transparent,
-                                  surfaceTintColor: Colors.transparent,
-                                  context: context,
-                                  position: const RelativeRect.fromLTRB(
-                                    100,
-                                    550,
-                                    0,
-                                    0,
-                                  ),
-                                  items: [
-                                    PopupMenuItem(
-                                      child: Container(
-                                        width: 50.w,
-                                        height: 200.h,
-                                        color: Colors.white,
-                                        child: Column(
-                                          children: [
-                                            AppText(text: 'اليوم', bottom: 5.h),
-                                            Expanded(
-                                              child: ListView.builder(
-                                                itemCount: days.length,
-                                                itemBuilder:
-                                                    (context, index) => InkWell(
-                                                      onTap: () {
-                                                        widget
-                                                            .ageDayController
-                                                            .text = days[index];
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: AppText(
-                                                        text: days[index],
-                                                        bottom: 3.h,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                        suffixIcon: Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                          size: 25.sp,
+                        ),
+                        read: true,
+                        onTap: () async {
+                          DateTime? dateTime = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100),
+                            builder:
+                                (context, child) => Theme(
+                                  data: Theme.of(context).copyWith(
+                                    colorScheme: const ColorScheme.light(
+                                      primary: AppColors.primary,
+                                      onPrimary: Colors.white,
+                                      surface: Colors.white,
+                                      onSurface: Colors.black,
                                     ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 110.w,
-                            child: AppInput(
-                              start: 0,
-                              end: 0,
-
-                              enabledBorderColor: Colors.grey,
-                              focusNode: ageFocus,
-                              bottom: 18.h,
-                              filled: true,
-                              hint: 'الشهر',
-                              controller: widget.ageMonthController,
-                              validate: (value) {
-                                if (value!.isEmpty) {
-                                  return 'الشهر مطلوب';
-                                } else {
-                                  return null;
-                                }
-                              },
-
-                              suffixIcon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.grey,
-                                size: 25.sp,
-                              ),
-                              read: true,
-                              onTap: () async {
-                                showMenu(
-                                  color: Colors.white,
-                                  shadowColor: Colors.transparent,
-                                  surfaceTintColor: Colors.transparent,
-                                  context: context,
-                                  position: const RelativeRect.fromLTRB(
-                                    200,
-                                    550,
-                                    120,
-                                    0,
                                   ),
-                                  items: [
-                                    PopupMenuItem(
-                                      child: Container(
-                                        width: 50.w,
-                                        height: 200.h,
-                                        color: Colors.white,
-                                        child: Column(
-                                          children: [
-                                            AppText(text: 'الشهر', bottom: 5.h),
-                                            Expanded(
-                                              child: ListView.builder(
-                                                itemCount: months.length,
-                                                itemBuilder:
-                                                    (context, index) => InkWell(
-                                                      onTap: () {
-                                                        widget
-                                                            .ageMonthController
-                                                            .text = months[index];
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: AppText(
-                                                        text: months[index],
-                                                        bottom: 3.h,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-
-                          SizedBox(
-                            width: 110.w,
-                            child: AppInput(
-                              start: 0,
-                              end: 0,
-                              enabledBorderColor: Colors.grey,
-                              focusNode: ageFocus,
-                              bottom: 18.h,
-                              filled: true,
-                              hint: 'السنه',
-                              controller: widget.ageYearController,
-                              validate: (value) {
-                                if (value!.isEmpty) {
-                                  return 'السنه مطلوب';
-                                } else {
-                                  return null;
-                                }
-                              },
-
-                              suffixIcon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.grey,
-                                size: 25.sp,
-                              ),
-                              read: true,
-                              onTap: () async {
-                                showMenu(
-                                  color: Colors.white,
-                                  shadowColor: Colors.transparent,
-                                  surfaceTintColor: Colors.transparent,
-                                  context: context,
-                                  position: const RelativeRect.fromLTRB(
-                                    200,
-                                    550,
-                                    120,
-                                    0,
-                                  ),
-                                  items: [
-                                    PopupMenuItem(
-                                      child: Container(
-                                        width: 50.w,
-                                        height: 200.h,
-                                        color: Colors.white,
-                                        child: Column(
-                                          children: [
-                                            AppText(text: 'السنه', bottom: 5.h),
-                                            Expanded(
-                                              child: ListView.builder(
-                                                itemCount: years.length,
-                                                itemBuilder:
-                                                    (context, index) => InkWell(
-                                                      onTap: () {
-                                                        widget
-                                                            .ageYearController
-                                                            .text = years[index];
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: AppText(
-                                                        text: years[index],
-                                                        bottom: 3.h,
-                                                      ),
-                                                    ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ],
+                                  child: child!,
+                                ),
+                          );
+                          if (dateTime != null) {
+                            String formattedDate = DateFormat(
+                              'yyyy-MM-dd',
+                            ).format(dateTime);
+                            setState(() {
+                              widget.ageDayController.text = formattedDate;
+                            });
+                          }
+                        },
                       ),
                       AppText(
                         text: LocaleKeys.child_issue.tr(),
@@ -497,6 +364,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                                           text: value['title'],
                                           size: 18.sp,
                                           color: AppColors.primary,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       );
                                     }).toList(),
@@ -558,6 +426,66 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                       ),
                     ],
                   ),
+              AppText(
+                text: 'المستوى التعليمي',
+                size: 18.sp,
+                fontWeight: FontWeight.bold,
+                bottom: 8.h,
+                start: 18.w,
+              ),
+              AppInput(
+                enabledBorderColor: Colors.grey,
+                focusNode: levelFocus,
+                bottom: 18.h,
+                filled: true,
+                hint: 'المستوى التعليمي',
+                controller: widget.levelController,
+                read: true,
+                onTap: () async {
+                  String? value = await showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SimpleDialog(
+                        backgroundColor: AppColors.borderColor,
+                        title: AppText(text: 'المستوى التعليمي', size: 21.sp),
+                        children:
+                            level.map((value) {
+                              return SimpleDialogOption(
+                                onPressed: () {
+                                  Navigator.pop(context, value['title']);
+                                },
+                                child: AppText(
+                                  text: value['title'],
+                                  size: 18.sp,
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            }).toList(),
+                      );
+                    },
+                  );
+                  if (value != null) {
+                    widget.levelController.text = value;
+                  }
+                },
+                suffixIcon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.grey,
+                  size: 25.sp,
+                ),
+                validate: (value) {
+                  if (value!.isEmpty) {
+                    return 'ادخل المستوى التعليمي';
+                  } else {
+                    return null;
+                  }
+                },
+                prefixIcon: Icon(
+                  Icons.school_outlined,
+                  color: levelFocus.hasFocus ? AppColors.primary : Colors.grey,
+                ),
+              ),
               AppText(
                 text: LocaleKeys.password.tr(),
                 size: 18.sp,
@@ -715,3 +643,16 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
     );
   }
 }
+
+Widget _buildDropdownItem(Country country) => SizedBox(
+  width: 70.w,
+  child: FittedBox(
+    child: Row(
+      children: <Widget>[
+        CountryPickerUtils.getDefaultFlagImage(country),
+        // SizedBox(width: 8.w),
+        Text("+${country.phoneCode}(${country.isoCode})"),
+      ],
+    ),
+  ),
+);

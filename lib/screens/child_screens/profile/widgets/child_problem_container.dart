@@ -34,6 +34,7 @@ class ChildProblemContainer extends StatelessWidget {
               size: 18.sp,
               fontWeight: FontWeight.bold,
               bottom: 14.h,
+              color: AppColors.primary,
             ),
           ),
           const Divider(color: Color(0xffE0E0E0)),

@@ -58,10 +58,9 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String userType,
     required String ageDay,
-    required String ageMonth,
-    required String ageYear,
     required String childIssue,
     required String speciality,
+    required String level,
   }) async {
     emit(RegisterLoading());
 
@@ -79,19 +78,18 @@ class AuthCubit extends Cubit<AuthState> {
         'email': email,
         'userType': userType,
         'ageDay': ageDay,
-        'ageMonth': ageMonth,
-        'ageYear': ageYear,
         'childIssue': childIssue,
         'speciality': speciality,
+        'level': level,
         'createdAt': FieldValue.serverTimestamp(),
       });
 
       emit(RegisterSuccess());
     } on FirebaseAuthException catch (e) {
-      print('FirebaseAuthException: ${e.code} - ${e.message}');
+      debugPrint('FirebaseAuthException: ${e.code} - ${e.message}');
       emit(RegisterFailure(error: "${e.message}"));
     } catch (e) {
-      print('Unknown Error: $e');
+      debugPrint('Unknown Error: $e');
       emit(RegisterFailure(error: e.toString()));
     }
   }

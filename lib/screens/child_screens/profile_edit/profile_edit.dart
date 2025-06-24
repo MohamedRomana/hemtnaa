@@ -11,8 +11,16 @@ import '../drawer/drawer.dart';
 import 'widgets/edit_profile_fields.dart';
 
 final _firstNameController = TextEditingController();
+final _lastNameController = TextEditingController();
 final _phoneController = TextEditingController();
+final _emailController = TextEditingController();
+final _ageDayController = TextEditingController();
+final _childIssueController = TextEditingController();
 final _passController = TextEditingController();
+final _specialityController = TextEditingController();
+final _levelController = TextEditingController();
+
+String profileEditPhoneCode = "+20";
 
 class ProfileEdit extends StatelessWidget {
   const ProfileEdit({super.key});
@@ -23,6 +31,7 @@ class ProfileEdit extends StatelessWidget {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return CustomBottomNav(
+          resizeToAvoidBottomInset: true,
           skey: scaffoldKey,
           drawer: const CustomDrawer(),
           appBar: PreferredSize(
@@ -30,7 +39,7 @@ class ProfileEdit extends StatelessWidget {
             child: CustomAppBar(
               scaffoldKey: scaffoldKey,
               title: 'تعديل الملف الشخصي',
-            )
+            ),
           ),
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -49,8 +58,8 @@ class ProfileEdit extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100.r),
                             child: Image.asset(
                               Assets.img.doctor2.path,
-                              height: 120.h,
-                              width: 120.w,
+                              height: 150.h,
+                              width: 150.w,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -68,8 +77,8 @@ class ProfileEdit extends StatelessWidget {
                     : Stack(
                       children: [
                         Container(
-                          height: 120.h,
-                          width: 120.w,
+                          height: 150.h,
+                          width: 150.w,
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                             shape: BoxShape.circle,
@@ -99,9 +108,15 @@ class ProfileEdit extends StatelessWidget {
                     ),
                 SizedBox(height: 20.h),
                 EditProfileFields(
-                  passController: _passController,
                   phoneController: _phoneController,
+                  passController: _passController,
+                  emailController: _emailController,
+                  childIssueController: _childIssueController,
+                  ageDayController: _ageDayController,
+                  specialityController: _specialityController,
                   firstNameController: _firstNameController,
+                  lastNameController: _lastNameController,
+                  levelController: _levelController,
                 ),
 
                 SizedBox(height: 150.h),

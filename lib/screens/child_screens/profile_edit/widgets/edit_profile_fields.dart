@@ -1,26 +1,39 @@
 // ignore_for_file: deprecated_member_use
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_pickers.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/service/cubit/app_cubit.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_input.dart';
 import '../../../../core/widgets/app_text.dart';
-import '../../../../gen/assets.gen.dart';
 import '../../../../generated/locale_keys.g.dart';
+import '../profile_edit.dart';
 
 class EditProfileFields extends StatefulWidget {
-  final TextEditingController passController;
   final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
   final TextEditingController phoneController;
+  final TextEditingController emailController;
+  final TextEditingController ageDayController;
+  final TextEditingController childIssueController;
+  final TextEditingController passController;
+  final TextEditingController specialityController;
+  final TextEditingController levelController;
   const EditProfileFields({
     super.key,
     required this.passController,
     required this.phoneController,
     required this.firstNameController,
+    required this.lastNameController,
+    required this.emailController,
+    required this.ageDayController,
+    required this.childIssueController,
+    required this.specialityController,
+    required this.levelController,
   });
 
   @override
@@ -28,23 +41,44 @@ class EditProfileFields extends StatefulWidget {
 }
 
 class _EditProfileFieldsState extends State<EditProfileFields> {
-  final FocusNode phoneFocusNode = FocusNode();
-  final FocusNode nameFocusNode = FocusNode();
-  final FocusNode passFocusNode = FocusNode();
+  final FocusNode firstnameFocus = FocusNode();
+  final FocusNode lastnameFocus = FocusNode();
+  final FocusNode phoneFocus = FocusNode();
+  final FocusNode emailFocus = FocusNode();
+  final FocusNode ageFocus = FocusNode();
+  final FocusNode childIssueFocus = FocusNode();
+  final FocusNode passFocus = FocusNode();
+  final FocusNode confirmPassFocus = FocusNode();
+  final FocusNode specialityFocus = FocusNode();
+  final FocusNode levelFocus = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    phoneFocusNode.addListener(() => setState(() {}));
-    nameFocusNode.addListener(() => setState(() {}));
-    passFocusNode.addListener(() => setState(() {}));
+    firstnameFocus.addListener(() => setState(() {}));
+    lastnameFocus.addListener(() => setState(() {}));
+    phoneFocus.addListener(() => setState(() {}));
+    emailFocus.addListener(() => setState(() {}));
+    ageFocus.addListener(() => setState(() {}));
+    childIssueFocus.addListener(() => setState(() {}));
+    passFocus.addListener(() => setState(() {}));
+    confirmPassFocus.addListener(() => setState(() {}));
+    specialityFocus.addListener(() => setState(() {}));
+    levelFocus.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
-    phoneFocusNode.dispose();
-    nameFocusNode.dispose();
-    passFocusNode.dispose();
+    firstnameFocus.dispose();
+    lastnameFocus.dispose();
+    phoneFocus.dispose();
+    emailFocus.dispose();
+    ageFocus.dispose();
+    childIssueFocus.dispose();
+    passFocus.dispose();
+    confirmPassFocus.dispose();
+    specialityFocus.dispose();
+    levelFocus.dispose();
     super.dispose();
   }
 
@@ -52,6 +86,11 @@ class _EditProfileFieldsState extends State<EditProfileFields> {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
+        List level = [
+          {'title': 'حضانه', 'id': 0},
+          {'title': 'ابتدائي', 'id': 1},
+          {'title': 'اعدادي', 'id': 2},
+        ];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -59,87 +98,299 @@ class _EditProfileFieldsState extends State<EditProfileFields> {
               start: 18.w,
               text: LocaleKeys.edit_personal_information.tr(),
               size: 18.sp,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.bold,
             ),
             Container(
               width: 343.w,
               padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 10.sp),
               margin: EdgeInsets.all(16.sp),
               decoration: BoxDecoration(
-                color: const Color(0xffF2F2F2),
+                color: Colors.grey.shade200,
                 borderRadius: BorderRadius.circular(15.r),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.2),
+                    color: AppColors.primary.withOpacity(0.4),
                     spreadRadius: 1.r,
                     blurRadius: 5.r,
-                    offset: Offset(0, 5.r), // changes position of shadow
+                    offset: const Offset(0, 0), // changes position of shadow
                   ),
                 ],
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  AppText(
+                    text: LocaleKeys.firstName.tr(),
+                    size: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    bottom: 8.h,
+                    start: 16.w,
+                  ),
                   AppInput(
-                    filled: true,
                     enabledBorderColor: Colors.grey,
-                    hint: "اسم المستخدم",
-                    focusNode: nameFocusNode,
+                    focusNode: firstnameFocus,
+                    bottom: 16.h,
+                    filled: true,
+                    start: 5.w,
+                    end: 5.w,
+                    hint: LocaleKeys.firstName.tr(),
                     controller: widget.firstNameController,
-                    focusedBorderColor: AppColors.primary,
-                    prefixIcon: SizedBox(
-                      height: 25.w,
-                      width: 25.w,
-                      child: const Icon(
-                        Icons.person_outline,
-                        color: Colors.grey,
-                      ),
+
+                    prefixIcon: Icon(
+                      Icons.person_outline,
+                      color:
+                          firstnameFocus.hasFocus
+                              ? AppColors.primary
+                              : Colors.grey,
+                      size: 30.sp,
                     ),
                   ),
-                  SizedBox(height: 16.h),
-
+                  AppText(
+                    text: LocaleKeys.lastName.tr(),
+                    size: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    bottom: 8.h,
+                    start: 16.w,
+                  ),
                   AppInput(
-                    filled: true,
+                    start: 5.w,
+                    end: 5.w,
                     enabledBorderColor: Colors.grey,
-                    hint: "01000000000",
-                    focusNode: phoneFocusNode,
-                    focusedBorderColor: AppColors.primary,
+                    focusNode: lastnameFocus,
+                    bottom: 16.h,
+                    filled: true,
+                    hint: LocaleKeys.lastName.tr(),
+                    controller: widget.lastNameController,
+
+                    prefixIcon: Icon(
+                      Icons.person_outline,
+                      color:
+                          lastnameFocus.hasFocus
+                              ? AppColors.primary
+                              : Colors.grey,
+                      size: 30.sp,
+                    ),
+                  ),
+                  AppText(
+                    text: LocaleKeys.phone.tr(),
+                    size: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    bottom: 8.h,
+                    start: 16.w,
+                  ),
+                  AppInput(
+                    start: 5.w,
+                    end: 5.w,
+                    enabledBorderColor: Colors.grey,
+                    focusNode: phoneFocus,
+                    bottom: 16.h,
+                    filled: true,
+                    hint: LocaleKeys.phone.tr(),
                     controller: widget.phoneController,
                     inputType: TextInputType.phone,
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.all(12.r),
-                      child: SvgPicture.asset(
-                        Assets.svg.phone,
-                        height: 25.w,
-                        width: 25.w,
-                        color:
-                            phoneFocusNode.hasFocus
-                                ? AppColors.primary
-                                : Colors.grey,
+                    prefixIcon: SizedBox(
+                      width: 130.w,
+                      child: FittedBox(
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(start: 16.w),
+                              child: CountryPickerDropdown(
+                                initialValue: 'EG',
+                                itemBuilder: _buildDropdownItem,
+                                sortComparator:
+                                    (Country a, Country b) =>
+                                        a.isoCode.compareTo(b.isoCode),
+                                onValuePicked: (Country country) {
+                                  profileEditPhoneCode = country.phoneCode;
+                                  debugPrint(profileEditPhoneCode);
+                                },
+                              ),
+                            ),
+                            Container(
+                              height: 24.h,
+                              width: 1.w,
+                              decoration: const BoxDecoration(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            Icon(
+                              Icons.phone_outlined,
+                              color:
+                                  phoneFocus.hasFocus
+                                      ? AppColors.primary
+                                      : Colors.grey,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.h),
+                  AppText(
+                    text: LocaleKeys.email.tr(),
+                    size: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    bottom: 8.h,
+                    start: 16.w,
+                  ),
+                  AppInput(
+                    start: 5.w,
+                    end: 5.w,
+                    enabledBorderColor: Colors.grey,
+                    focusNode: emailFocus,
+                    bottom: 16.h,
+                    filled: true,
+                    hint: LocaleKeys.email.tr(),
+                    controller: widget.emailController,
+                    inputType: TextInputType.emailAddress,
 
+                    prefixIcon: Icon(
+                      Icons.email_outlined,
+                      color:
+                          emailFocus.hasFocus ? AppColors.primary : Colors.grey,
+                    ),
+                  ),
+                  AppText(
+                    text: 'تاريخ ميلاد الطفل',
+                    size: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    bottom: 8.h,
+                    start: 18.w,
+                  ),
+                  AppInput(
+                    start: 5.w,
+                    end: 5.w,
+                    enabledBorderColor: Colors.grey,
+                    prefixIcon: Icon(
+                      Icons.calendar_month_outlined,
+                      color:
+                          ageFocus.hasFocus ? AppColors.primary : Colors.grey,
+                    ),
+                    focusNode: ageFocus,
+                    bottom: 18.h,
+                    filled: true,
+                    hint: 'تاريخ ميلاد الطفل',
+                    contentRight: 16.w,
+                    controller: widget.ageDayController,
+                    suffixIcon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.grey,
+                      size: 25.sp,
+                    ),
+                    read: true,
+                    onTap: () async {
+                      DateTime? dateTime = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100),
+                        builder:
+                            (context, child) => Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: const ColorScheme.light(
+                                  primary: AppColors.primary,
+                                  onPrimary: Colors.white,
+                                  surface: Colors.white,
+                                  onSurface: Colors.black,
+                                ),
+                              ),
+                              child: child!,
+                            ),
+                      );
+                      if (dateTime != null) {
+                        String formattedDate = DateFormat(
+                          'yyyy-MM-dd',
+                        ).format(dateTime);
+                        setState(() {
+                          widget.ageDayController.text = formattedDate;
+                        });
+                      }
+                    },
+                  ),
+                  AppText(
+                    text: 'المستوى التعليمي',
+                    size: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    bottom: 8.h,
+                    start: 18.w,
+                  ),
+                  AppInput(
+                    start: 5.w,
+                    end: 5.w,
+                    enabledBorderColor: Colors.grey,
+                    focusNode: levelFocus,
+                    bottom: 18.h,
+                    filled: true,
+                    hint: 'المستوى التعليمي',
+                    controller: widget.levelController,
+                    read: true,
+                    onTap: () async {
+                      String? value = await showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SimpleDialog(
+                            backgroundColor: AppColors.borderColor,
+                            title: AppText(
+                              text: 'المستوى التعليمي',
+                              size: 21.sp,
+                            ),
+                            children:
+                                level.map((value) {
+                                  return SimpleDialogOption(
+                                    onPressed: () {
+                                      Navigator.pop(context, value['title']);
+                                    },
+                                    child: AppText(
+                                      text: value['title'],
+                                      size: 18.sp,
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                }).toList(),
+                          );
+                        },
+                      );
+                      if (value != null) {
+                        widget.levelController.text = value;
+                      }
+                    },
+                    suffixIcon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.grey,
+                      size: 25.sp,
+                    ),
+
+                    prefixIcon: Icon(
+                      Icons.school_outlined,
+                      color:
+                          levelFocus.hasFocus ? AppColors.primary : Colors.grey,
+                    ),
+                  ),
+                  AppText(
+                    text: LocaleKeys.password.tr(),
+                    size: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    bottom: 8.h,
+                    start: 16.w,
+                  ),
                   BlocBuilder<AppCubit, AppState>(
                     builder: (context, state) {
                       return AppInput(
+                        start: 5.w,
+                        end: 5.w,
                         filled: true,
-                        focusNode: passFocusNode,
+                        focusNode: passFocus,
                         focusedBorderColor: AppColors.primary,
                         hint: LocaleKeys.password.tr(),
                         enabledBorderColor: Colors.grey,
                         controller: widget.passController,
-                        validate: (value) {
-                          if (value!.isEmpty) {
-                            return LocaleKeys.passwordValidate.tr();
-                          } else {
-                            return null;
-                          }
-                        },
+
                         prefixIcon: Icon(
                           Icons.lock,
                           color:
-                              passFocusNode.hasFocus
+                              passFocus.hasFocus
                                   ? AppColors.primary
                                   : Colors.grey,
                           size: 25.sp,
@@ -160,7 +411,7 @@ class _EditProfileFieldsState extends State<EditProfileFields> {
                                     child: Icon(
                                       Icons.visibility_off,
                                       color:
-                                          passFocusNode.hasFocus
+                                          passFocus.hasFocus
                                               ? AppColors.primary
                                               : Colors.grey,
                                       size: 21.sp,
@@ -180,7 +431,7 @@ class _EditProfileFieldsState extends State<EditProfileFields> {
                                     child: Icon(
                                       Icons.visibility,
                                       color:
-                                          passFocusNode.hasFocus
+                                          passFocus.hasFocus
                                               ? AppColors.primary
                                               : Colors.grey,
                                       size: 21.sp,
@@ -212,6 +463,10 @@ class _EditProfileFieldsState extends State<EditProfileFields> {
                     },
                     builder: (context, state) {
                       return AppButton(
+                        elevation: WidgetStatePropertyAll(3.r),
+                        shadowColor: const WidgetStatePropertyAll(
+                          AppColors.primary,
+                        ),
                         top: 24.h,
                         width: 311.w,
                         onPressed: () {
@@ -236,6 +491,8 @@ class _EditProfileFieldsState extends State<EditProfileFields> {
                                 )
                                 : AppText(
                                   text: LocaleKeys.save.tr(),
+                                  size: 21.sp,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                       );
@@ -250,3 +507,16 @@ class _EditProfileFieldsState extends State<EditProfileFields> {
     );
   }
 }
+
+Widget _buildDropdownItem(Country country) => SizedBox(
+  width: 70.w,
+  child: FittedBox(
+    child: Row(
+      children: <Widget>[
+        CountryPickerUtils.getDefaultFlagImage(country),
+        // SizedBox(width: 8.w),
+        Text("+${country.phoneCode}(${country.isoCode})"),
+      ],
+    ),
+  ),
+);

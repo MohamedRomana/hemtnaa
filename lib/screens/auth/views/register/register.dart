@@ -21,12 +21,13 @@ final _lastNameController = TextEditingController();
 final _phoneController = TextEditingController();
 final _emailController = TextEditingController();
 final _ageDayController = TextEditingController();
-final _ageMonthController = TextEditingController();
-final _ageYearController = TextEditingController();
 final _childIssueController = TextEditingController();
 final _passController = TextEditingController();
 final _confirmPassController = TextEditingController();
 final _specialityController = TextEditingController();
+final _levelController = TextEditingController();
+
+String userRegisterPhoneCode = "+20";
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -43,12 +44,11 @@ class _RegisterState extends State<Register> {
     _phoneController.clear();
     _emailController.clear();
     _ageDayController.clear();
-    _ageMonthController.clear();
-    _ageYearController.clear();
     _childIssueController.clear();
     _passController.clear();
     _confirmPassController.clear();
     _specialityController.clear();
+    _levelController.clear();
     super.initState();
   }
 
@@ -68,11 +68,10 @@ class _RegisterState extends State<Register> {
               emailController: _emailController,
               childIssueController: _childIssueController,
               ageDayController: _ageDayController,
-              ageMonthController: _ageMonthController,
-              ageYearController: _ageYearController,
               specialityController: _specialityController,
               firstNameController: _firstNameController,
               lastNameController: _lastNameController,
+              levelController: _levelController,
             ),
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
@@ -85,10 +84,9 @@ class _RegisterState extends State<Register> {
                   _passController.clear();
                   _confirmPassController.clear();
                   _ageDayController.clear();
-                  _ageMonthController.clear();
-                  _ageYearController.clear();
                   _childIssueController.clear();
                   _specialityController.clear();
+                  _levelController.clear();
                   showFlashMessage(
                     context: context,
                     type: FlashMessageType.success,
@@ -118,10 +116,9 @@ class _RegisterState extends State<Register> {
                         email: _emailController.text,
                         userType: CacheHelper.getUserType(),
                         ageDay: _ageDayController.text,
-                        ageMonth: _ageMonthController.text,
-                        ageYear: _ageYearController.text,
                         childIssue: _childIssueController.text,
                         speciality: _specialityController.text,
+                        level: _levelController.text,
                       );
                     }
                   },
