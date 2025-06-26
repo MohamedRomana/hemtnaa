@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:hemtnaa/core/widgets/app_router.dart';
 import 'package:hemtnaa/core/widgets/app_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../../core/constants/colors.dart';
 
 class MysteryGames extends StatefulWidget {
@@ -33,6 +34,23 @@ class _MysteryGamesState extends State<MysteryGames>
   int _score = 0;
   bool _answered = false;
   int? _selectedIndex;
+
+  Future<void> saveScore(int score) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('puzzle_score', score);
+  }
+
+  Future<void> loadScore() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _score = prefs.getInt('puzzle_score') ?? 0;
+    });
+  }
+
+  Future<int> getStoredScore() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('puzzle_score') ?? 0;
+  }
 
   @override
   void initState() {
@@ -394,5 +412,17 @@ class _MysteryGamesState extends State<MysteryGames>
         );
       },
     );
+  }
+}
+
+class CacheScore {
+  static Future<void> saveScore(int score) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('puzzle_score', score);
+  }
+
+  static Future<int> getStoredScore() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('puzzle_score') ?? 0;
   }
 }

@@ -4,8 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../../../../../../../core/widgets/custom_app_bar.dart';
-
 class CustomStories extends StatefulWidget {
   const CustomStories({super.key});
 
@@ -42,54 +40,71 @@ class _CustomStoriesState extends State<CustomStories> {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
         return Scaffold(
-          key: scaffoldKey,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(90.h),
-            child: CustomAppBar(scaffoldKey: scaffoldKey, title: 'القصص'),
-          ),
-          body: ListView.separated(
-            padding: EdgeInsets.only(
-              right: 16.w,
-              left: 16.w,
-              bottom: 24.h,
-              top: 24.h,
-            ),
-            separatorBuilder: (context, index) => SizedBox(height: 16.w),
-            itemCount: _controller.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    useSafeArea: false,
-                    builder: (context) {
-                      return StoryVideo(controller: _controller, index: index);
-                    },
-                  );
-                },
-                child: Container(
-                  height: 100.w,
-                  width: 100.w,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.r),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        AppCubit.get(context).stories[index].thumbnail,
-                      ),
-                      fit: BoxFit.fill,
-                    ),
+          body: Stack(
+            children: [
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xffAAD8FC), Color(0xffFCAADA)],
                   ),
                 ),
-              );
-            },
+              ),
+              GridView.builder(
+                padding: EdgeInsets.only(
+                  right: 16.w,
+                  left: 16.w,
+                  bottom: 24.h,
+                  top: 200.h,
+                ),
+                itemCount: _controller.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  mainAxisExtent: 100,
+                  childAspectRatio: 1,
+                ),
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        useSafeArea: false,
+                        builder: (context) {
+                          return StoryVideo(
+                            controller: _controller,
+                            index: index,
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      height: 100.w,
+                      width: 100.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.r),
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            AppCubit.get(context).stories[index].thumbnail,
+                          ),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         );
       },

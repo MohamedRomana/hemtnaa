@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:hemtnaa/core/widgets/app_router.dart';
 import 'package:hemtnaa/screens/child_screens/home_layout/games/games_view/games_view.dart';
+import 'package:hemtnaa/screens/child_screens/home_layout/games/games_view/widgets/puzzle_games/widgets/puzzle_easy.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/widgets/app_text.dart';
@@ -168,33 +169,41 @@ class Games extends StatelessWidget {
                         color: Colors.white,
                         bottom: 16.h,
                       ),
-                      CircularPercentIndicator(
-                        radius: 70.0,
-                        lineWidth: 10.0,
-                        percent: 70 / 100,
-                        center: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              Assets.img.score.path,
-                              height: 50.w,
-                              width: 50.w,
-                              fit: BoxFit.fill,
+                      FutureBuilder<int>(
+                        future: CacheScore.getStoredScore(),
+
+                        builder: (context, asyncSnapshot) {
+                          int storedScore = asyncSnapshot.data ?? 0;
+                          double percent = (storedScore / 100).clamp(0.0, 1.0);
+                          return CircularPercentIndicator(
+                            radius: 70.0,
+                            lineWidth: 10.0,
+                            percent: percent,
+                            center: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  Assets.img.score.path,
+                                  height: 50.w,
+                                  width: 50.w,
+                                  fit: BoxFit.fill,
+                                ),
+                                SizedBox(height: 8.h),
+                                AppText(
+                                  text: "$storedScore%",
+                                  fontWeight: FontWeight.bold,
+                                  size: 16.sp,
+                                  color: Colors.white,
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 8.h),
-                            AppText(
-                              text: "70%",
-                              fontWeight: FontWeight.bold,
-                              size: 16.sp,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                        progressColor: const Color(0xff24B600),
-                        backgroundColor: Colors.grey[300]!,
-                        circularStrokeCap: CircularStrokeCap.round,
-                        animation: true,
-                        animationDuration: 1000,
+                            progressColor: const Color(0xff24B600),
+                            backgroundColor: Colors.grey[300]!,
+                            circularStrokeCap: CircularStrokeCap.round,
+                            animation: true,
+                            animationDuration: 1000,
+                          );
+                        },
                       ),
                     ],
                   ),

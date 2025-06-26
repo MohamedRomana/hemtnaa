@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/screens/child_screens/home_layout/games/games_view/widgets/puzzle_games/widgets/puzzle_medium.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../../../core/constants/colors.dart';
 import '../../../../../../../../core/widgets/app_router.dart';
 import '../../../../../../../../core/widgets/app_text.dart';
@@ -22,6 +22,7 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
   List<ui.Image> imagePieces = [];
   List<int?> topGrid = List.filled(9, null);
   List<int> availablePieces = List.generate(9, (i) => i);
+  int score = 0;
 
   void resetGame() {
     setState(() {
@@ -47,16 +48,37 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
     return true;
   }
 
+  Future<void> saveScore(int score) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('puzzle_score', score);
+  }
+
+  Future<void> loadScore() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      score = prefs.getInt('puzzle_score') ?? 0;
+    });
+  }
+
+  Future<int> getStoredScore() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('puzzle_score') ?? 0;
+  }
+
   void handlePuzzleCompletion(BuildContext context) {
     Future.delayed(const Duration(milliseconds: 300), () {
       bool solved = isPuzzleSolved();
-      print("Solved: $solved");
-      print("TopGrid after check: $topGrid");
+      debugPrint("Solved: $solved");
+      debugPrint("TopGrid after check: $topGrid");
       if (!solved) {
         setState(() {
           topGrid = List.generate(9, (i) => i);
         });
       } else {
+        setState(() {
+          score += 10;
+        });
+        saveScore(score);
         _startRepeatedConfetti();
         _confettiController.play();
       }
@@ -110,6 +132,7 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
     );
     super.initState();
     _splitImage();
+    loadScore();
   }
 
   void _startRepeatedConfetti() async {
@@ -236,6 +259,15 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Text(
+                    'النقاط: $score',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
 
                   GridView.builder(
                     shrinkWrap: true,
@@ -278,7 +310,7 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
                             ); // استخدم الدالة الجديدة
                           }
 
-                          print("TopGrid after move: $topGrid");
+                          debugPrint("TopGrid after move: $topGrid");
                         },
                       );
                     },
@@ -369,5 +401,17 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
         ],
       ),
     );
+  }
+}
+
+class CacheScore {
+  static Future<void> saveScore(int score) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('puzzle_score', score);
+  }
+
+  static Future<int> getStoredScore() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('puzzle_score') ?? 0;
   }
 }

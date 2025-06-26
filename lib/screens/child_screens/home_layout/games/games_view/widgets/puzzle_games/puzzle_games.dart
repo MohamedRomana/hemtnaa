@@ -93,7 +93,10 @@ class PuzzleGames extends StatelessWidget {
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onTap: () {
-                    AppRouter.navigateTo(context, const MediumPuzzle());
+                    AppRouter.navigateTo(
+                      context,
+                      const MediumPuzzle(),
+                    );
                   },
                   child: Container(
                     height: 45.h,
@@ -144,3 +147,4 @@ class PuzzleGames extends StatelessWidget {
     );
   }
 }
+
