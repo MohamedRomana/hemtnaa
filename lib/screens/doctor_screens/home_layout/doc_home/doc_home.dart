@@ -109,10 +109,7 @@ class DocHome extends StatelessWidget {
                     SizedBox(width: 16.w),
                     InkWell(
                       onTap: () {
-                        AppRouter.navigateTo(
-                          context,
-                          const DocProfile(),
-                        );
+                        AppRouter.navigateTo(context, const DocProfile());
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
@@ -136,9 +133,11 @@ class DocHome extends StatelessWidget {
                         focusedBorderColor: AppColors.borderColor,
                         color: AppColors.borderColor,
                         onTap: () {
-                          AppRouter.navigateTo(
-                            context,
-                            const PublishPostSheet(),
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.white,
+                            builder: (_) => const PublishPostSheet(),
                           );
                         },
                       ),

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -23,8 +25,11 @@ import '../../../screens/child_screens/home_layout/chats/chats.dart';
 import '../../../screens/child_screens/home_layout/games/games.dart';
 import '../../../screens/child_screens/home_layout/home/home.dart';
 import '../../../screens/doctor_screens/home_layout/doc_home/doc_home.dart';
+import '../../../screens/doctor_screens/home_layout/doc_home/widgets/publish_post_sheet.dart';
+import '../../../screens/doctor_screens/home_layout/doc_rates/widgets/add_activity.dart';
 import '../../cache/cache_helper.dart';
 import '../../constants/contsants.dart';
+import '../../widgets/flash_message.dart';
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
@@ -192,6 +197,17 @@ class AppCubit extends Cubit<AppState> {
       loveIndexes.remove(index);
     } else {
       loveIndexes.add(index);
+    }
+    emit(ChangeIndex());
+  }
+
+  Set<int> loveDocIndexes = {};
+
+  void changeDocLoveIndex(int index) {
+    if (loveDocIndexes.contains(index)) {
+      loveDocIndexes.remove(index);
+    } else {
+      loveDocIndexes.add(index);
     }
     emit(ChangeIndex());
   }
@@ -725,107 +741,6 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
-  // List<ChatMessagesModel> chatMessages = [];
-  // Map chatDetails = {};
-  // Future getChatMessages({
-  //   required String salerId,
-  //   String roomId = "",
-  //   bool isloading = true,
-  // }) async {
-  //   if (isloading) {
-  //     emit(GetChatMessagesLoading());
-  //   }
-  //   try {
-  //     http.Response response = await http
-  //         .post(
-  //           Uri.parse("${baseUrl}api/all-chats"),
-  //           body: {
-  //             "lang": CacheHelper.getLang(),
-  //             "user_id": CacheHelper.getUserId(),
-  //             "saler_id": salerId,
-  //             "room_id": roomId,
-  //           },
-  //         )
-  //         .timeout(const Duration(milliseconds: 8000));
-
-  //     if (response.statusCode == 500) {
-  //       emit(ServerError());
-  //     } else {
-  //       Map<String, dynamic> data = jsonDecode(response.body);
-
-  //       if (data["key"] == 1) {
-  //         chatDetails = data;
-  //         debugPrint(chatDetails.toString());
-  //         chatMessages = List<ChatMessagesModel>.from(
-  //           (data["data"] ?? [])
-  //               .map((e) => ChatMessagesModel.fromJson(e))
-  //               .toList()
-  //               .reversed,
-  //         );
-
-  //         emit(GetChatMessagesSuccess());
-  //       } else {
-  //         debugPrint(data["msg"]);
-  //         emit(GetChatMessagesFailure(error: data["msg"]));
-  //       }
-  //     }
-  //   } catch (error) {
-  //     if (error is TimeoutException) {
-  //       debugPrint("Request timed out");
-  //       emit(Timeoutt());
-  //     } else {
-  //       emit(GetChatMessagesFailure(error: error.toString()));
-  //     }
-  //   }
-  // }
-
-  // Future sendMessage({required String message}) async {
-  //   emit(SendMessageLoading());
-  //   try {
-  //     http.Response response = await http
-  //         .post(
-  //           Uri.parse("${baseUrl}api/store-chat"),
-  //           body: {
-  //             "lang": CacheHelper.getLang(),
-  //             "from_id": CacheHelper.getUserId(),
-  //             "to_id":
-  //                 CacheHelper.getUserType() == "saler"
-  //                     ? chatDetails["user_id"].toString()
-  //                     : chatDetails["saler_id"].toString(),
-  //             "type": "text",
-  //             "message": message,
-  //           },
-  //         )
-  //         .timeout(const Duration(milliseconds: 8000));
-
-  //     if (response.statusCode == 500) {
-  //       emit(ServerError());
-  //     } else {
-  //       Map<String, dynamic> data = jsonDecode(response.body);
-
-  //       if (data["key"] == 1) {
-  //         debugPrint(data["data"].toString());
-  //         emit(SendMessageSuccess());
-  //         getChatMessages(
-  //           salerId: chatDetails["saler_id"].toString(),
-  //           roomId: chatDetails["room_id"].toString(),
-  //           isloading: false,
-  //         );
-  //       } else {
-  //         debugPrint(data["msg"]);
-  //         emit(SendMessageFailure(error: data["msg"]));
-  //       }
-  //     }
-  //   } catch (error) {
-  //     if (error is TimeoutException) {
-  //       debugPrint("Request timed out");
-  //       emit(Timeoutt());
-  //     } else {
-  //       emit(SendMessageFailure(error: error.toString()));
-  //     }
-  //   }
-  // }
-
   List<GamesModels> games = [
     GamesModels(
       title: 'بازل العباقرة',
@@ -1156,20 +1071,112 @@ class AppCubit extends Cubit<AppState> {
   ];
 
   List postsList = [];
-  Future postsView() async {
-    emit(PostsViewLoading());
-    http.Response response = await http.get(Uri.parse("${baseUrl}api/posts"));
-    debugPrint('Response status: ${response.statusCode}');
-    debugPrint('Response body: ${response.body}');
-    List<dynamic> data = jsonDecode(response.body);
-    debugPrint(data.toString());
-    postsList = data;
-    if (response.statusCode == 200) {
-      emit(PostsViewSuccess());
-    } else {
-      emit(PostsViewFailure());
+
+  Future<void> createPost({
+    required String text,
+    required String doctorName,
+    required BuildContext context,
+  }) async {
+    emit(CreatePostLoading());
+
+    try {
+      List<String> imageBase64List = [];
+
+      for (var imageFile in postImages) {
+        final bytes = await imageFile.readAsBytes();
+        final base64Image = base64Encode(bytes);
+        imageBase64List.add('base64:$base64Image');
+      }
+
+      final newPost = PostModel(
+        doctorName: doctorName,
+        text: text,
+        imageUrls: imageBase64List,
+        timestamp: DateTime.now(),
+      );
+
+      postsList.insert(0, newPost);
+
+      emit(CreatePostSuccess());
+      Navigator.pop(context);
+
+      showFlashMessage(
+        context: context,
+        type: FlashMessageType.success,
+        message: 'تم نشر البوست بنجاح',
+      );
+    } catch (e) {
+      emit(CreatePostFailure(error: e.toString()));
+      showFlashMessage(
+        context: context,
+        type: FlashMessageType.error,
+        message: 'فشل في النشر، حاول مرة أخرى',
+      );
     }
   }
+
+List<ActivityModel> activitiesList = [];
+
+Future<void> createActivity({
+  required String name,
+  required String status,
+  required String startDate,
+  required String endDate,
+  required String description,
+  required BuildContext context,
+}) async {
+  emit(CreateActivityLoading());
+
+  try {
+    String imageBase64 = '';
+
+    if (activityImage.isNotEmpty) {
+      final bytes = await activityImage.first.readAsBytes();
+      imageBase64 = base64Encode(bytes);
+    }
+
+    final activity = ActivityModel(
+      name: name,
+      status: status,
+      startDate: startDate,
+      endDate: endDate,
+      description: description,
+      imageBase64: imageBase64,
+    );
+
+    activitiesList.insert(0, activity);
+
+
+    emit(CreateActivitySuccess());
+    Navigator.pop(context);
+
+    showFlashMessage(
+      context: context,
+      type: FlashMessageType.success,
+      message: 'تم إضافة النشاط بنجاح',
+    );
+  } catch (e) {
+    emit(CreateActivityFailure(error: e.toString()));
+    showFlashMessage(
+      context: context,
+      type: FlashMessageType.error,
+      message: 'فشل في الإضافة، حاول مرة أخرى',
+    );
+  }
+}
+
+int activityScore = 0;
+
+void incrementScoreByActivities() {
+  activityScore += selectedIndexes.length * 20;
+  emit(ActivityScoreChanged());
+}
+
+void resetScore() {
+  activityScore = 0;
+  emit(ActivityScoreChanged());
+}
+
 }
 
 class TrianglePainter extends CustomPainter {

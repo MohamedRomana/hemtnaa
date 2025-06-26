@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hemtnaa/core/widgets/app_button.dart';
 import 'package:intl/intl.dart';
 import '../../../../../core/constants/colors.dart';
@@ -11,7 +10,6 @@ import '../../../../../core/service/cubit/app_cubit.dart';
 import '../../../../../core/widgets/app_input.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/custom_doc_bottom_nav.dart';
-import '../../../../../gen/assets.gen.dart';
 
 class AddActivity extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -35,6 +33,17 @@ class AddActivity extends StatefulWidget {
 }
 
 class _AddActivityState extends State<AddActivity> {
+  @override
+  void initState() {
+    widget.nameController.clear();
+    widget.statusController.clear();
+    widget.endDateController.clear();
+    widget.startDateController.clear();
+    widget.descriptionController.clear();
+    AppCubit.get(context).activityImage = [];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
@@ -321,13 +330,13 @@ class _AddActivityState extends State<AddActivity> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          SvgPicture.asset(
-                                            Assets.svg.picture1,
-                                            height: 40.w,
-                                            width: 40.w,
-                                            fit: BoxFit.cover,
+                                          Icon(
+                                            Icons.add_a_photo,
+                                            size: 40.sp,
+                                            color: Colors.grey,
                                           ),
                                           AppText(
+                                            top: 10.h,
                                             text: 'اضافة صورة النشاط',
                                             size: 12.sp,
                                             color: Colors.grey,
@@ -345,7 +354,17 @@ class _AddActivityState extends State<AddActivity> {
                       child: AppButton(
                         top: 24.h,
                         onPressed: () {
-                          if (widget.formKey.currentState!.validate()) {}
+                          if (widget.formKey.currentState!.validate()) {
+                            AppCubit.get(context).createActivity(
+                              name: widget.nameController.text.trim(),
+                              status: widget.statusController.text.trim(),
+                              startDate: widget.startDateController.text.trim(),
+                              endDate: widget.endDateController.text.trim(),
+                              description:
+                                  widget.descriptionController.text.trim(),
+                              context: context,
+                            );
+                          }
                         },
                         child: AppText(
                           text: 'تاكيد',
@@ -365,4 +384,40 @@ class _AddActivityState extends State<AddActivity> {
       },
     );
   }
+}
+
+class ActivityModel {
+  final String name;
+  final String status;
+  final String startDate;
+  final String endDate;
+  final String description;
+  final String imageBase64; // أو imageUrl لو هترفعه على سيرفر
+
+  ActivityModel({
+    required this.name,
+    required this.status,
+    required this.startDate,
+    required this.endDate,
+    required this.description,
+    required this.imageBase64,
+  });
+
+  Map<String, dynamic> toMap() => {
+    'name': name,
+    'status': status,
+    'startDate': startDate,
+    'endDate': endDate,
+    'description': description,
+    'image': imageBase64,
+  };
+
+  factory ActivityModel.fromMap(Map<String, dynamic> map) => ActivityModel(
+    name: map['name'],
+    status: map['status'],
+    startDate: map['startDate'],
+    endDate: map['endDate'],
+    description: map['description'],
+    imageBase64: map['image'],
+  );
 }

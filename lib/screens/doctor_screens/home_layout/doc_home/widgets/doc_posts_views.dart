@@ -16,34 +16,34 @@ class DocPostsViews extends StatelessWidget {
       builder: (context, state) {
         return Row(
           children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.visibility,
-                  color: const Color(0xffB9B9B9),
-                  size: 18.sp,
-                ),
-                AppText(
-                  start: 5.w,
-                  text: '3289',
-                  size: 11.sp,
-                  color: const Color(0xffB9B9B9),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Icon(
+            //       Icons.visibility,
+            //       color: const Color(0xffB9B9B9),
+            //       size: 18.sp,
+            //     ),
+            //     AppText(
+            //       start: 5.w,
+            //       text: '3289',
+            //       size: 11.sp,
+            //       color: const Color(0xffB9B9B9),
+            //     ),
+            //   ],
+            // ),
             SizedBox(width: 12.w),
             InkWell(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-                AppCubit.get(context).changeLoveIndex(index);
+                AppCubit.get(context).changeDocLoveIndex(index);
               },
               child: Row(
                 children: [
                   SvgPicture.asset(
                     Assets.svg.heart,
                     color:
-                        AppCubit.get(context).loveIndexes.contains(index)
+                        AppCubit.get(context).loveDocIndexes.contains(index)
                             ? Colors.red
                             : const Color(0xffB9B9B9),
                     height: 18.w,
@@ -55,7 +55,7 @@ class DocPostsViews extends StatelessWidget {
                     text: 'اعجاب',
                     size: 11.sp,
                     color:
-                        AppCubit.get(context).loveIndexes.contains(index)
+                        AppCubit.get(context).loveDocIndexes.contains(index)
                             ? Colors.red
                             : const Color(0xffB9B9B9),
                   ),

@@ -158,3 +158,23 @@ class PostsViewLoading extends AppState {}
 class PostsViewSuccess extends AppState {}
 
 class PostsViewFailure extends AppState {}
+
+class CreatePostLoading extends AppState {}
+
+class CreatePostSuccess extends AppState {}
+
+class CreatePostFailure extends AppState {
+  final String error;
+  CreatePostFailure({required this.error});
+}
+
+class CreateActivityLoading extends AppState {}
+
+class CreateActivitySuccess extends AppState {}
+
+class CreateActivityFailure extends AppState {
+  final String error;
+  CreateActivityFailure({required this.error});
+}
+
+class ActivityScoreChanged extends AppState {}

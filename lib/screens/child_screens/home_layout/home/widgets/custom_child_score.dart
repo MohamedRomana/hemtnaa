@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:hemtnaa/core/widgets/app_router.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/widgets/app_text.dart';
@@ -11,41 +13,60 @@ class CustomChildScore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      onTap: () {
-        AppRouter.navigateTo(context, const Profile());
-      },
-      child: Padding(
-        padding: EdgeInsetsDirectional.only(
-          start: 24.w,
-          bottom: 35.h,
-          top: 20.h,
-        ),
-        child: Row(
-          children: [
-            Image.asset(
-              Assets.img.man.path,
-              height: 48.w,
-              width: 48.w,
-              fit: BoxFit.cover,
+    return BlocBuilder<AppCubit, AppState>(
+      buildWhen: (previous, current) => current is ActivityScoreChanged,
+      builder: (context, state) {
+        final score = AppCubit.get(context).activityScore;
+        final progress = (score / 100).clamp(0.0, 1.0);
+        return InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: () {
+            AppRouter.navigateTo(context, const Profile());
+          },
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(
+              start: 24.w,
+              bottom: 35.h,
+              top: 20.h,
             ),
-            SizedBox(width: 16.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                AppText(
-                  text: 'اكتمل40%',
-                  size: 14.sp,
-                  color: AppColors.primary,
+                Image.asset(
+                  Assets.img.man.path,
+                  height: 48.w,
+                  width: 48.w,
+                  fit: BoxFit.cover,
                 ),
-                AppText(text: 'سهل', size: 14.sp, color: AppColors.primary),
+                SizedBox(width: 16.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppText(
+                      text: 'اكتمل $score%',
+                      size: 14.sp,
+                      color: AppColors.primary,
+                    ),
+                    SizedBox(height: 8.h),
+                    SizedBox(
+                      width: 150.w,
+                      child: LinearProgressIndicator(
+                        borderRadius: BorderRadius.circular(8.r),
+                        value: progress,
+                        minHeight: 10,
+                        backgroundColor: Colors.grey[300],
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          Color(0xff24B600),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
