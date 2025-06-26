@@ -103,6 +103,7 @@ class AppInput extends StatelessWidget {
         bottom: bottom ?? 0,
       ),
       child: TextFormField(
+        
         focusNode: focusNode,
         readOnly: read ?? false,
         onTap: onTap,

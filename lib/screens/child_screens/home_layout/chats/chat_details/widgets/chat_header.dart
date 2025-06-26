@@ -8,7 +8,9 @@ import '../../../../../../gen/assets.gen.dart';
 import '../../widgets/call.dart';
 
 class ChatHeader extends StatelessWidget {
-  const ChatHeader({super.key});
+  final VoidCallback onChangeBackground;
+
+  const ChatHeader({super.key, required this.onChangeBackground});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class ChatHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 200.w,
+                    width: 150.w,
                     child: AppText(
                       text: 'احمد محمد',
                       size: 18.sp,
@@ -42,7 +44,7 @@ class ChatHeader extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 200.w,
+                    width: 150.w,
                     child: AppText(
                       text: '8:00 صباحًا',
                       size: 12.sp,
@@ -87,6 +89,24 @@ class ChatHeader extends StatelessWidget {
                       width: 24.w,
                       fit: BoxFit.cover,
                     ),
+                  ),
+                  PopupMenuButton<int>(
+                    color: Colors.white,
+                    icon: const Icon(Icons.more_vert, color: Colors.black),
+                    onSelected: (value) {
+                      if (value == 1) onChangeBackground();
+                    },
+                    itemBuilder:
+                        (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: AppText(
+                              text: 'تغيير الخلفيه',
+                              size: 16.sp,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ],
                   ),
                 ],
               ),

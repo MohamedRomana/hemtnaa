@@ -8,7 +8,9 @@ import '../../../../../../gen/assets.gen.dart';
 import 'doc_call.dart';
 
 class DocChatHeader extends StatelessWidget {
-  const DocChatHeader({super.key});
+  final VoidCallback onChangeBackground;
+
+  const DocChatHeader({super.key, required this.onChangeBackground});
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +19,13 @@ class DocChatHeader extends StatelessWidget {
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-          margin: EdgeInsets.only(top: 60.h),
           decoration: const BoxDecoration(color: Color(0xffFAFAFA)),
           child: Row(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(1000.r),
                 child: Image.asset(
-                  Assets.img.doctor.path,
+                  Assets.img.doctor2.path,
                   height: 40.w,
                   width: 40.w,
                   fit: BoxFit.cover,
@@ -35,7 +36,7 @@ class DocChatHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 200.w,
+                    width: 150.w,
                     child: AppText(
                       text: 'احمد محمد',
                       size: 18.sp,
@@ -43,7 +44,7 @@ class DocChatHeader extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 200.w,
+                    width: 150.w,
                     child: AppText(
                       text: '8:00 صباحًا',
                       size: 12.sp,
@@ -88,6 +89,24 @@ class DocChatHeader extends StatelessWidget {
                       width: 24.w,
                       fit: BoxFit.cover,
                     ),
+                  ),
+                  PopupMenuButton<int>(
+                    color: Colors.white,
+                    icon: const Icon(Icons.more_vert, color: Colors.black),
+                    onSelected: (value) {
+                      if (value == 1) onChangeBackground();
+                    },
+                    itemBuilder:
+                        (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: AppText(
+                              text: 'تغيير الخلفيه',
+                              size: 16.sp,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ],
                   ),
                 ],
               ),
