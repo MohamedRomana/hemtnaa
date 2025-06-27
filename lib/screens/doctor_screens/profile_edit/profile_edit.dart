@@ -9,8 +9,12 @@ import '../../../core/widgets/custom_doc_bottom_nav.dart';
 import 'widgets/edit_profile_fields.dart';
 
 final _firstNameController = TextEditingController();
+final _lastNameController = TextEditingController();
 final _phoneController = TextEditingController();
+final _emailController = TextEditingController();
 final _passController = TextEditingController();
+
+String profileEditPhoneCode = "+20";
 
 class DocProfileEdit extends StatelessWidget {
   const DocProfileEdit({super.key});
@@ -88,9 +92,11 @@ class DocProfileEdit extends StatelessWidget {
                     ),
                 SizedBox(height: 20.h),
                 EditProfileFields(
+                     phoneController: _phoneController,
                   passController: _passController,
-                  phoneController: _phoneController,
+                  emailController: _emailController,
                   firstNameController: _firstNameController,
+                  lastNameController: _lastNameController,
                 ),
 
                 SizedBox(height: 150.h),
