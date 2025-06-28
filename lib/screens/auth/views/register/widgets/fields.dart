@@ -93,16 +93,6 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
-        List childrenIssue = [
-          {'title': 'توحد', 'id': 0},
-          {'title': 'ضعف سمع', 'id': 1},
-          {'title': 'ضعف بصر', 'id': 2},
-        ];
-        List level = [
-          {'title': 'حضانه', 'id': 0},
-          {'title': 'ابتدائي', 'id': 1},
-          {'title': 'اعدادي', 'id': 2},
-        ];
         return Form(
           key: widget.formKey,
           child: Column(
@@ -252,7 +242,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                 ),
               ),
 
-              CacheHelper.getUserType() == 'Child'
+              CacheHelper.getUserType() == "parent"
                   ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -335,46 +325,7 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                         filled: true,
                         hint: LocaleKeys.child_issue.tr(),
                         controller: widget.childIssueController,
-                        suffixIcon: Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.grey,
-                          size: 25.sp,
-                        ),
-                        read: true,
-                        onTap: () async {
-                          String? value = await showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return SimpleDialog(
-                                backgroundColor: AppColors.borderColor,
-                                title: AppText(
-                                  text: LocaleKeys.child_issue.tr(),
-                                  size: 21.sp,
-                                ),
-                                children:
-                                    childrenIssue.map((value) {
-                                      return SimpleDialogOption(
-                                        onPressed: () {
-                                          Navigator.pop(
-                                            context,
-                                            value['title'],
-                                          );
-                                        },
-                                        child: AppText(
-                                          text: value['title'],
-                                          size: 18.sp,
-                                          color: AppColors.primary,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      );
-                                    }).toList(),
-                              );
-                            },
-                          );
-                          if (value != null) {
-                            widget.childIssueController.text = value;
-                          }
-                        },
+
                         validate: (value) {
                           if (value!.isEmpty) {
                             return LocaleKeys.child_issue_required.tr();
@@ -426,66 +377,37 @@ class _CustomUserRegisterFieldsState extends State<CustomUserRegisterFields> {
                       ),
                     ],
                   ),
-              AppText(
-                text: 'المستوى التعليمي',
-                size: 18.sp,
-                fontWeight: FontWeight.bold,
-                bottom: 8.h,
-                start: 18.w,
-              ),
-              AppInput(
-                enabledBorderColor: Colors.grey,
-                focusNode: levelFocus,
-                bottom: 18.h,
-                filled: true,
-                hint: 'المستوى التعليمي',
-                controller: widget.levelController,
-                read: true,
-                onTap: () async {
-                  String? value = await showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SimpleDialog(
-                        backgroundColor: AppColors.borderColor,
-                        title: AppText(text: 'المستوى التعليمي', size: 21.sp),
-                        children:
-                            level.map((value) {
-                              return SimpleDialogOption(
-                                onPressed: () {
-                                  Navigator.pop(context, value['title']);
-                                },
-                                child: AppText(
-                                  text: value['title'],
-                                  size: 18.sp,
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            }).toList(),
-                      );
+              CacheHelper.getUserType() == "parent"
+                  ? AppText(
+                    text: 'المستوى التعليمي',
+                    size: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    bottom: 8.h,
+                    start: 18.w,
+                  )
+                  : const SizedBox(),
+              CacheHelper.getUserType() == "parent"
+                  ? AppInput(
+                    enabledBorderColor: Colors.grey,
+                    focusNode: levelFocus,
+                    bottom: 18.h,
+                    filled: true,
+                    hint: 'المستوى التعليمي',
+                    controller: widget.levelController,
+                    validate: (value) {
+                      if (value!.isEmpty) {
+                        return 'ادخل المستوى التعليمي';
+                      } else {
+                        return null;
+                      }
                     },
-                  );
-                  if (value != null) {
-                    widget.levelController.text = value;
-                  }
-                },
-                suffixIcon: Icon(
-                  Icons.arrow_drop_down,
-                  color: Colors.grey,
-                  size: 25.sp,
-                ),
-                validate: (value) {
-                  if (value!.isEmpty) {
-                    return 'ادخل المستوى التعليمي';
-                  } else {
-                    return null;
-                  }
-                },
-                prefixIcon: Icon(
-                  Icons.school_outlined,
-                  color: levelFocus.hasFocus ? AppColors.primary : Colors.grey,
-                ),
-              ),
+                    prefixIcon: Icon(
+                      Icons.school_outlined,
+                      color:
+                          levelFocus.hasFocus ? AppColors.primary : Colors.grey,
+                    ),
+                  )
+                  : const SizedBox(),
               AppText(
                 text: LocaleKeys.password.tr(),
                 size: 18.sp,

@@ -161,7 +161,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                     highlightColor: Colors.transparent,
                     onTap: () {
                       AppCubit.get(context).changedrawerIndex(index: 0);
-                      if (CacheHelper.getUserType() == "Child") {
+                      if (CacheHelper.getUserType() == "parent") {
                         AppCubit.get(context).changebottomNavIndex(2);
                         AppRouter.navigateTo(context, const HomeLayout());
                       } else {
@@ -219,7 +219,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                     highlightColor: Colors.transparent,
                     onTap: () {
                       AppCubit.get(context).changedrawerIndex(index: 1);
-                      if (CacheHelper.getUserType() == "Child") {
+                      if (CacheHelper.getUserType() == "parent") {
                         AppRouter.pop(context);
                         AppRouter.navigateTo(context, const Profile());
                       } else {
@@ -320,11 +320,11 @@ class _CustomDrawerState extends State<CustomDrawer>
                     highlightColor: Colors.transparent,
                     onTap: () {
                       AppCubit.get(context).changedrawerIndex(index: 7);
-                      if (CacheHelper.getUserType() == "Child") {
-                        CacheHelper.setUserType('Doctor');
+                      if (CacheHelper.getUserType() == "parent") {
+                        CacheHelper.setUserType('doctor');
                         AppRouter.navigateTo(context, const LogIn());
                       } else {
-                        CacheHelper.setUserType('Child');
+                        CacheHelper.setUserType('parent');
                         AppRouter.navigateTo(context, const LogIn());
                       }
                     },
@@ -354,7 +354,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                           AppText(
                             start: 6.w,
                             text:
-                                CacheHelper.getUserType() == 'Child'
+                                CacheHelper.getUserType() == "parent"
                                     ? 'تسجيل كطبيب'
                                     : 'تسجيل كطفل',
                             color:

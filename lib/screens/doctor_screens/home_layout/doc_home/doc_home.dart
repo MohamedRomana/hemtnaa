@@ -144,6 +144,7 @@ class DocHome extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 16.h),
                 const DocPostsList(),
               ],
             ),

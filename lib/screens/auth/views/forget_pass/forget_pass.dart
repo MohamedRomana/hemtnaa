@@ -116,16 +116,10 @@ class _ForgetPassState extends State<ForgetPass> {
                   return Center(
                     child: AppButton(
                       onPressed: () async {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ResetPass(),
-                          ),
-                        );
                         if (_formKey.currentState!.validate()) {
                           AuthCubit.get(
                             context,
-                          ).forgetPass(phone: _emailController.text);
+                          ).forgetPass(email: _emailController.text);
                         }
                       },
                       child:

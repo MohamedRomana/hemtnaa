@@ -161,7 +161,10 @@ class PostsViewFailure extends AppState {}
 
 class CreatePostLoading extends AppState {}
 
-class CreatePostSuccess extends AppState {}
+class CreatePostSuccess extends AppState {
+  final String message;
+  CreatePostSuccess({required this.message});
+}
 
 class CreatePostFailure extends AppState {
   final String error;
@@ -178,3 +181,63 @@ class CreateActivityFailure extends AppState {
 }
 
 class ActivityScoreChanged extends AppState {}
+
+final class GetProfileLoading extends AppState {}
+
+final class GetProfileSuccess extends AppState {}
+
+final class GetProfileFailure extends AppState {
+  final String error;
+  GetProfileFailure({required this.error});
+}
+
+final class GetPostsLoading extends AppState {}
+
+final class GetPostsSuccess extends AppState {}
+
+final class GetPostsFailure extends AppState {
+  final String error;
+  GetPostsFailure({required this.error});
+}
+
+final class DoLikePostLoading extends AppState {}
+
+final class DoLikePostSuccess extends AppState {}
+
+final class DoLikePostFailure extends AppState {
+  final String error;
+  DoLikePostFailure({required this.error});
+}
+
+final class AddCommentLoading extends AppState {}
+
+final class AddCommentSuccess extends AppState {
+  final String message;
+  AddCommentSuccess({required this.message});
+}
+
+final class AddCommentFailure extends AppState {
+  final String error;
+  AddCommentFailure({required this.error});
+}
+
+final class GetCommentsLoading extends AppState {}
+
+final class GetCommentsSuccess extends AppState {}
+
+final class GetCommentsFailure extends AppState {
+  final String error;
+  GetCommentsFailure({required this.error});
+}
+
+final class AddActivityLoading extends AppState {}
+
+final class AddActivitySuccess extends AppState {
+  final String message;
+  AddActivitySuccess({required this.message});
+}
+
+final class AddActivityFailure extends AppState {
+  final String error;
+  AddActivityFailure({required this.error});
+}

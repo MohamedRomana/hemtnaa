@@ -6,8 +6,14 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../gen/assets.gen.dart';
 
-class ChatsListView extends StatelessWidget {
+class ChatsListView extends StatefulWidget {
   const ChatsListView({super.key});
+
+  @override
+  State<ChatsListView> createState() => _ChatsListViewState();
+}
+
+class _ChatsListViewState extends State<ChatsListView> {
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,7 @@ class ChatsListView extends StatelessWidget {
         top: 24.h,
         bottom: 120.h,
       ),
-      itemCount: 20,
+      itemCount: 10,
       separatorBuilder: (context, index) => SizedBox(height: 16.h),
       itemBuilder:
           (context, index) => InkWell(

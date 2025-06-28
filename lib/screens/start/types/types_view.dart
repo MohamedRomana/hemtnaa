@@ -34,7 +34,7 @@ class TypesView extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-                CacheHelper.setUserType('Child');
+                CacheHelper.setUserType('parent');
                 AppRouter.navigateAndFinish(context, const LogIn());
               },
               child: Container(
@@ -122,7 +122,7 @@ class TypesView extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-                CacheHelper.setUserType('Doctor');
+                CacheHelper.setUserType('doctor');
                 AppRouter.navigateAndFinish(context, const LogIn());
               },
               child: Container(

@@ -53,10 +53,10 @@ class _LogInState extends State<LogIn> {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state is LogInSuccess) {
-                  if (CacheHelper.getUserType() == 'Child') {
-                    AppCubit.get(context).changebottomNavIndex(0);
+                  if (CacheHelper.getUserType() == "parent") {
+                    AppCubit.get(context).changebottomNavIndex(2);
                     AppRouter.navigateAndFinish(context, const HomeLayout());
-                  } else if (CacheHelper.getUserType() == 'Doctor') {
+                  } else if (CacheHelper.getUserType() == "doctor") {
                     AppCubit.get(context).changebottomNavIndex(0);
                     AppRouter.navigateAndFinish(context, const DocHomeLayout());
                   }
@@ -71,7 +71,7 @@ class _LogInState extends State<LogIn> {
                   showFlashMessage(
                     context: context,
                     type: FlashMessageType.error,
-                    message: "error",
+                    message: state.error,
                   );
                 }
               },
@@ -100,10 +100,10 @@ class _LogInState extends State<LogIn> {
             ),
             AppButton(
               onPressed: () {
-                if (CacheHelper.getUserType() == 'Child') {
+                if (CacheHelper.getUserType() == "parent") {
                   AppCubit.get(context).changebottomNavIndex(2);
                   AppRouter.navigateAndFinish(context, const HomeLayout());
-                } else if (CacheHelper.getUserType() == 'Doctor') {
+                } else if (CacheHelper.getUserType() == "doctor") {
                   AppCubit.get(context).changebottomDocNavIndex(0);
                   AppRouter.navigateAndFinish(context, const DocHomeLayout());
                 }

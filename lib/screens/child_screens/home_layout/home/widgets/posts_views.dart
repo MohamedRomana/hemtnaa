@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../gen/assets.gen.dart';
+import '../../../../doctor_screens/home_layout/doc_home/widgets/doc_posts_views.dart';
 
 class PostsViews extends StatelessWidget {
   final int index;
@@ -16,34 +17,40 @@ class PostsViews extends StatelessWidget {
       builder: (context, state) {
         return Row(
           children: [
-            // Row(
-            //   children: [
-            //     Icon(
-            //       Icons.visibility,
-            //       color: const Color(0xffB9B9B9),
-            //       size: 18.sp,
-            //     ),
-            //     AppText(
-            //       start: 5.w,
-            //       text: '3289',
-            //       size: 11.sp,
-            //       color: const Color(0xffB9B9B9),
-            //     ),
-            //   ],
-            // ),
+            Row(
+              children: [
+                Icon(
+                  Icons.visibility,
+                  color: const Color(0xffB9B9B9),
+                  size: 18.sp,
+                ),
+                AppText(
+                  start: 5.w,
+                  text:
+                      AppCubit.get(
+                        context,
+                      ).postsList[index]['views'].toString(),
+                  size: 11.sp,
+                  color: const Color(0xffB9B9B9),
+                ),
+              ],
+            ),
             SizedBox(width: 12.w),
             InkWell(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-                AppCubit.get(context).changeLoveIndex(index);
+                AppCubit.get(context).doLikePost(
+                  postId:
+                      AppCubit.get(context).postsList[index]['id'].toString(),
+                );
               },
               child: Row(
                 children: [
                   SvgPicture.asset(
                     Assets.svg.heart,
                     color:
-                        AppCubit.get(context).loveIndexes.contains(index)
+                        AppCubit.get(context).postsList[index]['likes'] == 1
                             ? Colors.red
                             : const Color(0xffB9B9B9),
                     height: 18.w,
@@ -55,9 +62,41 @@ class PostsViews extends StatelessWidget {
                     text: 'اعجاب',
                     size: 11.sp,
                     color:
-                        AppCubit.get(context).loveIndexes.contains(index)
+                        AppCubit.get(context).postsList[index]['likes'] == 1
                             ? Colors.red
                             : const Color(0xffB9B9B9),
+                  ),
+                ],
+              ),
+            ),
+                        SizedBox(width: 12.w),
+            InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () {
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) {
+                    return Comments(index: index);
+                  },
+                );
+              },
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    Assets.svg.chats,
+                    color: const Color(0xffB9B9B9),
+                    height: 18.w,
+                    width: 18.w,
+                    fit: BoxFit.cover,
+                  ),
+                  AppText(
+                    start: 5.w,
+                    text: 'التعليقات',
+                    size: 11.sp,
+                    color: const Color(0xffB9B9B9),
                   ),
                 ],
               ),

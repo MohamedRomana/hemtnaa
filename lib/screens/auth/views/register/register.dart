@@ -87,10 +87,11 @@ class _RegisterState extends State<Register> {
                   _childIssueController.clear();
                   _specialityController.clear();
                   _levelController.clear();
+                  _specialityController.clear();
                   showFlashMessage(
                     context: context,
                     type: FlashMessageType.success,
-                    message: 'success',
+                    message: state.message,
                   );
                 } else if (state is RegisterFailure) {
                   showFlashMessage(
@@ -109,16 +110,18 @@ class _RegisterState extends State<Register> {
 
                     if (_formKey.currentState!.validate()) {
                       await AuthCubit.get(context).register(
-                        phone: _phoneController.text,
-                        password: _passController.text,
                         firstName: _firstNameController.text,
                         lastName: _lastNameController.text,
                         email: _emailController.text,
+                        phoneNumber: _phoneController.text,
+                        password: _passController.text,
                         userType: CacheHelper.getUserType(),
-                        ageDay: _ageDayController.text,
-                        childIssue: _childIssueController.text,
-                        speciality: _specialityController.text,
-                        level: _levelController.text,
+                        category: 'A',
+                        countrycode: userRegisterPhoneCode,
+                        childbirthdate: _ageDayController.text,
+                        childeducationlevel: _levelController.text,
+                        childproblem: _childIssueController.text,
+                        doctorSpecialty: _specialityController.text,
                       );
                     }
                   },

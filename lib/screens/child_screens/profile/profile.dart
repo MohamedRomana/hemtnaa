@@ -13,8 +13,19 @@ import 'widgets/custom_profile_information.dart';
 import 'widgets/profile_container.dart';
 import 'widgets/score_container.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  @override
+  void initState() {
+    AppCubit.get(context).showProfile();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

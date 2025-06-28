@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../../../../core/constants/colors.dart';
@@ -42,6 +43,8 @@ class _ChatDetailsState extends State<ChatDetails>
   int _recordDuration = 0;
   Timer? _recordTimer;
   late AnimationController _controller;
+  late IO.Socket socket;
+
 
   Future<void> requestMicPermission() async {
     final status = await Permission.microphone.request();
@@ -135,6 +138,7 @@ class _ChatDetailsState extends State<ChatDetails>
     });
     _messageSendController.addListener(_adjustInputHeight);
     _loadSavedBackground();
+    _initSocket();
   }
 
   void _adjustInputHeight() {
@@ -772,6 +776,75 @@ class _ChatDetailsState extends State<ChatDetails>
       return '00:${secs.toString().padLeft(2, '0')}';
     }
   }
+
+
+void _initSocket() {
+  socket = IO.io(
+    'https://YOUR_SERVER_URL',
+    IO.OptionBuilder()
+        .setTransports(['websocket'])
+        .disableAutoConnect() // خلينا نتحكم فيه يدوي
+        .build(),
+  );
+
+  socket.connect();
+
+  /// ✅ joined successfully
+  socket.onConnect((_) {
+    print('🟢 Connected!');
+    socket.emit('join_room', {
+      "roomId": "YOUR_ROOM_ID", // ID الغرفة بتاعتك
+      "userId": "YOUR_USER_ID"
+    });
+
+    /// Get old messages
+    socket.emit('get_messages', {"roomId": "YOUR_ROOM_ID"});
+  });
+
+  /// ✅ receive messages
+  socket.on('new_message', (data) {
+    print('📥 New Message: $data');
+    _handleIncomingMessage(data);
+  });
+
+  /// ✅ receive old messages
+  socket.on('messages_list', (data) {
+    print('📜 All Messages: $data');
+    _handleOldMessages(data);
+  });
+
+  socket.onDisconnect((_) {
+    print('🔴 Disconnected!');
+  });
+}
+
+void _handleIncomingMessage(dynamic data) {
+  setState(() {
+    messages.add(
+      ChatMessage(
+        type: MessageType.text, // انت اختار حسب `data['type']`
+        content: data['content'],
+        isSender: false,
+      ),
+    );
+  });
+  _scrollToBottom();
+}
+
+void _handleOldMessages(dynamic data) {
+  List<dynamic> old = data as List<dynamic>;
+  setState(() {
+    messages.addAll(old.map((msg) {
+      return ChatMessage(
+        type: MessageType.text, // حسب msg['type']
+        content: msg['content'],
+        isSender: msg['senderId'] == "YOUR_USER_ID",
+      );
+    }));
+  });
+  _scrollToBottom();
+}
+
 
   @override
   Widget build(BuildContext context) {

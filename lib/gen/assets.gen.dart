@@ -75,6 +75,9 @@ class $AssetsImgGen {
   /// File path: assets/img/doctor2.png
   AssetGenImage get doctor2 => const AssetGenImage('assets/img/doctor2.png');
 
+  /// File path: assets/img/emptyorder.json
+  String get emptyorder => 'assets/img/emptyorder.json';
+
   /// File path: assets/img/emptyseach.json
   String get emptyseach => 'assets/img/emptyseach.json';
 
@@ -157,6 +160,7 @@ class $AssetsImgGen {
     brain,
     doctor,
     doctor2,
+    emptyorder,
     emptyseach,
     images1,
     lion,
@@ -195,9 +199,6 @@ class $AssetsSvgGen {
   /// File path: assets/svg/chats.svg
   String get chats => 'assets/svg/chats.svg';
 
-  /// File path: assets/svg/comment.svg
-  String get comment => 'assets/svg/comment.svg';
-
   /// File path: assets/svg/games.svg
   String get games => 'assets/svg/games.svg';
 
@@ -224,7 +225,6 @@ class $AssetsSvgGen {
     activities,
     arrowleftcircle,
     chats,
-    comment,
     games,
     heart,
     home,

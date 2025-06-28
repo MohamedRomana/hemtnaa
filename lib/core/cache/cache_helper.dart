@@ -4,7 +4,7 @@ class CacheHelper {
   static late SharedPreferences _preferences;
   static const _userId = 'id';
   static const _language = 'lang';
-  // static const _token = 'token';
+  static const _token = 'token';
   static const _deviceToken = 'deviceToken';
   static const _type = 'type';
 
@@ -20,13 +20,13 @@ class CacheHelper {
     return _preferences.getString(_userId) ?? '';
   }
 
-  // static setUserToken(String? token) async {
-  //   await _preferences.setString(_token, token ?? '');
-  // }
+  static setUserToken(String? token) async {
+    await _preferences.setString(_token, token ?? '');
+  }
 
-  // static String getUserToken() {
-  //   return _preferences.getString(_token) ?? '';
-  // }
+  static String getUserToken() {
+    return _preferences.getString(_token) ?? '';
+  }
 
   static setDeviceToken(String? deviceToken) async {
     await _preferences.setString(_deviceToken, deviceToken ?? '');

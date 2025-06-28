@@ -25,7 +25,6 @@ import '../../../screens/child_screens/home_layout/chats/chats.dart';
 import '../../../screens/child_screens/home_layout/games/games.dart';
 import '../../../screens/child_screens/home_layout/home/home.dart';
 import '../../../screens/doctor_screens/home_layout/doc_home/doc_home.dart';
-import '../../../screens/doctor_screens/home_layout/doc_home/widgets/publish_post_sheet.dart';
 import '../../../screens/doctor_screens/home_layout/doc_rates/widgets/add_activity.dart';
 import '../../cache/cache_helper.dart';
 import '../../constants/contsants.dart';
@@ -197,17 +196,6 @@ class AppCubit extends Cubit<AppState> {
       loveIndexes.remove(index);
     } else {
       loveIndexes.add(index);
-    }
-    emit(ChangeIndex());
-  }
-
-  Set<int> loveDocIndexes = {};
-
-  void changeDocLoveIndex(int index) {
-    if (loveDocIndexes.contains(index)) {
-      loveDocIndexes.remove(index);
-    } else {
-      loveDocIndexes.add(index);
     }
     emit(ChangeIndex());
   }
@@ -1070,112 +1058,300 @@ class AppCubit extends Cubit<AppState> {
     ),
   ];
 
-  List postsList = [];
+  // List postsList = [];
 
-  Future<void> createPost({
-    required String text,
-    required String doctorName,
+  // Future<void> createPost({
+  //   required String text,
+  //   required String doctorName,
+  //   required BuildContext context,
+  // }) async {
+  //   emit(CreatePostLoading());
+
+  //   try {
+  //     List<String> imageBase64List = [];
+
+  //     for (var imageFile in postImages) {
+  //       final bytes = await imageFile.readAsBytes();
+  //       final base64Image = base64Encode(bytes);
+  //       imageBase64List.add('base64:$base64Image');
+  //     }
+
+  //     final newPost = PostModel(
+  //       doctorName: doctorName,
+  //       text: text,
+  //       imageUrls: imageBase64List,
+  //       timestamp: DateTime.now(),
+  //     );
+
+  //     postsList.insert(0, newPost);
+
+  //     emit(CreatePostSuccess());
+  //     Navigator.pop(context);
+
+  //     showFlashMessage(
+  //       context: context,
+  //       type: FlashMessageType.success,
+  //       message: 'تم نشر البوست بنجاح',
+  //     );
+  //   } catch (e) {
+  //     emit(CreatePostFailure(error: e.toString()));
+  //     showFlashMessage(
+  //       context: context,
+  //       type: FlashMessageType.error,
+  //       message: 'فشل في النشر، حاول مرة أخرى',
+  //     );
+  //   }
+  // }
+
+  List<ActivityModel> activitiesList = [];
+
+  Future<void> createActivity({
+    required String name,
+    required String status,
+    required String startDate,
+    required String endDate,
+    required String description,
     required BuildContext context,
   }) async {
-    emit(CreatePostLoading());
+    emit(CreateActivityLoading());
 
     try {
-      List<String> imageBase64List = [];
+      String imageBase64 = '';
 
-      for (var imageFile in postImages) {
-        final bytes = await imageFile.readAsBytes();
-        final base64Image = base64Encode(bytes);
-        imageBase64List.add('base64:$base64Image');
+      if (activityImage.isNotEmpty) {
+        final bytes = await activityImage.first.readAsBytes();
+        imageBase64 = base64Encode(bytes);
       }
 
-      final newPost = PostModel(
-        doctorName: doctorName,
-        text: text,
-        imageUrls: imageBase64List,
-        timestamp: DateTime.now(),
+      final activity = ActivityModel(
+        name: name,
+        status: status,
+        startDate: startDate,
+        endDate: endDate,
+        description: description,
+        imageBase64: imageBase64,
       );
 
-      postsList.insert(0, newPost);
+      activitiesList.insert(0, activity);
 
-      emit(CreatePostSuccess());
+      emit(CreateActivitySuccess());
       Navigator.pop(context);
 
       showFlashMessage(
         context: context,
         type: FlashMessageType.success,
-        message: 'تم نشر البوست بنجاح',
+        message: 'تم إضافة النشاط بنجاح',
       );
     } catch (e) {
-      emit(CreatePostFailure(error: e.toString()));
+      emit(CreateActivityFailure(error: e.toString()));
       showFlashMessage(
         context: context,
         type: FlashMessageType.error,
-        message: 'فشل في النشر، حاول مرة أخرى',
+        message: 'فشل في الإضافة، حاول مرة أخرى',
       );
     }
   }
 
-List<ActivityModel> activitiesList = [];
+  int activityScore = 0;
 
-Future<void> createActivity({
-  required String name,
-  required String status,
-  required String startDate,
-  required String endDate,
-  required String description,
-  required BuildContext context,
-}) async {
-  emit(CreateActivityLoading());
-
-  try {
-    String imageBase64 = '';
-
-    if (activityImage.isNotEmpty) {
-      final bytes = await activityImage.first.readAsBytes();
-      imageBase64 = base64Encode(bytes);
-    }
-
-    final activity = ActivityModel(
-      name: name,
-      status: status,
-      startDate: startDate,
-      endDate: endDate,
-      description: description,
-      imageBase64: imageBase64,
-    );
-
-    activitiesList.insert(0, activity);
-
-
-    emit(CreateActivitySuccess());
-    Navigator.pop(context);
-
-    showFlashMessage(
-      context: context,
-      type: FlashMessageType.success,
-      message: 'تم إضافة النشاط بنجاح',
-    );
-  } catch (e) {
-    emit(CreateActivityFailure(error: e.toString()));
-    showFlashMessage(
-      context: context,
-      type: FlashMessageType.error,
-      message: 'فشل في الإضافة، حاول مرة أخرى',
-    );
+  void incrementScoreByActivities() {
+    activityScore += selectedIndexes.length * 20;
+    emit(ActivityScoreChanged());
   }
-}
 
-int activityScore = 0;
+  void resetScore() {
+    activityScore = 0;
+    emit(ActivityScoreChanged());
+  }
 
-void incrementScoreByActivities() {
-  activityScore += selectedIndexes.length * 20;
-  emit(ActivityScoreChanged());
-}
+  Map showProfileMap = {};
+  Future showProfile() async {
+    emit(GetProfileLoading());
+    String? token = CacheHelper.getUserToken();
+    debugPrint("Token: $token");
+    debugPrint("Token from CacheHelper: $token");
+    http.Response response = await http.get(
+      Uri.parse("${baseUrl}api/auth/me"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
 
-void resetScore() {
-  activityScore = 0;
-  emit(ActivityScoreChanged());
-}
+    Map<String, dynamic> data = jsonDecode(response.body);
+    debugPrint(data.toString());
+    debugPrint("Profile API response: $data");
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      showProfileMap = data["data"]['user'];
+      emit(GetProfileSuccess());
+    } else {
+      emit(GetProfileFailure(error: data["message"] ?? "حدث خطاء"));
+    }
+  }
+
+  List postsList = [];
+  Future getPosts() async {
+    emit(GetPostsLoading());
+    String? token = CacheHelper.getUserToken();
+    debugPrint("Token: $token");
+    debugPrint("Token from CacheHelper: $token");
+    http.Response response = await http.get(
+      Uri.parse("${baseUrl}api/posts"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+    debugPrint(data.toString());
+    debugPrint("Posts API response: $data");
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      postsList = data["data"];
+      emit(GetPostsSuccess());
+    } else {
+      emit(GetPostsFailure(error: data["message"] ?? "حدث خطاء"));
+    }
+  }
+
+  Future createPosts({
+    required String title,
+    required String content,
+    required String category,
+    required String doctorId,
+  }) async {
+    emit(CreatePostLoading());
+    String? token = CacheHelper.getUserToken();
+
+    try {
+      var uri = Uri.parse("${baseUrl}api/posts/");
+      var request = http.MultipartRequest('POST', uri);
+
+      request.headers.addAll({"Authorization": "Bearer $token"});
+
+      // البيانات النصية
+      request.fields['title'] = title;
+      request.fields['content'] = content;
+      request.fields['category'] = category;
+      request.fields['doctor_id'] = doctorId;
+
+      // إضافة الصور
+      for (var imageFile in postImages) {
+        var stream = http.ByteStream(imageFile.openRead());
+        var length = await imageFile.length();
+        var multipartFile = http.MultipartFile(
+          'image', // اسم المفتاح في الـ backend إذا كان يقبل array
+          stream,
+          length,
+          filename: imageFile.path.split('/').last,
+        );
+        request.files.add(multipartFile);
+      }
+
+      // تنفيذ الطلب
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      if (response.headers['content-type']?.contains('application/json') ==
+          true) {
+        var data = jsonDecode(response.body);
+        debugPrint(data.toString());
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          emit(CreatePostSuccess(message: data["message"] ?? "تم النشر بنجاح"));
+          postImages.clear();
+          getPosts();
+        } else {
+          emit(CreatePostFailure(error: data["message"] ?? "حدث خطأ"));
+        }
+      } else {
+        debugPrint("Unexpected response: ${response.body}");
+        emit(CreatePostFailure(error: "Unexpected response from server"));
+      }
+    } catch (e) {
+      emit(CreatePostFailure(error: "حدث خطأ: ${e.toString()}"));
+    }
+  }
+
+  Future doLikePost({required String postId}) async {
+    emit(DoLikePostLoading());
+    String? token = CacheHelper.getUserToken();
+    debugPrint("Token: $token");
+    debugPrint("Token from CacheHelper: $token");
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}api/posts/$postId/like"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode({"user_id": '1'}),
+    );
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+    debugPrint(data.toString());
+    debugPrint("Posts API response: $data");
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      emit(DoLikePostSuccess());
+      getPosts();
+    } else {
+      emit(DoLikePostFailure(error: data["message"] ?? "حدث خطاء"));
+    }
+  }
+
+  Future addComment({required String postId, required String comment}) async {
+    emit(AddCommentLoading());
+    String? token = CacheHelper.getUserToken();
+    debugPrint("Token: $token");
+    debugPrint("Token from CacheHelper: $token");
+    http.Response response = await http.post(
+      Uri.parse("${baseUrl}api/posts/$postId/comment"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode({"user_id": '1', "comment": comment}),
+    );
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+    debugPrint(data.toString());
+    debugPrint("Posts API response: $data");
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      emit(AddCommentSuccess(message: data["message"] ?? "تم النشر بنجاح"));
+      getComments(postId: postId);
+    } else {
+      emit(AddCommentFailure(error: data["message"] ?? "حدث خطاء"));
+    }
+  }
+
+  List comments = [];
+  Future getComments({required String postId}) async {
+    emit(GetCommentsLoading());
+    String? token = CacheHelper.getUserToken();
+    debugPrint("Token: $token");
+    debugPrint("Token from CacheHelper: $token");
+    http.Response response = await http.get(
+      Uri.parse("${baseUrl}api/posts/$postId/comments"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+    debugPrint(data.toString());
+    debugPrint("Posts API response: $data");
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      comments = data["data"];
+      emit(GetCommentsSuccess());
+    } else {
+      emit(GetCommentsFailure(error: data["message"] ?? "حدث خطاء"));
+    }
+  }
 
 }
 

@@ -11,7 +11,10 @@ final class AgreeTermsSuccess extends AuthState {}
 
 final class RegisterLoading extends AuthState {}
 
-final class RegisterSuccess extends AuthState {}
+final class RegisterSuccess extends AuthState {
+  final String message;
+  RegisterSuccess({required this.message});
+}
 
 final class RegisterFailure extends AuthState {
   final String error;
@@ -41,7 +44,10 @@ final class OTPFailure extends AuthState {
 
 final class LogInLoading extends AuthState {}
 
-final class LogInSuccess extends AuthState {}
+final class LogInSuccess extends AuthState {
+  final String message;
+  LogInSuccess({required this.message});
+}
 
 final class LogInFailure extends AuthState {
   final String error;
