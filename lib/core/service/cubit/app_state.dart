@@ -241,3 +241,42 @@ final class AddActivityFailure extends AppState {
   final String error;
   AddActivityFailure({required this.error});
 }
+
+final class ShowUserLoading extends AppState {}
+
+final class ShowUserSuccess extends AppState {}
+
+final class ShowUserFailure extends AppState {
+  final String error;
+  ShowUserFailure({required this.error});
+}
+
+final class UpdateUserLoading extends AppState {}
+
+final class UpdateUserSuccess extends AppState {
+  final String message;
+  UpdateUserSuccess({required this.message});
+}
+
+final class UpdateUserFailure extends AppState {
+  final String error;
+  UpdateUserFailure({required this.error});
+}
+
+final class GetActivitiesLoading extends AppState {}
+
+final class GetActivitiesSuccess extends AppState {}
+
+final class GetActivitiesFailure extends AppState {
+  final String error;
+  GetActivitiesFailure({required this.error});
+}
+
+final class GetUsersLoading extends AppState {}
+
+final class GetUsersSuccess extends AppState {}
+
+final class GetUsersFailure extends AppState {
+  final String error;
+  GetUsersFailure({required this.error});
+}

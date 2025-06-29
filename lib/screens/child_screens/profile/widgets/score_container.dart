@@ -11,7 +11,11 @@ class ScoreContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
+      buildWhen: (previous, current) => current is ActivityScoreChanged,
+
       builder: (context, state) {
+        final score = AppCubit.get(context).activityScore;
+        final progress = (score / 100).clamp(0.0, 1.0);
         return Container(
           width: 343.w,
           padding: EdgeInsets.all(16.r),
@@ -45,9 +49,7 @@ class ScoreContainer extends StatelessWidget {
               SizedBox(height: 24.h),
               LinearProgressIndicator(
                 borderRadius: BorderRadius.circular(8.r),
-                value:
-                    AppCubit.get(context).score /
-                    AppCubit.get(context).maxScore,
+                value: progress,
                 minHeight: 10,
                 backgroundColor: Colors.grey[300],
                 valueColor: const AlwaysStoppedAnimation<Color>(
@@ -59,7 +61,7 @@ class ScoreContainer extends StatelessWidget {
                 child: AppText(
                   bottom: 15.h,
                   top: 7.h,
-                  text: " ${AppCubit.get(context).score.toInt()}%",
+                  text: " $score%",
                   size: 14.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -69,7 +71,12 @@ class ScoreContainer extends StatelessWidget {
                   SizedBox(
                     width: 150.w,
                     child: AppText(
-                      text: 'ممتاز',
+                      text:
+                          score <= 20
+                              ? "ضعيف"
+                              : score <= 50
+                              ? "متوسط"
+                              : "ممتاز",
                       size: 14.sp,
                       color: AppColors.primary,
                     ),
@@ -77,7 +84,7 @@ class ScoreContainer extends StatelessWidget {
                   SizedBox(
                     width: 150.w,
                     child: AppText(
-                      text: 'الهدف: 70%',
+                      text: 'الهدف: $score%',
                       size: 14.sp,
                       color: AppColors.primary,
                     ),

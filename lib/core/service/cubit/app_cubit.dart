@@ -1164,32 +1164,6 @@ class AppCubit extends Cubit<AppState> {
     emit(ActivityScoreChanged());
   }
 
-  Map showProfileMap = {};
-  Future showProfile() async {
-    emit(GetProfileLoading());
-    String? token = CacheHelper.getUserToken();
-    debugPrint("Token: $token");
-    debugPrint("Token from CacheHelper: $token");
-    http.Response response = await http.get(
-      Uri.parse("${baseUrl}api/auth/me"),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      },
-    );
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    debugPrint(data.toString());
-    debugPrint("Profile API response: $data");
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      showProfileMap = data["data"]['user'];
-      emit(GetProfileSuccess());
-    } else {
-      emit(GetProfileFailure(error: data["message"] ?? "حدث خطاء"));
-    }
-  }
-
   List postsList = [];
   Future getPosts() async {
     emit(GetPostsLoading());
@@ -1353,6 +1327,204 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
+  Map userMap = {};
+  Future showUser() async {
+    emit(ShowUserLoading());
+    http.Response response = await http.get(
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${CacheHelper.getUserToken()}",
+      },
+      Uri.parse("${baseUrl}api/auth/me"),
+    );
+    Map<String, dynamic> data = jsonDecode(response.body);
+
+    debugPrint(data.toString());
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      userMap = data;
+      emit(ShowUserSuccess());
+    } else {
+      emit(ShowUserFailure(error: data["msg"]));
+    }
+  }
+
+  Future updateUser({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String profileId,
+  }) async {
+    emit(UpdateUserLoading());
+
+    try {
+      final request = http.MultipartRequest(
+        'PUT',
+        Uri.parse("${baseUrl}api/users/$profileId"),
+      );
+      request.headers['Authorization'] = 'Bearer ${CacheHelper.getUserToken()}';
+      request.fields['first_name'] = firstName;
+      request.fields['last_name'] = lastName;
+      request.fields['email'] = email;
+
+      if (profileImage.isNotEmpty) {
+        final file = profileImage.first;
+        final stream = http.ByteStream(file.openRead());
+        final length = await file.length();
+
+        final multipartFile = http.MultipartFile(
+          'profile_picture',
+          stream,
+          length,
+          filename: file.path.split('/').last,
+        );
+
+        request.files.add(multipartFile);
+      }
+
+      final response = await request.send();
+      final responseBody = await response.stream.bytesToString();
+      final data = jsonDecode(responseBody);
+
+      debugPrint(data.toString());
+
+      if (response.statusCode == 500) {
+        emit(ServerError());
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        emit(UpdateUserSuccess(message: data["message"]));
+        profileImage.clear();
+        profileImageUrl = null;
+        showUser();
+      } else {
+        emit(UpdateUserFailure(error: data["message"]));
+      }
+    } catch (error) {
+      if (error is TimeoutException) {
+        debugPrint("Request timed out");
+        emit(Timeoutt());
+      } else {
+        debugPrint(error.toString());
+        emit(UpdateProfileFailure(error: error.toString()));
+      }
+    }
+  }
+
+  Future addActivity({
+    required String activityName,
+    required String childName,
+    required String details,
+    required String startDate,
+    required String endDate,
+  }) async {
+    emit(AddActivityLoading());
+
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse("${baseUrl}api/activities/"),
+    );
+
+    request.headers['Authorization'] = 'Bearer ${CacheHelper.getUserToken()}';
+    request.headers['Accept'] = 'application/json';
+    request.fields['activity_name'] = activityName;
+    request.fields['child_name'] = childName;
+    request.fields['details'] = details;
+    request.fields['start_date'] = startDate;
+    request.fields['end_date'] = endDate;
+
+    if (activityImage.isNotEmpty) {
+      final file = activityImage.first;
+      final stream = http.ByteStream(file.openRead());
+      final length = await file.length();
+      final multipartFile = http.MultipartFile(
+        'activity_image',
+        stream,
+        length,
+        filename: file.path.split('/').last,
+      );
+      request.files.add(multipartFile);
+    }
+
+    final response = await request.send();
+    final responseBody = await response.stream.bytesToString();
+
+    debugPrint('Status: ${response.statusCode}');
+    debugPrint('Body: $responseBody');
+
+    if (responseBody.trim().startsWith('<')) {
+      emit(AddActivityFailure(error: 'Unexpected HTML response'));
+      return;
+    }
+
+    final data = jsonDecode(responseBody);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      emit(
+        AddActivitySuccess(
+          message: data["message"] ?? "Activity added successfully",
+        ),
+      );
+      activityImage.clear();
+    } else {
+      emit(AddActivityFailure(error: data["message"] ?? "Unknown error"));
+    }
+  }
+
+  List getActivitiesList = [];
+  Future getActivities() async {
+    emit(GetActivitiesLoading());
+    String? token = CacheHelper.getUserToken();
+    debugPrint("Token: $token");
+    debugPrint("Token from CacheHelper: $token");
+    http.Response response = await http.get(
+      Uri.parse("${baseUrl}api/activities"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+    debugPrint("Response status: ${response.statusCode}");
+    debugPrint("Response body: ${response.body}");
+    Map<String, dynamic> data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      getActivitiesList = data["data"];
+      emit(GetActivitiesSuccess());
+    } else {
+      emit(GetActivitiesFailure(error: "Failed to fetch activities"));
+    }
+  }
+
+  List doctorsList = [];
+
+  Future getDoctors() async {
+    emit(GetUsersLoading());
+    String? token = CacheHelper.getUserToken();
+    debugPrint("Token: $token");
+
+    http.Response response = await http.get(
+      Uri.parse("${baseUrl}api/users/"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    debugPrint("Response status: ${response.statusCode}");
+    debugPrint("Response body: ${response.body}");
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      List allUsers = data["data"];
+
+      doctorsList =
+          allUsers.where((user) => user["user_type"] == "doctor").toList();
+
+      debugPrint("Doctors List: $doctorsList");
+
+      emit(GetUsersSuccess());
+    } else {
+      emit(GetUsersFailure(error: "Failed to fetch users"));
+    }
+  }
 }
 
 class TrianglePainter extends CustomPainter {

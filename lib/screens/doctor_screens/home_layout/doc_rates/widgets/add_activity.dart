@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/widgets/app_button.dart';
+import 'package:hemtnaa/core/widgets/flash_message.dart';
 import 'package:intl/intl.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/service/cubit/app_cubit.dart';
@@ -18,6 +19,7 @@ class AddActivity extends StatefulWidget {
   final TextEditingController endDateController;
   final TextEditingController startDateController;
   final TextEditingController descriptionController;
+  final TextEditingController childNameController;
   const AddActivity({
     super.key,
     required this.nameController,
@@ -26,6 +28,7 @@ class AddActivity extends StatefulWidget {
     required this.startDateController,
     required this.descriptionController,
     required this.formKey,
+    required this.childNameController,
   });
 
   @override
@@ -242,6 +245,28 @@ class _AddActivityState extends State<AddActivity> {
                     ),
                     AppText(
                       top: 8.h,
+                      text: 'اسم الطفل',
+                      bottom: 8.h,
+                      size: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    AppInput(
+                      start: 0,
+                      end: 0,
+                      filled: true,
+                      enabledBorderColor: Colors.grey,
+                      border: 8.r,
+                      hint: 'اسم الطفل',
+                      controller: widget.childNameController,
+                      validate: (value) {
+                        if (value!.isEmpty) {
+                          return 'ادخل اسم الطفل';
+                        }
+                        return null;
+                      },
+                    ),
+                    AppText(
+                      top: 8.h,
                       text: 'شرح النشاط',
                       bottom: 8.h,
                       size: 18.sp,
@@ -351,27 +376,56 @@ class _AddActivityState extends State<AddActivity> {
                       ),
                     ),
                     Center(
-                      child: AppButton(
-                        top: 24.h,
-                        onPressed: () {
-                          if (widget.formKey.currentState!.validate()) {
-                            AppCubit.get(context).createActivity(
-                              name: widget.nameController.text.trim(),
-                              status: widget.statusController.text.trim(),
-                              startDate: widget.startDateController.text.trim(),
-                              endDate: widget.endDateController.text.trim(),
-                              description:
-                                  widget.descriptionController.text.trim(),
+                      child: BlocConsumer<AppCubit, AppState>(
+                        listener: (context, state) {
+                          if (state is AddActivitySuccess) {
+                            Navigator.pop(context);
+                            showFlashMessage(
+                              message: state.message,
+                              type: FlashMessageType.success,
+                              context: context,
+                            );
+                            widget.nameController.clear();
+                            widget.statusController.clear();
+                            widget.endDateController.clear();
+                            widget.startDateController.clear();
+                            widget.descriptionController.clear();
+                            AppCubit.get(context).activityImage = [];
+                          } else if (state is AddActivityFailure) {
+                            showFlashMessage(
+                              message: state.error,
+                              type: FlashMessageType.error,
                               context: context,
                             );
                           }
                         },
-                        child: AppText(
-                          text: 'تاكيد',
-                          size: 21.sp,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        builder: (context, state) {
+                          return AppButton(
+                            top: 24.h,
+                            onPressed: () {
+                              if (widget.formKey.currentState!.validate()) {
+                                AppCubit.get(context).addActivity(
+                                  activityName: widget.nameController.text,
+                                  childName: widget.childNameController.text,
+                                  details: widget.descriptionController.text,
+                                  startDate: widget.endDateController.text,
+                                  endDate: widget.endDateController.text,
+                                );
+                              }
+                            },
+                            child:
+                                state is AddActivityLoading
+                                    ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                    : AppText(
+                                      text: 'تاكيد',
+                                      size: 21.sp,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          );
+                        },
                       ),
                     ),
                     SizedBox(height: 30.h),

@@ -60,7 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String childbirthdate,
     required String childeducationlevel,
     required String childproblem,
-    required String doctorSpecialty
+    required String doctorSpecialty,
   }) async {
     emit(RegisterLoading());
 
@@ -81,7 +81,7 @@ class AuthCubit extends Cubit<AuthState> {
         "child_birthdate": childbirthdate,
         "child_education_level": childeducationlevel,
         "child_problem": childproblem,
-        "doctor_specialty" : doctorSpecialty,
+        "doctor_specialty": doctorSpecialty,
       }),
     );
 
@@ -236,29 +236,26 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  String resetPassId = "";
+  String? resetToken;
+
   Future forgetPass({required String email}) async {
     emit(ForgetPassLoading());
-    http.Response response = await http.post(
+    final response = await http.post(
       Uri.parse("${baseUrl}api/auth/forgot-password"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"email": email}),
     );
+
     debugPrint("Response status: ${response.statusCode}");
     debugPrint("Response body: ${response.body}");
 
-    final data = jsonDecode(response.body);
-
-    if (data["data"] != null) {
-      // resetPassId = data["data"]["id"].toString();
-      debugPrint(resetPassId);
-    }
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      resetToken = data["reset_token"];
+      debugPrint("Reset Token: $resetToken");
       emit(ForgetPassSuccess(message: data["message"]));
     } else {
-      debugPrint(data["msg"]);
-      emit(ForgetPassFailure(error: data["message"]));
+      emit(ForgetPassFailure(error: "خطأ في الطلب"));
     }
   }
 
@@ -279,24 +276,29 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future resetPass({required String code, required String password}) async {
+  Future resetPass({required String password}) async {
     emit(ResetPassLoading());
-    http.Response response = await http.post(
-      Uri.parse("${baseUrl}api/reset-password"),
-      body: {
-        "lang": CacheHelper.getLang(),
-        "user_id": resetPassId,
-        "code": code,
-        "password": password,
-      },
-    );
-    Map<String, dynamic> data = jsonDecode(response.body);
-    debugPrint(data.toString());
 
-    if (data["key"] == 1) {
-      emit(ResetPassSuccess(message: data["msg"]));
+    if (resetToken == null) {
+      emit(ResetPassFailure(error: "الرمز مفقود"));
+      return;
+    }
+
+    final response = await http.post(
+      Uri.parse("${baseUrl}api/auth/reset-password"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"token": resetToken, "password": password}),
+    );
+
+    debugPrint("Response status: ${response.statusCode}");
+    debugPrint("Response body: ${response.body}");
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      emit(ResetPassSuccess(message: data["message"]));
     } else {
-      emit(ResetPassFailure(error: data["msg"]));
+      final data = jsonDecode(response.body);
+      emit(ResetPassFailure(error: data["error"] ?? "خطأ غير معروف"));
     }
   }
 

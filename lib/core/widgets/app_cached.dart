@@ -47,7 +47,7 @@ class AppCachedImage extends StatelessWidget {
         height: height ?? 100.h,
         width: width ?? 100.w,
         decoration: BoxDecoration(
-          color: AppColors.secondray,
+          color: AppColors.primary,
           borderRadius: BorderRadius.circular(5.r),
           boxShadow: [
             BoxShadow(
@@ -60,7 +60,7 @@ class AppCachedImage extends StatelessWidget {
         ),
         child: Icon(
           Icons.error,
-          color: AppColors.primary,
+          color: Colors.white,
           size: 20.r,
         ),
       ),

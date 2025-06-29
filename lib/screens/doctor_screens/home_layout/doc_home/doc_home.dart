@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
+import 'package:hemtnaa/core/widgets/app_cached.dart';
 import 'package:hemtnaa/core/widgets/app_text.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/widgets/alert_dialog.dart';
@@ -9,7 +10,6 @@ import '../../../../core/widgets/app_input.dart';
 import '../../../../core/widgets/app_router.dart';
 import '../../../../core/widgets/flash_message.dart';
 import '../../../../core/widgets/logout_dialog.dart';
-import '../../../../gen/assets.gen.dart';
 import '../../../auth/data/auth_cubit.dart';
 import '../../../auth/views/login/login.dart';
 import '../../../child_screens/drawer/drawer.dart';
@@ -113,10 +113,14 @@ class DocHome extends StatelessWidget {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
-                        child: Image.asset(
-                          Assets.img.doctor2.path,
-                          height: 48.w,
+                        child: AppCachedImage(
+                          image:
+                              AppCubit.get(
+                                context,
+                              ).userMap["profile_picture"] ??
+                              "",
                           width: 48.w,
+                          height: 48.h,
                           fit: BoxFit.cover,
                         ),
                       ),

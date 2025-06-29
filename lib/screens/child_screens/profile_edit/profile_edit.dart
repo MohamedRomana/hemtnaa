@@ -1,24 +1,25 @@
 // ignore_for_file: deprecated_member_use
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/gen/assets.gen.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/service/cubit/app_cubit.dart';
+import '../../../core/widgets/app_button.dart';
+import '../../../core/widgets/app_cached.dart';
+import '../../../core/widgets/app_router.dart';
+import '../../../core/widgets/app_text.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../../core/widgets/custom_bottom_nav.dart';
+import '../../../core/widgets/flash_message.dart';
+import '../../../generated/locale_keys.g.dart';
 import '../drawer/drawer.dart';
 import 'widgets/edit_profile_fields.dart';
 
 final _firstNameController = TextEditingController();
 final _lastNameController = TextEditingController();
-final _phoneController = TextEditingController();
 final _emailController = TextEditingController();
-final _ageDayController = TextEditingController();
-final _childIssueController = TextEditingController();
-final _passController = TextEditingController();
-final _specialityController = TextEditingController();
-final _levelController = TextEditingController();
 
 String profileEditPhoneCode = "+20";
 
@@ -54,15 +55,45 @@ class ProfileEdit extends StatelessWidget {
                       highlightColor: Colors.transparent,
                       child: Stack(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100.r),
-                            child: Image.asset(
-                              Assets.img.doctor2.path,
-                              height: 150.h,
-                              width: 150.w,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                          AppCubit.get(context).userMap["profile_picture"] ==
+                                  null
+                              ? Container(
+                                width: 120.w,
+                                height: 120.w,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(100.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.primary.withOpacity(0.2),
+                                      spreadRadius: 1.r,
+                                      blurRadius: 5.r,
+                                      offset: Offset(0, 5.r),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100.r),
+                                  child: Image.asset(
+                                    Assets.img.logo.path,
+                                    width: 120.w,
+                                    height: 120.w,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              )
+                              : ClipRRect(
+                                borderRadius: BorderRadius.circular(100.r),
+                                child: AppCachedImage(
+                                  image:
+                                      AppCubit.get(
+                                        context,
+                                      ).userMap["profile_picture"],
+                                  width: 120.w,
+                                  height: 120.w,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                           PositionedDirectional(
                             end: 0,
                             child: Icon(
@@ -108,15 +139,70 @@ class ProfileEdit extends StatelessWidget {
                     ),
                 SizedBox(height: 20.h),
                 EditProfileFields(
-                  phoneController: _phoneController,
-                  passController: _passController,
                   emailController: _emailController,
-                  childIssueController: _childIssueController,
-                  ageDayController: _ageDayController,
-                  specialityController: _specialityController,
                   firstNameController: _firstNameController,
                   lastNameController: _lastNameController,
-                  levelController: _levelController,
+                ),
+                BlocConsumer<AppCubit, AppState>(
+                  listener: (context, state) {
+                    if (state is UpdateUserSuccess) {
+                      AppRouter.pop(context);
+                      showFlashMessage(
+                        message: state.message,
+                        type: FlashMessageType.success,
+                        context: context,
+                      );
+                      _firstNameController.clear();
+                      _lastNameController.clear();
+                      _emailController.clear();
+                    } else if (state is UpdateUserFailure) {
+                      showFlashMessage(
+                        message: state.error,
+                        type: FlashMessageType.error,
+                        context: context,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return AppButton(
+                      elevation: WidgetStatePropertyAll(3.r),
+                      shadowColor: const WidgetStatePropertyAll(
+                        AppColors.primary,
+                      ),
+                      top: 24.h,
+                      width: 311.w,
+                      onPressed: () {
+                        AppCubit.get(context).updateUser(
+                          firstName:
+                              _firstNameController.text.isEmpty
+                                  ? AppCubit.get(context).userMap["first_name"]
+                                  : _firstNameController.text,
+                          lastName:
+                              _lastNameController.text.isEmpty
+                                  ? AppCubit.get(context).userMap["last_name"]
+                                  : _lastNameController.text,
+                          email:
+                              _emailController.text.isEmpty
+                                  ? AppCubit.get(context).userMap["email"]
+                                  : _emailController.text,
+                          profileId:
+                              AppCubit.get(context).userMap["id"].toString(),
+                        );
+                      },
+                      child:
+                          state is UploadImagesLoading ||
+                                  state is UpdateUserLoading
+                              ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                              : AppText(
+                                text: LocaleKeys.save.tr(),
+                                size: 21.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                    );
+                  },
                 ),
 
                 SizedBox(height: 150.h),

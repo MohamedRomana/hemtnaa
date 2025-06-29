@@ -1,14 +1,14 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
+import 'package:hemtnaa/core/widgets/app_cached.dart';
 import 'package:hemtnaa/core/widgets/app_router.dart';
+import 'package:hemtnaa/gen/assets.gen.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_text.dart';
-import '../../../../gen/assets.gen.dart';
 import '../../profile_edit/profile_edit.dart';
 
 class ProfileContainer extends StatelessWidget {
@@ -52,15 +52,30 @@ class ProfileContainer extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100.r),
-                  child: Image.asset(
-                    Assets.img.doctor2.path,
-                    height: 80.w,
-                    width: 80.w,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                child:
+                    AppCubit.get(context).userMap['profile_picture'] == null
+                        ? ClipRRect(
+                          borderRadius: BorderRadius.circular(100.r),
+                          child: Image.asset(
+                            Assets.img.logo.path,
+                            height: 80.w,
+                            width: 80.w,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                        : ClipRRect(
+                          borderRadius: BorderRadius.circular(100.r),
+                          child: AppCachedImage(
+                            image:
+                                AppCubit.get(
+                                  context,
+                                ).userMap['profile_picture'] ??
+                                "",
+                            height: 80.w,
+                            width: 80.w,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
               ),
               SizedBox(width: 10.w),
               Column(
@@ -70,8 +85,8 @@ class ProfileContainer extends StatelessWidget {
                     width: 200.w,
                     child: AppText(
                       text:
-                          "${AppCubit.get(context).showProfileMap['first_name'] ?? ""} ${AppCubit.get(context).showProfileMap['last_name'] ?? ""} ",
-                      size: 20.sp,
+                          "${AppCubit.get(context).userMap['first_name'] ?? ""} ${AppCubit.get(context).userMap['last_name'] ?? ""} ",
+                      size: 16.sp,
                       color: const Color(0xff434343),
                       fontWeight: FontWeight.bold,
                     ),
@@ -79,7 +94,10 @@ class ProfileContainer extends StatelessWidget {
                   SizedBox(
                     width: 200.w,
                     child: AppText(
-                      text: 'طفل',
+                      text:
+                          AppCubit.get(context).userMap['user_type'] == "parent"
+                              ? "child"
+                              : "",
                       bottom: 16.h,
                       size: 18.sp,
                       color: const Color(0xff434343),

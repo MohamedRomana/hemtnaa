@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/core/widgets/app_cached.dart';
 import '../../../../../core/service/cubit/app_cubit.dart';
 import '../../../../../core/widgets/app_button.dart';
 import '../../../../../core/widgets/app_input.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/flash_message.dart';
-import '../../../../../gen/assets.gen.dart';
 
 final _posttitleController = TextEditingController();
 final _postController = TextEditingController();
@@ -75,15 +75,20 @@ class _PublishPostSheetState extends State<PublishPostSheet> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(1000.r),
-                        child: Image.asset(
-                          Assets.img.doctor2.path,
+                        child: AppCachedImage(
+                          image:
+                              AppCubit.get(
+                                context,
+                              ).userMap["profile_picture"] ??
+                              '',
                           height: 50.w,
                           width: 50.w,
                           fit: BoxFit.cover,
                         ),
                       ),
                       AppText(
-                        text: 'د/ محمد احمد',
+                        text:
+                            "${AppCubit.get(context).userMap["first_name"]} ${AppCubit.get(context).userMap["last_name"]}",
                         size: 16.sp,
                         fontWeight: FontWeight.w500,
                         start: 12.w,
@@ -129,7 +134,7 @@ class _PublishPostSheetState extends State<PublishPostSheet> {
                           itemBuilder: (context, index) {
                             final imageFile =
                                 AppCubit.get(context).postImages[index];
-              
+
                             return Stack(
                               clipBehavior: Clip.none,
                               children: [
@@ -168,7 +173,7 @@ class _PublishPostSheetState extends State<PublishPostSheet> {
                         ),
                       )
                       : const SizedBox.shrink(),
-              
+
                   InkWell(
                     onTap: () {
                       AppCubit.get(context).getPostImages(context);
@@ -185,7 +190,7 @@ class _PublishPostSheetState extends State<PublishPostSheet> {
                       ],
                     ),
                   ),
-              
+
                   BlocConsumer<AppCubit, AppState>(
                     listener: (context, state) {
                       if (state is CreatePostSuccess) {

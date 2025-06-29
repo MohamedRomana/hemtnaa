@@ -23,7 +23,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   void initState() {
-    AppCubit.get(context).showProfile();
+    AppCubit.get(context).showUser();
     super.initState();
   }
 
@@ -90,7 +90,11 @@ class _ProfileState extends State<Profile> {
                               width: 200.w,
                               child: AppText(
                                 textAlign: TextAlign.end,
-                                text: 'ابتدائي',
+                                text:
+                                    AppCubit.get(
+                                      context,
+                                    ).userMap['child_education_level'] ??
+                                    "",
                                 size: 12.sp,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey.shade500,
@@ -102,7 +106,7 @@ class _ProfileState extends State<Profile> {
                         Row(
                           children: [
                             AppText(
-                              text: 'البلد',
+                              text: 'حالة الطفل',
                               size: 16.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.black,
@@ -112,7 +116,11 @@ class _ProfileState extends State<Profile> {
                               width: 200.w,
                               child: AppText(
                                 textAlign: TextAlign.end,
-                                text: 'مصر',
+                                text:
+                                    AppCubit.get(
+                                      context,
+                                    ).userMap['child_problem'] ??
+                                    "",
                                 size: 12.sp,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey.shade500,
@@ -134,7 +142,11 @@ class _ProfileState extends State<Profile> {
                               width: 200.w,
                               child: AppText(
                                 textAlign: TextAlign.end,
-                                text: '20 مارس 2020',
+                                text:
+                                    AppCubit.get(
+                                      context,
+                                    ).userMap['child_birthdate'] ??
+                                    "",
                                 size: 12.sp,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey.shade500,

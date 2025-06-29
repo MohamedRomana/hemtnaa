@@ -4,15 +4,18 @@ import '../../../core/widgets/custom_doc_bottom_nav.dart';
 import 'widgets/doctor_header.dart';
 
 class CustomDoctorView extends StatelessWidget {
-  const CustomDoctorView({super.key});
+  final int index;
+  const CustomDoctorView({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      bottomNavigationBar: CustomDocBottomNav(),
+    return Scaffold(
+      bottomNavigationBar: const CustomDocBottomNav(),
       body: SingleChildScrollView(
-        physics: ClampingScrollPhysics(),
-        child: Column(children: [ProviderHeader(), CustomAboutDoctor()]),
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          children: [const ProviderHeader(), CustomAboutDoctor(index: index)],
+        ),
       ),
     );
   }

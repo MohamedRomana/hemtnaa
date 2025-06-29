@@ -16,6 +16,7 @@ final _statusController = TextEditingController();
 final _startDateController = TextEditingController();
 final _endDateController = TextEditingController();
 final _descriptionController = TextEditingController();
+final _childNameController = TextEditingController();
 
 class ChildProfile extends StatelessWidget {
   const ChildProfile({super.key});
@@ -56,6 +57,7 @@ class ChildProfile extends StatelessWidget {
                             startDateController: _startDateController,
                             descriptionController: _descriptionController,
                             formKey: _formKey,
+                            childNameController: _childNameController,
                           ),
                         );
                       },

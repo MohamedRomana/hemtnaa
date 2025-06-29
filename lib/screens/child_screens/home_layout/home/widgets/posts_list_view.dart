@@ -8,12 +8,10 @@ import 'package:photo_view/photo_view.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/service/cubit/app_cubit.dart';
 import '../../../../../core/widgets/app_cached.dart';
-import '../../../../../core/widgets/app_router.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/custom_lottie_widget.dart';
 import '../../../../../core/widgets/login_first.dart';
 import '../../../../../gen/assets.gen.dart';
-import '../../../doctor_view/doctor_view.dart';
 import 'posts_views.dart';
 
 class PostsListView extends StatefulWidget {
@@ -47,7 +45,8 @@ class _PostsListViewState extends State<PostsListView> {
                 ),
               ],
             )
-            : state is GetPostsLoading && AppCubit.get(context).postsList.isEmpty
+            : state is GetPostsLoading &&
+                AppCubit.get(context).postsList.isEmpty
             ? const PostsListShimmer()
             : CacheHelper.getUserToken() == ""
             ? const LoginFirst()
@@ -94,19 +93,54 @@ class _PostsListViewState extends State<PostsListView> {
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () {
-                          AppRouter.navigateTo(context, const DoctorView());
+                          // AppRouter.navigateTo(context,  DoctorView(index: index, isPost: true,));
                         },
                         child: Row(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(1000.r),
-                              child: Image.asset(
-                                Assets.img.doctor2.path,
-                                height: 44.w,
-                                width: 44.w,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
+                            AppCubit.get(
+                                      context,
+                                    ).postsList[index]['doctor_image'] ==
+                                    null
+                                ? Container(
+                                  height: 44.w,
+                                  width: 44.w,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(100.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.primary.withOpacity(
+                                          0.2,
+                                        ),
+                                        spreadRadius: 1.r,
+                                        blurRadius: 5.r,
+                                        offset: Offset(0, 5.r),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100.r),
+                                    child: Image.asset(
+                                      Assets.img.logo.path,
+                                      height: 44.w,
+                                      width: 44.w,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                                : ClipRRect(
+                                  borderRadius: BorderRadius.circular(1000.r),
+                                  child: AppCachedImage(
+                                    image:
+                                        AppCubit.get(
+                                          context,
+                                        ).postsList[index]['doctor_image'] ??
+                                        "",
+                                    width: 44.w,
+                                    height: 44.w,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

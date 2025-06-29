@@ -2,15 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/contsants.dart';
+import '../../../../core/service/cubit/app_cubit.dart';
+import '../../../../core/widgets/app_cached.dart';
 import '../../../../core/widgets/app_router.dart';
 import '../../../../core/widgets/app_text.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../home_layout/chats/chat_details/chat_details.dart';
 
-class ProviderHeader extends StatelessWidget {
-  const ProviderHeader({super.key});
+class ProviderHeader extends StatefulWidget {
+  final int index;
+  final bool isPost;
+  const ProviderHeader({super.key, required this.index, required this.isPost});
 
+  @override
+  State<ProviderHeader> createState() => _ProviderHeaderState();
+}
+
+class _ProviderHeaderState extends State<ProviderHeader> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -49,15 +58,56 @@ class ProviderHeader extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(100.r),
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100.r),
-                    child: Image.asset(
-                      Assets.img.doctor.path,
-                      height: 150.w,
-                      width: 150.w,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  child:
+                      AppCubit.get(context).doctorsList[widget
+                                      .index]['profile_picture'] ==
+                                  null ||
+                              AppCubit.get(context).doctorsList[widget
+                                  .index]['doctor_image']
+                          ? Container(
+                            height: 150.w,
+                            width: 150.w,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(150.r),
+                              border: Border.all(
+                                color: AppColors.primary,
+                                width: 2.w,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withAlpha(100),
+                                  blurRadius: 5.r,
+                                  spreadRadius: 1.r,
+                                  offset: const Offset(0, 0),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(150.r),
+                              child: Image.asset(
+                                Assets.img.logo.path,
+                                height: 150.w,
+                                width: 150.w,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                          : ClipRRect(
+                            borderRadius: BorderRadius.circular(150.r),
+                            child: AppCachedImage(
+                              image:
+                                  widget.isPost == true
+                                      ? AppCubit.get(context).doctorsList[widget
+                                          .index]['doctor_image']
+                                      : AppCubit.get(context).doctorsList[widget
+                                              .index]['profile_picture'] ??
+                                          "",
+                              height: 150.w,
+                              width: 150.w,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                 ),
               ],
             ),
@@ -68,7 +118,12 @@ class ProviderHeader extends StatelessWidget {
             child: AppText(
               bottom: 16.h,
               top: 16.h,
-              text: 'د/محمد احمد',
+              text:
+                  widget.isPost == true
+                      ? AppCubit.get(context).postsList[widget
+                              .index]['doctor_name'] ??
+                          ""
+                      : "${AppCubit.get(context).doctorsList[widget.index]['first_name']} ${AppCubit.get(context).doctorsList[widget.index]['last_name']}",
               size: 24.sp,
               color: Colors.white,
             ),
@@ -80,7 +135,15 @@ class ProviderHeader extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
-                makePhoneCall('01000000000');
+                makePhoneCall(
+                  widget.isPost == true
+                      ? AppCubit.get(context).postsList[widget
+                              .index]['doctor_phone'] ??
+                          ""
+                      : AppCubit.get(context).doctorsList[widget
+                              .index]['phone'] ??
+                          "",
+                );
               },
               child: Container(
                 height: 60.w,
@@ -118,6 +181,7 @@ class ProviderHeader extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
+                socketService.joinRoom("room_1");
                 AppRouter.navigateAndFinish(context, const ChatDetails());
               },
               child: Container(

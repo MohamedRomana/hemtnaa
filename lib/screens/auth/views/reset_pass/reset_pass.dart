@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_input.dart';
@@ -44,7 +43,6 @@ class _ResetPassState extends State<ResetPass> {
 
   @override
   Widget build(BuildContext context) {
-    String otpCode = "";
     return Scaffold(
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
@@ -54,49 +52,6 @@ class _ResetPassState extends State<ResetPass> {
             children: [
               const CustomAuthHeader(isresetPass: true),
               SizedBox(height: 50.h),
-              AppText(
-                text: LocaleKeys.emailActivationCode.tr(),
-                top: 26.h,
-                color: const Color(0xff00818A),
-                bottom: 27.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 35.w),
-                child: PinCodeTextField(
-                  appContext: context,
-                  length: 4,
-                  obscureText: false,
-                  keyboardType: TextInputType.number,
-                  animationType: AnimationType.scale,
-                  cursorColor: AppColors.primary,
-                  textStyle: TextStyle(
-                    fontSize: 24.sp,
-                    color: AppColors.primary,
-                    fontFamily: FontFamily.poppinsBold,
-                  ),
-                  pinTheme: PinTheme(
-                    shape: PinCodeFieldShape.box,
-                    borderRadius: BorderRadius.circular(10.r),
-                    fieldHeight: 60.h,
-                    fieldWidth: 60.h,
-                    activeColor: AppColors.primary,
-                    inactiveColor: Colors.grey,
-                    inactiveFillColor: Colors.white,
-                    activeFillColor: Colors.transparent,
-                    selectedColor: AppColors.primary,
-                    selectedFillColor: Colors.transparent,
-                  ),
-                  animationDuration: const Duration(milliseconds: 300),
-                  enableActiveFill: true,
-                  onCompleted: (code) {
-                    otpCode = code;
-                    debugPrint("Completed");
-                  },
-                  onChanged: (value) {
-                    debugPrint(value);
-                  },
-                ),
-              ),
               BlocBuilder<AuthCubit, AuthState>(
                 builder: (context, state) {
                   return Column(
@@ -269,8 +224,6 @@ class _ResetPassState extends State<ResetPass> {
                     Navigator.pop(context);
                     _passController.clear();
                     _confirmPassController.clear();
-                    otpCode = "";
-                    AuthCubit.get(context).resetPassId = "";
                     showFlashMessage(
                       context: context,
                       type: FlashMessageType.success,
@@ -282,12 +235,11 @@ class _ResetPassState extends State<ResetPass> {
                   return AppButton(
                     top: 32.h,
                     bottom: 29.h,
-                    onPressed: () async {
+                    onPressed: () async { 
                       if (_formKey.currentState!.validate()) {
-                        AuthCubit.get(context).resetPass(
-                          code: otpCode,
-                          password: _passController.text,
-                        );
+                        AuthCubit.get(
+                          context,
+                        ).resetPass(password: _passController.text);
                       }
                     },
                     child:

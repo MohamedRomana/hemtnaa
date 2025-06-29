@@ -43,8 +43,7 @@ class _ChatDetailsState extends State<ChatDetails>
   int _recordDuration = 0;
   Timer? _recordTimer;
   late AnimationController _controller;
-  late IO.Socket socket;
-
+  late SocketService socketService;
 
   Future<void> requestMicPermission() async {
     final status = await Permission.microphone.request();
@@ -138,7 +137,25 @@ class _ChatDetailsState extends State<ChatDetails>
     });
     _messageSendController.addListener(_adjustInputHeight);
     _loadSavedBackground();
-    _initSocket();
+    socketService = SocketService();
+
+    socketService.connectToSocket();
+
+    socketService.socket.on('receive_message', (data) {
+      debugPrint('📥 New Message Received: $data');
+
+      setState(() {
+        messages.add(
+          ChatMessage(
+            type: MessageType.text,
+            content: data['message'],
+            isSender: false,
+          ),
+        );
+      });
+
+      _scrollToBottom();
+    });
   }
 
   void _adjustInputHeight() {
@@ -182,6 +199,14 @@ class _ChatDetailsState extends State<ChatDetails>
           ChatMessage(type: MessageType.text, content: text, isSender: true),
         );
       });
+
+      socketService.socket.emit('send_message', {
+        "message": text,
+        "user_id": 4,
+        "doctor_id": 3,
+        "room": "room_1",
+      });
+
       _messageSendController.clear();
       _scrollToBottom();
     }
@@ -777,75 +802,6 @@ class _ChatDetailsState extends State<ChatDetails>
     }
   }
 
-
-void _initSocket() {
-  socket = IO.io(
-    'https://YOUR_SERVER_URL',
-    IO.OptionBuilder()
-        .setTransports(['websocket'])
-        .disableAutoConnect() // خلينا نتحكم فيه يدوي
-        .build(),
-  );
-
-  socket.connect();
-
-  /// ✅ joined successfully
-  socket.onConnect((_) {
-    print('🟢 Connected!');
-    socket.emit('join_room', {
-      "roomId": "YOUR_ROOM_ID", // ID الغرفة بتاعتك
-      "userId": "YOUR_USER_ID"
-    });
-
-    /// Get old messages
-    socket.emit('get_messages', {"roomId": "YOUR_ROOM_ID"});
-  });
-
-  /// ✅ receive messages
-  socket.on('new_message', (data) {
-    print('📥 New Message: $data');
-    _handleIncomingMessage(data);
-  });
-
-  /// ✅ receive old messages
-  socket.on('messages_list', (data) {
-    print('📜 All Messages: $data');
-    _handleOldMessages(data);
-  });
-
-  socket.onDisconnect((_) {
-    print('🔴 Disconnected!');
-  });
-}
-
-void _handleIncomingMessage(dynamic data) {
-  setState(() {
-    messages.add(
-      ChatMessage(
-        type: MessageType.text, // انت اختار حسب `data['type']`
-        content: data['content'],
-        isSender: false,
-      ),
-    );
-  });
-  _scrollToBottom();
-}
-
-void _handleOldMessages(dynamic data) {
-  List<dynamic> old = data as List<dynamic>;
-  setState(() {
-    messages.addAll(old.map((msg) {
-      return ChatMessage(
-        type: MessageType.text, // حسب msg['type']
-        content: msg['content'],
-        isSender: msg['senderId'] == "YOUR_USER_ID",
-      );
-    }));
-  });
-  _scrollToBottom();
-}
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -1228,5 +1184,56 @@ class _VideoViewerScreenState extends State<VideoViewerScreen> {
                 : const CircularProgressIndicator(),
       ),
     );
+  }
+}
+
+final socketService = SocketService();
+
+class SocketService {
+  late IO.Socket socket;
+
+  void connectToSocket() {
+    socket = IO.io(
+      'https://hemtna.onrender.com',
+      IO.OptionBuilder().setTransports(['websocket']).build(),
+    );
+
+    // اتصال
+    socket.connect();
+
+    // عند الاتصال
+    socket.onConnect((_) {
+      debugPrint('✅ Connected to Socket.IO');
+
+      // إرسال رسالة
+      socket.emit('send_message', {
+        "message": "Hello from Flutter",
+        "user_id": 4,
+        "doctor_id": 3,
+        "room": "room_1",
+      });
+    });
+
+    // استقبال رسالة
+    socket.on('receive_message', (data) {
+      debugPrint('📥 New Message Received: $data');
+    });
+
+    // أخطاء
+    socket.onConnectError((data) => print('❌ Connect Error: $data'));
+    socket.onError((data) => print('❌ General Error: $data'));
+  }
+
+  void joinRoom(String roomName) {
+    if (socket.connected) {
+      socket.emit('join_room', {"room": roomName});
+      debugPrint('✅ Joined Room: $roomName');
+    } else {
+      debugPrint('⚠️ Socket not connected yet!');
+    }
+  }
+
+  void disconnect() {
+    socket.disconnect();
   }
 }

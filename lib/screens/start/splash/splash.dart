@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/widgets/custom_lottie_widget.dart';
 import 'package:hemtnaa/screens/auth/views/login/login.dart';
+import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_home_layout.dart';
 import '../../../core/cache/cache_helper.dart';
 import '../../../core/widgets/app_router.dart';
 import '../../../gen/assets.gen.dart';
+import '../../child_screens/home_layout/home_layout.dart';
 import '../on_boarding/on_boarding.dart';
 
 class Splash extends StatefulWidget {
@@ -84,6 +86,12 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
       CacheHelper.getLang() != ""
           ? AppRouter.navigateAndPop(context, const LogIn())
           : AppRouter.navigateAndPop(context, const OnBoarding());
+
+      CacheHelper.getUserToken() != ""
+          ? CacheHelper.getUserType() == "parent"
+              ? AppRouter.navigateAndPop(context, const HomeLayout())
+              : AppRouter.navigateAndPop(context, const DocHomeLayout())
+          : AppRouter.navigateAndFinish(context, const OnBoarding());
 
       // CacheHelper.getLang() != ""
       //     ? CacheHelper.getUserId() != ""

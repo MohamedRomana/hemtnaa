@@ -8,12 +8,10 @@ import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../../../../core/cache/cache_helper.dart';
 import '../../../../../core/constants/colors.dart';
-import '../../../../../core/widgets/app_router.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/login_first.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../child_screens/home_layout/home/widgets/posts_list_shimmer.dart';
-import '../../../doc_doctor_view/doctor_view.dart';
 import 'doc_posts_views.dart';
 
 class DocPostsList extends StatefulWidget {
@@ -94,22 +92,57 @@ class _DocPostsListState extends State<DocPostsList> {
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () {
-                          AppRouter.navigateTo(
-                            context,
-                            const CustomDoctorView(),
-                          );
+                          // AppRouter.navigateTo(
+                          //   context,
+                          //   CustomDoctorView(index: index),
+                          // );
                         },
                         child: Row(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(1000.r),
-                              child: Image.asset(
-                                Assets.img.doctor2.path,
-                                height: 44.w,
-                                width: 44.w,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
+                            AppCubit.get(
+                                      context,
+                                    ).postsList[index]['doctor_image'] ==
+                                    null
+                                ? Container(
+                                  height: 44.w,
+                                  width: 44.w,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(100.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.primary.withOpacity(
+                                          0.2,
+                                        ),
+                                        spreadRadius: 1.r,
+                                        blurRadius: 5.r,
+                                        offset: Offset(0, 5.r),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100.r),
+                                    child: Image.asset(
+                                      Assets.img.logo.path,
+                                      height: 44.w,
+                                      width: 44.w,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                                : ClipRRect(
+                                  borderRadius: BorderRadius.circular(1000.r),
+                                  child: AppCachedImage(
+                                    image:
+                                        AppCubit.get(
+                                          context,
+                                        ).postsList[index]['doctor_image'] ??
+                                        "",
+                                    width: 44.w,
+                                    height: 44.w,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

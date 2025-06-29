@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/constants/colors.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:hemtnaa/core/widgets/app_button.dart';
+import 'package:hemtnaa/core/widgets/app_cached.dart';
 import 'package:hemtnaa/core/widgets/app_text.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_lottie_widget.dart';
@@ -22,6 +21,12 @@ class Activities extends StatefulWidget {
 
 class _ActivitiesState extends State<Activities> {
   @override
+  void initState() {
+    AppCubit.get(context).getActivities();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -37,11 +42,11 @@ class _ActivitiesState extends State<Activities> {
 
           body: Stack(
             children: [
-              AppCubit.get(context).activitiesList.isEmpty
+              AppCubit.get(context).getActivitiesList.isEmpty
                   ? Column(
                     children: [
                       SizedBox(height: 100.h),
-                      CustomLottieWidget(lottieName: Assets.img.notiEmpty),
+                      CustomLottieWidget(lottieName: Assets.img.emptyorder),
                       AppText(
                         text: "لا يوجد انشطه",
                         size: 20.sp,
@@ -57,7 +62,7 @@ class _ActivitiesState extends State<Activities> {
                       bottom: 180.h,
                       top: 16.h,
                     ),
-                    itemCount: AppCubit.get(context).activitiesList.length,
+                    itemCount: AppCubit.get(context).getActivitiesList.length,
                     separatorBuilder:
                         (context, index) => SizedBox(height: 18.h),
                     itemBuilder:
@@ -103,19 +108,36 @@ class _ActivitiesState extends State<Activities> {
                                       ),
                                     ],
                                   ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(1000.r),
-                                    child: Image.memory(
-                                      base64Decode(
-                                        AppCubit.get(
-                                          context,
-                                        ).activitiesList[index].imageBase64,
-                                      ),
-                                      height: 55.w,
-                                      width: 55.w,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                                  child:
+                                      AppCubit.get(
+                                                context,
+                                              ).getActivitiesList[index]['activity_image'] ==
+                                              null
+                                          ? ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              1000.r,
+                                            ),
+                                            child: Image.asset(
+                                              Assets.img.logo.path,
+                                              height: 55.w,
+                                              width: 55.w,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                          : ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              1000.r,
+                                            ),
+                                            child: AppCachedImage(
+                                              image:
+                                                  AppCubit.get(
+                                                    context,
+                                                  ).getActivitiesList[index]['activity_image'],
+                                              height: 55.w,
+                                              width: 55.w,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +148,8 @@ class _ActivitiesState extends State<Activities> {
                                         text:
                                             AppCubit.get(
                                               context,
-                                            ).activitiesList[index].name,
+                                            ).getActivitiesList[index]['activity_name'] ??
+                                            "",
                                         size: 14.sp,
                                         fontWeight: FontWeight.bold,
                                         color:
@@ -155,9 +178,10 @@ class _ActivitiesState extends State<Activities> {
                                             ),
                                             TextSpan(
                                               text:
-                                                  AppCubit.get(context)
-                                                      .activitiesList[index]
-                                                      .endDate,
+                                                  AppCubit.get(
+                                                    context,
+                                                  ).getActivitiesList[index]['end_date'] ??
+                                                  "",
                                               style: TextStyle(
                                                 fontSize: 14.sp,
                                                 fontWeight: FontWeight.w500,
@@ -179,7 +203,8 @@ class _ActivitiesState extends State<Activities> {
                                         text:
                                             AppCubit.get(
                                               context,
-                                            ).activitiesList[index].description,
+                                            ).getActivitiesList[index]['details'] ??
+                                            "",
                                         size: 12.sp,
                                         lines: 3,
                                         fontWeight: FontWeight.w500,
