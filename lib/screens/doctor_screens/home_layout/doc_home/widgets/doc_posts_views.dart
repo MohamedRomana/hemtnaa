@@ -219,7 +219,14 @@ class _CommentsState extends State<Comments> {
                                       ),
                                     ],
                                     image: DecorationImage(
-                                      image: AssetImage(Assets.img.doctor.path),
+                                      image:
+                                          comment['profile_picture'] == null
+                                              ? NetworkImage(
+                                                comment['profile_picture'],
+                                              )
+                                              : AssetImage(
+                                                Assets.img.logo.path,
+                                              ),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -313,6 +320,10 @@ class _CommentsState extends State<Comments> {
                                             .postsList[widget.index]['id']
                                             .toString(),
                                     comment: _commentController.text,
+                                    userId:
+                                        AppCubit.get(
+                                          context,
+                                        ).userMap['id'].toString(),
                                   );
                                 }
                               },

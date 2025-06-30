@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/core/cache/cache_helper.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/widgets/app_router.dart';
 import '../../../../../core/widgets/app_text.dart';
@@ -42,6 +43,7 @@ class LogoutDialog extends StatelessWidget {
             TextButton(
               onPressed: () {
                 AppRouter.pop(context);
+                CacheHelper.setUserToken('');
                 AppRouter.navigateTo(context, const TypesView());
                 // AuthCubit.get(context).logOut();
               },

@@ -63,7 +63,8 @@ class _ProviderHeaderState extends State<ProviderHeader> {
                                       .index]['profile_picture'] ==
                                   null ||
                               AppCubit.get(context).doctorsList[widget
-                                  .index]['doctor_image']
+                                      .index]['doctor_image'] ==
+                                  null
                           ? Container(
                             height: 150.w,
                             width: 150.w,
@@ -113,19 +114,23 @@ class _ProviderHeaderState extends State<ProviderHeader> {
             ),
           ),
           PositionedDirectional(
-            bottom: 100.h,
+            bottom: 80.h,
             start: 140.w,
-            child: AppText(
-              bottom: 16.h,
-              top: 16.h,
-              text:
-                  widget.isPost == true
-                      ? AppCubit.get(context).postsList[widget
-                              .index]['doctor_name'] ??
-                          ""
-                      : "${AppCubit.get(context).doctorsList[widget.index]['first_name']} ${AppCubit.get(context).doctorsList[widget.index]['last_name']}",
-              size: 24.sp,
-              color: Colors.white,
+            child: SizedBox(
+              width: 100.w,
+              child: AppText(
+                bottom: 16.h,
+                top: 16.h,
+                text:
+                    widget.isPost == true
+                        ? AppCubit.get(context).postsList[widget
+                                .index]['doctor_name'] ??
+                            ""
+                        : "${AppCubit.get(context).doctorsList[widget.index]['first_name']} ${AppCubit.get(context).doctorsList[widget.index]['last_name']}",
+                size: 20.sp,
+                lines: 2,
+                color: Colors.white,
+              ),
             ),
           ),
           PositionedDirectional(

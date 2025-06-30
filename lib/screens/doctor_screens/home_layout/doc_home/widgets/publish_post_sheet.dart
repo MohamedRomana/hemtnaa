@@ -7,6 +7,7 @@ import '../../../../../core/widgets/app_button.dart';
 import '../../../../../core/widgets/app_input.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/flash_message.dart';
+import '../../../../../gen/assets.gen.dart';
 
 final _posttitleController = TextEditingController();
 final _postController = TextEditingController();
@@ -24,7 +25,7 @@ class _PublishPostSheetState extends State<PublishPostSheet> {
     _posttitleController.clear();
     _postController.clear();
     AppCubit.get(context).postImages = [];
-
+    AppCubit.get(context).showUser();
     super.initState();
   }
 
@@ -73,19 +74,29 @@ class _PublishPostSheetState extends State<PublishPostSheet> {
                   SizedBox(height: 24.h),
                   Row(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(1000.r),
-                        child: AppCachedImage(
-                          image:
-                              AppCubit.get(
-                                context,
-                              ).userMap["profile_picture"] ??
-                              '',
-                          height: 50.w,
-                          width: 50.w,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      AppCubit.get(context).userMap["profile_picture"] == null
+                          ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8.r),
+                            child: Image.asset(
+                              Assets.img.logo.path,
+                              width: 50.w,
+                              height: 50.h,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                          : ClipRRect(
+                            borderRadius: BorderRadius.circular(1000.r),
+                            child: AppCachedImage(
+                              image:
+                                  AppCubit.get(
+                                    context,
+                                  ).userMap["profile_picture"] ??
+                                  '',
+                              height: 50.w,
+                              width: 50.w,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                       AppText(
                         text:
                             "${AppCubit.get(context).userMap["first_name"]} ${AppCubit.get(context).userMap["last_name"]}",
@@ -219,7 +230,7 @@ class _PublishPostSheetState extends State<PublishPostSheet> {
                             title: _posttitleController.text,
                             content: _postController.text,
                             category: 'A',
-                            doctorId: '1',
+                            doctorId: AppCubit.get(context).userMap["id"].toString(),
                           );
                         },
                         top: 50.h,

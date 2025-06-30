@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/cache/cache_helper.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../core/widgets/login_first.dart';
 import '../../drawer/drawer.dart';
 import 'widgets/chats_list_view.dart';
 import 'widgets/groubs_list_view.dart';
@@ -20,50 +22,53 @@ class Chats extends StatelessWidget {
         preferredSize: Size.fromHeight(90.h),
         child: CustomAppBar(scaffoldKey: scaffoldKey, title: 'المحادثات'),
       ),
-      body: DefaultTabController(
-        length: 2,
-        child: NestedScrollView(
-          headerSliverBuilder:
-              (context, innerBoxIsScrolled) => [
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 343.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: AppColors.borderColor.withAlpha(100),
-                        ),
-                        child: TabBar(
-                          dividerColor: Colors.transparent,
-                          indicatorColor: AppColors.primary,
-                          labelColor: Colors.white,
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          indicator: BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(10.r),
+      body:
+          CacheHelper.getUserToken() == ""
+              ? const LoginFirst()
+              : DefaultTabController(
+                length: 2,
+                child: NestedScrollView(
+                  headerSliverBuilder:
+                      (context, innerBoxIsScrolled) => [
+                        SliverToBoxAdapter(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 343.w,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  color: AppColors.borderColor.withAlpha(100),
+                                ),
+                                child: TabBar(
+                                  dividerColor: Colors.transparent,
+                                  indicatorColor: AppColors.primary,
+                                  labelColor: Colors.white,
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                  indicator: BoxDecoration(
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                  unselectedLabelColor: Colors.grey,
+                                  labelStyle: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  tabs: const [
+                                    Tab(text: 'المحادثات'),
+                                    Tab(text: 'المجموعات'),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          unselectedLabelColor: Colors.grey,
-                          labelStyle: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          tabs: const [
-                            Tab(text: 'المحادثات'),
-                            Tab(text: 'المجموعات'),
-                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                  body: const TabBarView(
+                    physics: BouncingScrollPhysics(),
+                    children: [ChatsListView(), GroubsListView()],
                   ),
                 ),
-              ],
-          body: const TabBarView(
-            physics: BouncingScrollPhysics(),
-            children: [ChatsListView(), GroubsListView()],
-          ),
-        ),
-      ),
+              ),
     );
   }
 }

@@ -175,7 +175,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             width: 24.w,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 0
-                                    ? AppColors.borderColor
+                                    ? AppColors.lightGreen
                                     : Colors.white,
                           ),
                           AppText(
@@ -184,7 +184,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             size: 12.sp,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 0
-                                    ? AppColors.borderColor
+                                    ? AppColors.lightGreen
                                     : Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
@@ -214,7 +214,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             width: 24.w,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 1
-                                    ? AppColors.borderColor
+                                    ? AppColors.lightGreen
                                     : Colors.white,
                           ),
                           AppText(
@@ -223,7 +223,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             size: 12.sp,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 1
-                                    ? AppColors.borderColor
+                                    ? AppColors.lightGreen
                                     : Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
@@ -255,7 +255,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             width: 24.w,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 3
-                                    ? AppColors.borderColor
+                                    ? AppColors.lightGreen
                                     : Colors.white,
                           ),
                           AppText(
@@ -264,7 +264,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             size: 12.sp,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 3
-                                    ? AppColors.borderColor
+                                    ? AppColors.lightGreen
                                     : Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
@@ -292,7 +292,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             Icons.emergency,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 4
-                                    ? AppColors.borderColor
+                                    ? AppColors.lightGreen
                                     : Colors.white,
                           ),
                           AppText(
@@ -301,7 +301,7 @@ class _HomeLayoutState extends State<HomeLayout>
                             size: 12.sp,
                             color:
                                 AppCubit.get(context).bottomNavIndex == 4
-                                    ? AppColors.borderColor
+                                    ? AppColors.lightGreen
                                     : Colors.white,
                             fontWeight: FontWeight.w500,
                           ),

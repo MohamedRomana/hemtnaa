@@ -1275,7 +1275,11 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
-  Future addComment({required String postId, required String comment}) async {
+  Future addComment({
+    required String postId,
+    required String comment,
+    required String userId,
+  }) async {
     emit(AddCommentLoading());
     String? token = CacheHelper.getUserToken();
     debugPrint("Token: $token");
@@ -1286,7 +1290,7 @@ class AppCubit extends Cubit<AppState> {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       },
-      body: jsonEncode({"user_id": '1', "comment": comment}),
+      body: jsonEncode({"user_id": userId, "comment": comment}),
     );
 
     Map<String, dynamic> data = jsonDecode(response.body);

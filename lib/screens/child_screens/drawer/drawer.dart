@@ -16,6 +16,7 @@ import '../../../core/widgets/logout_dialog.dart';
 import '../../../gen/fonts.gen.dart';
 import '../../../generated/locale_keys.g.dart';
 import '../../auth/views/login/login.dart';
+import '../../doctor_screens/doc_profile/profile.dart';
 import '../home_layout/home_layout.dart';
 import '../profile/profile.dart';
 
@@ -224,7 +225,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                         AppRouter.navigateTo(context, const Profile());
                       } else {
                         AppRouter.pop(context);
-                        // AppRouter.navigateTo(context, const ProviderProfile());
+                        AppRouter.navigateTo(context, const DocProfile());
                       }
                     },
                     child: Container(
@@ -321,9 +322,11 @@ class _CustomDrawerState extends State<CustomDrawer>
                     onTap: () {
                       AppCubit.get(context).changedrawerIndex(index: 7);
                       if (CacheHelper.getUserType() == "parent") {
+                        CacheHelper.setUserToken('');
                         CacheHelper.setUserType('doctor');
                         AppRouter.navigateTo(context, const LogIn());
                       } else {
+                        CacheHelper.setUserToken('');
                         CacheHelper.setUserType('parent');
                         AppRouter.navigateTo(context, const LogIn());
                       }

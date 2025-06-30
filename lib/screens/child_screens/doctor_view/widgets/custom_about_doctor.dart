@@ -40,12 +40,16 @@ class CustomAboutDoctor extends StatelessWidget {
                     size: 16.sp,
                   ),
                   const Spacer(),
-                  AppText(
-                    text:
-                        "${AppCubit.get(context).doctorsList[index]["first_name"]} ${AppCubit.get(context).doctorsList[index]["last_name"]}",
-                    family: FontFamily.lexendBold,
-                    size: 16.sp,
-                    color: Colors.grey,
+                  SizedBox(
+                    width: 180.w,
+                    child: AppText(
+                      textAlign: TextAlign.end,
+                      text:
+                          "${AppCubit.get(context).doctorsList[index]["first_name"]} ${AppCubit.get(context).doctorsList[index]["last_name"]}",
+                      family: FontFamily.lexendBold,
+                      size: 16.sp,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),
@@ -61,14 +65,18 @@ class CustomAboutDoctor extends StatelessWidget {
                     size: 16.sp,
                   ),
                   const Spacer(),
-                  AppText(
-                    text:
-                        AppCubit.get(
-                          context,
-                        ).doctorsList[index]["doctor_specialty"],
-                    family: FontFamily.lexendBold,
-                    size: 16.sp,
-                    color: Colors.grey,
+                  SizedBox(
+                    width: 180.w,
+                    child: AppText(
+                      textAlign: TextAlign.end,
+                      text:
+                          AppCubit.get(
+                            context,
+                          ).doctorsList[index]["doctor_specialty"],
+                      family: FontFamily.lexendBold,
+                      size: 16.sp,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),
@@ -83,12 +91,16 @@ class CustomAboutDoctor extends StatelessWidget {
                     size: 16.sp,
                   ),
                   const Spacer(),
-                  AppText(
-                    text:
-                        AppCubit.get(context).doctorsList[index]["email"] ?? "",
-                    family: FontFamily.lexendBold,
-                    size: 14.sp,
-                    color: Colors.grey,
+                  SizedBox(
+                    width: 180.w,
+                    child: AppText(
+                      textAlign: TextAlign.end,
+                      text:
+                          AppCubit.get(context).doctorsList[index]["email"] ?? "",
+                      family: FontFamily.lexendBold,
+                      size: 12.sp,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),
@@ -105,12 +117,17 @@ class CustomAboutDoctor extends StatelessWidget {
                     size: 16.sp,
                   ),
                   const Spacer(),
-                  AppText(
-                    text:
-                        AppCubit.get(context).doctorsList[index]["phone"] ?? "",
-                    family: FontFamily.lexendBold,
-                    size: 16.sp,
-                    color: Colors.grey,
+                  SizedBox(
+                    width: 150.w,
+                    child: AppText(
+                      textAlign: TextAlign.end,
+                      text:
+                          AppCubit.get(context).doctorsList[index]["phone"] ??
+                          "",
+                      family: FontFamily.lexendBold,
+                      size: 16.sp,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),

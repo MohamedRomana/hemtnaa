@@ -210,44 +210,6 @@ class _PostsListViewState extends State<PostsListView> {
                             color: Colors.black,
                           ),
                         ),
-                      if (AppCubit.get(
-                        context,
-                      ).postsList[index]['title'].isNotEmpty)
-                        SizedBox(
-                          width: 300.w,
-                          child: AppText(
-                            top: 8.h,
-                            textAlign: TextAlign.start,
-                            text:
-                                AppCubit.get(
-                                  context,
-                                ).postsList[index]['title'] ??
-                                "",
-                            lines: 100,
-                            fontWeight: FontWeight.w600,
-                            size: 12.sp,
-                            color: Colors.black,
-                          ),
-                        ),
-                      if (AppCubit.get(
-                        context,
-                      ).postsList[index]['content'].isNotEmpty)
-                        SizedBox(
-                          width: 300.w,
-                          child: AppText(
-                            top: 8.h,
-                            textAlign: TextAlign.start,
-                            text:
-                                AppCubit.get(
-                                  context,
-                                ).postsList[index]['content'] ??
-                                "",
-                            lines: 100,
-                            fontWeight: FontWeight.w600,
-                            size: 12.sp,
-                            color: Colors.black,
-                          ),
-                        ),
                       if (AppCubit.get(context).postsList[index]['image'] !=
                               null &&
                           AppCubit.get(

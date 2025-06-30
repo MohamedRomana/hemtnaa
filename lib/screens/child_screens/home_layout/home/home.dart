@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
+import '../../../../core/cache/cache_helper.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../core/widgets/login_first.dart';
 import '../../drawer/drawer.dart';
 import 'widgets/custom_child_score.dart';
 import 'widgets/posts_list_view.dart';
@@ -18,6 +20,7 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   initState() {
+    AppCubit.get(context).showUser();
     super.initState();
   }
 
@@ -32,9 +35,14 @@ class _HomeState extends State<Home> {
             preferredSize: Size.fromHeight(90.h),
             child: CustomAppBar(scaffoldKey: scaffoldKey, title: 'الرئيسيه'),
           ),
-          body: const SingleChildScrollView(
-            child: Column(children: [CustomChildScore(), PostsListView()]),
-          ),
+          body:
+              CacheHelper.getUserToken() == ""
+                  ? const LoginFirst()
+                  : const SingleChildScrollView(
+                    child: Column(
+                      children: [CustomChildScore(), PostsListView()],
+                    ),
+                  ),
         );
       },
     );

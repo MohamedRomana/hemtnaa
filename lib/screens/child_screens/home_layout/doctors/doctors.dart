@@ -9,7 +9,9 @@ import 'package:hemtnaa/core/widgets/custom_app_bar.dart';
 import 'package:hemtnaa/core/widgets/custom_lottie_widget.dart';
 import 'package:hemtnaa/screens/child_screens/doctor_view/doctor_view.dart';
 import 'package:hemtnaa/screens/child_screens/home_layout/home/widgets/posts_list_shimmer.dart';
+import '../../../../core/cache/cache_helper.dart';
 import '../../../../core/service/cubit/app_cubit.dart';
+import '../../../../core/widgets/login_first.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../drawer/drawer.dart';
 
@@ -40,7 +42,9 @@ class _DoctorsState extends State<Doctors> {
             child: CustomAppBar(scaffoldKey: scaffoldKey, title: 'الاطباء'),
           ),
           body:
-              AppCubit.get(context).doctorsList.isEmpty
+              CacheHelper.getUserToken() == ""
+                  ? const LoginFirst()
+                  : AppCubit.get(context).doctorsList.isEmpty
                   ? CustomLottieWidget(lottieName: Assets.img.emptyorder)
                   : state is GetUsersLoading
                   ? const PostsListShimmer()
@@ -61,7 +65,7 @@ class _DoctorsState extends State<Doctors> {
                           onTap: () {
                             AppRouter.navigateTo(
                               context,
-                              DoctorView(index: index, isPost: false,),
+                              DoctorView(index: index, isPost: false),
                             );
                           },
                           child: Container(

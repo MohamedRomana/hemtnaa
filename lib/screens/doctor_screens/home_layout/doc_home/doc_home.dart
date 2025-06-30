@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hemtnaa/core/cache/cache_helper.dart';
 import 'package:hemtnaa/core/service/cubit/app_cubit.dart';
 import 'package:hemtnaa/core/widgets/app_cached.dart';
 import 'package:hemtnaa/core/widgets/app_text.dart';
+import 'package:hemtnaa/core/widgets/login_first.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/widgets/alert_dialog.dart';
 import '../../../../core/widgets/app_input.dart';
 import '../../../../core/widgets/app_router.dart';
 import '../../../../core/widgets/flash_message.dart';
 import '../../../../core/widgets/logout_dialog.dart';
+import '../../../../gen/assets.gen.dart';
 import '../../../auth/data/auth_cubit.dart';
 import '../../../auth/views/login/login.dart';
 import '../../../child_screens/drawer/drawer.dart';
@@ -17,8 +20,20 @@ import '../../doc_profile/profile.dart';
 import 'widgets/publish_post_sheet.dart';
 import 'widgets/doc_posts_list.dart';
 
-class DocHome extends StatelessWidget {
+class DocHome extends StatefulWidget {
   const DocHome({super.key});
+
+  @override
+  State<DocHome> createState() => _DocHomeState();
+}
+
+class _DocHomeState extends State<DocHome> {
+  @override
+  void initState() {
+    AppCubit.get(context).showUser();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,58 +116,98 @@ class DocHome extends StatelessWidget {
               ),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    SizedBox(width: 16.w),
-                    InkWell(
-                      onTap: () {
-                        AppRouter.navigateTo(context, const DocProfile());
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.r),
-                        child: AppCachedImage(
-                          image:
-                              AppCubit.get(
-                                context,
-                              ).userMap["profile_picture"] ??
-                              "",
-                          width: 48.w,
-                          height: 48.h,
-                          fit: BoxFit.cover,
+          body:
+              CacheHelper.getUserToken() == ""
+                  ? const LoginFirst()
+                  : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(width: 16.w),
+                            InkWell(
+                              onTap: () {
+                                AppRouter.navigateTo(
+                                  context,
+                                  const DocProfile(),
+                                );
+                              },
+                              child:
+                                  AppCubit.get(
+                                            context,
+                                          ).userMap["profile_picture"] ==
+                                          null
+                                      ? Container(
+                                        height: 48.w,
+                                        width: 48.w,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: AppColors.primary
+                                                  .withOpacity(0.2),
+                                              spreadRadius: 1.r,
+                                              blurRadius: 5.r,
+                                              offset: const Offset(0, 0),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Center(
+                                          child: Image.asset(
+                                            Assets.img.logo.path,
+                                            height: 48.w,
+                                            width: 48.w,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      )
+                                      : ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          8.r,
+                                        ),
+                                        child: AppCachedImage(
+                                          image:
+                                              AppCubit.get(
+                                                context,
+                                              ).userMap["profile_picture"] ??
+                                              "",
+                                          width: 48.w,
+                                          height: 48.h,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                            ),
+                            SizedBox(width: 8.w),
+                            SizedBox(
+                              width: 300.w,
+                              child: AppInput(
+                                start: 0,
+                                end: 16.w,
+                                hint: 'بماذا تفكر؟ ',
+                                read: true,
+                                enabledBorderColor: AppColors.borderColor,
+                                focusedBorderColor: AppColors.borderColor,
+                                color: AppColors.borderColor,
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.white,
+                                    builder: (_) => const PublishPostSheet(),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
+                        SizedBox(height: 16.h),
+                        const DocPostsList(),
+                      ],
                     ),
-                    SizedBox(width: 8.w),
-                    SizedBox(
-                      width: 300.w,
-                      child: AppInput(
-                        start: 0,
-                        end: 16.w,
-                        hint: 'بماذا تفكر؟ ',
-                        read: true,
-                        enabledBorderColor: AppColors.borderColor,
-                        focusedBorderColor: AppColors.borderColor,
-                        color: AppColors.borderColor,
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.white,
-                            builder: (_) => const PublishPostSheet(),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16.h),
-                const DocPostsList(),
-              ],
-            ),
-          ),
+                  ),
         );
       },
     );
