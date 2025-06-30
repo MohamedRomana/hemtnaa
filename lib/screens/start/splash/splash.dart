@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hemtnaa/core/widgets/custom_lottie_widget.dart';
-import 'package:hemtnaa/screens/auth/views/login/login.dart';
 import 'package:hemtnaa/screens/doctor_screens/home_layout/doc_home_layout.dart';
+import 'package:hemtnaa/screens/start/types/types_view.dart';
 import '../../../core/cache/cache_helper.dart';
 import '../../../core/widgets/app_router.dart';
 import '../../../gen/assets.gen.dart';
@@ -82,27 +82,13 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
   Future _customNavigation() {
     return Future.delayed(const Duration(seconds: 3), () {
       _shakeController.forward();
-
       CacheHelper.getLang() != ""
-          ? AppRouter.navigateAndPop(context, const LogIn())
+          ? CacheHelper.getUserToken() != ""
+              ? CacheHelper.getUserType() == "parent"
+                  ? AppRouter.navigateAndPop(context, const HomeLayout())
+                  : AppRouter.navigateAndPop(context, const DocHomeLayout())
+              : AppRouter.navigateAndFinish(context, const TypesView())
           : AppRouter.navigateAndPop(context, const OnBoarding());
-
-      CacheHelper.getUserToken() != ""
-          ? CacheHelper.getUserType() == "parent"
-              ? AppRouter.navigateAndPop(context, const HomeLayout())
-              : AppRouter.navigateAndPop(context, const DocHomeLayout())
-          : AppRouter.navigateAndFinish(context, const OnBoarding());
-
-      // CacheHelper.getLang() != ""
-      //     ? CacheHelper.getUserId() != ""
-      // ? CacheHelper.getUserType() == "client"
-      //             ? AppRouter.navigateAndPop(context, const HomeLayout())
-      //             : AppRouter.navigateAndPop(
-      //                 context, const ProviderHomeLayout())
-      //         : AppCubit.get(context).showImage
-      //             ? AppRouter.navigateAndPop(context, const TypeScreen())
-      //             : AppRouter.navigateAndPop(context, const HomeLayout())
-      //     : AppRouter.navigateAndPop(context, const OnBoarding());
     });
   }
 

@@ -35,12 +35,11 @@ class TypesView extends StatelessWidget {
               highlightColor: Colors.transparent,
               onTap: () {
                 CacheHelper.setUserType('parent');
-                AppRouter.navigateAndFinish(context, const LogIn());
+                AppRouter.navigateTo(context, const LogIn());
               },
               child: Container(
-                height: 165.h,
                 width: 136.w,
-                padding: EdgeInsets.symmetric(horizontal: 23.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(horizontal: 23.w, vertical: 23.h),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.grey),
@@ -55,8 +54,7 @@ class TypesView extends StatelessWidget {
                       color: Colors.grey,
                     ),
                     Container(
-                      height: 77.w,
-                      width: 77.w,
+                      padding: EdgeInsets.all(12.r),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         shape: BoxShape.circle,
@@ -68,67 +66,23 @@ class TypesView extends StatelessWidget {
                       text: LocaleKeys.child.tr(),
                       size: 16.sp,
                       color: const Color(0xff5E5E5E),
+                      fontWeight: FontWeight.bold,
                     ),
                   ],
                 ),
               ),
             ),
             SizedBox(height: 24.h),
-            // InkWell(
-            //   splashColor: Colors.transparent,
-            //   highlightColor: Colors.transparent,
-            //   onTap: () {
-            //     CacheHelper.setUserType('senior');
-            //     AppRouter.navigateAndFinish(context, const LogIn());
-            //   },
-            //   child: Container(
-            //     height: 165.h,
-            //     width: 136.w,
-            //     padding: EdgeInsets.symmetric(horizontal: 23.w, vertical: 12.h),
-            //     margin: EdgeInsets.symmetric(vertical: 16.h),
-            //     decoration: BoxDecoration(
-            //       color: Colors.white,
-            //       border: Border.all(color: Colors.grey),
-            //       borderRadius: BorderRadius.circular(8.r),
-            //     ),
-            //     child: Column(
-            //       children: [
-            //         AppText(
-            //           bottom: 8.h,
-            //           text: LocaleKeys.continue_as.tr(),
-            //           size: 12.sp,
-            //           color: Colors.grey,
-            //         ),
-            //         Container(
-            //           height: 77.w,
-            //           width: 77.w,
-            //           decoration: BoxDecoration(
-            //             border: Border.all(color: Colors.grey),
-            //             shape: BoxShape.circle,
-            //           ),
-            //           child: Image.asset(Assets.img.senior.path),
-            //         ),
-            //         AppText(
-            //           top: 12.h,
-            //           text: LocaleKeys.senior.tr(),
-            //           size: 16.sp,
-            //           color: const Color(0xff5E5E5E),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
             InkWell(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () {
                 CacheHelper.setUserType('doctor');
-                AppRouter.navigateAndFinish(context, const LogIn());
+                AppRouter.navigateTo(context, const LogIn());
               },
               child: Container(
-                height: 165.h,
                 width: 136.w,
-                padding: EdgeInsets.symmetric(horizontal: 23.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(horizontal: 23.w, vertical: 23.h),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.grey),
@@ -143,8 +97,7 @@ class TypesView extends StatelessWidget {
                       color: Colors.grey,
                     ),
                     Container(
-                      height: 77.w,
-                      width: 77.w,
+                      padding: EdgeInsets.all(12.r),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         shape: BoxShape.circle,
@@ -156,6 +109,7 @@ class TypesView extends StatelessWidget {
                       text: LocaleKeys.doctor.tr(),
                       size: 16.sp,
                       color: const Color(0xff5E5E5E),
+                      fontWeight: FontWeight.bold,
                     ),
                   ],
                 ),

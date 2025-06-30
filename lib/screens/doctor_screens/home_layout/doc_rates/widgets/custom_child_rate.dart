@@ -18,18 +18,16 @@ class CustomChildRate extends StatelessWidget {
       onTap: () {
         double value = 1.0;
         showDialog(
+          
           context: context,
           builder:
-              (context) => Dialog(
-                backgroundColor: Colors.transparent,
-                child: Container(
-                  height: 180.h,
-                  width: 285.w,
-                  padding: EdgeInsets.all(12.r),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
+              (context) => AlertDialog(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                content: SizedBox(
+                  height: 150.h,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

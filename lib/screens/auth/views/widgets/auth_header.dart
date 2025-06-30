@@ -34,11 +34,9 @@ class CustomAuthHeader extends StatelessWidget {
           PositionedDirectional(
             start: CacheHelper.getLang() == "ar" ? 0.w : null,
             end: CacheHelper.getLang() == "en" ? 0.w : null,
-            top: 220.h,
+            top: 170.h,
             child: Image.asset(
               Assets.img.onboarding.path,
-              height: 260.h,
-              width: 230.w,
               fit: BoxFit.cover,
             ),
           ),

@@ -133,62 +133,6 @@ class _AddActivityState extends State<AddActivity> {
                     ),
                     AppText(
                       top: 8.h,
-                      text: 'تاريخ الانتهاء',
-                      bottom: 8.h,
-                      size: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    AppInput(
-                      start: 0,
-                      end: 0,
-                      filled: true,
-                      enabledBorderColor: Colors.grey,
-                      border: 8.r,
-                      hint: 'تاريخ الانتهاء',
-                      controller: widget.endDateController,
-                      suffixIcon: Icon(
-                        Icons.calendar_month_outlined,
-                        color: Colors.grey,
-                        size: 24.sp,
-                      ),
-                      read: true,
-                      onTap: () async {
-                        DateTime? dateTime = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
-                          builder:
-                              (context, child) => Theme(
-                                data: Theme.of(context).copyWith(
-                                  colorScheme: const ColorScheme.light(
-                                    primary: AppColors.primary,
-                                    onPrimary: Colors.white,
-                                    surface: Colors.white,
-                                    onSurface: Colors.black,
-                                  ),
-                                ),
-                                child: child!,
-                              ),
-                        );
-                        if (dateTime != null) {
-                          String formattedDate = DateFormat(
-                            'yyyy-MM-dd',
-                          ).format(dateTime);
-                          setState(() {
-                            widget.endDateController.text = formattedDate;
-                          });
-                        }
-                      },
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return 'ادخل تاريخ الانتهاء';
-                        }
-                        return null;
-                      },
-                    ),
-                    AppText(
-                      top: 8.h,
                       text: 'تاريخ البدايه',
                       bottom: 8.h,
                       size: 18.sp,
@@ -245,7 +189,7 @@ class _AddActivityState extends State<AddActivity> {
                     ),
                     AppText(
                       top: 8.h,
-                      text: 'اسم الطفل',
+                      text: 'تاريخ الانتهاء',
                       bottom: 8.h,
                       size: 18.sp,
                       fontWeight: FontWeight.bold,
@@ -256,15 +200,50 @@ class _AddActivityState extends State<AddActivity> {
                       filled: true,
                       enabledBorderColor: Colors.grey,
                       border: 8.r,
-                      hint: 'اسم الطفل',
-                      controller: widget.childNameController,
+                      hint: 'تاريخ الانتهاء',
+                      controller: widget.endDateController,
+                      suffixIcon: Icon(
+                        Icons.calendar_month_outlined,
+                        color: Colors.grey,
+                        size: 24.sp,
+                      ),
+                      read: true,
+                      onTap: () async {
+                        DateTime? dateTime = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                          builder:
+                              (context, child) => Theme(
+                                data: Theme.of(context).copyWith(
+                                  colorScheme: const ColorScheme.light(
+                                    primary: AppColors.primary,
+                                    onPrimary: Colors.white,
+                                    surface: Colors.white,
+                                    onSurface: Colors.black,
+                                  ),
+                                ),
+                                child: child!,
+                              ),
+                        );
+                        if (dateTime != null) {
+                          String formattedDate = DateFormat(
+                            'yyyy-MM-dd',
+                          ).format(dateTime);
+                          setState(() {
+                            widget.endDateController.text = formattedDate;
+                          });
+                        }
+                      },
                       validate: (value) {
                         if (value!.isEmpty) {
-                          return 'ادخل اسم الطفل';
+                          return 'ادخل تاريخ الانتهاء';
                         }
                         return null;
                       },
                     ),
+
                     AppText(
                       top: 8.h,
                       text: 'شرح النشاط',

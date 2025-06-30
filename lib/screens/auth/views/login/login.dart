@@ -98,24 +98,6 @@ class _LogInState extends State<LogIn> {
                 );
               },
             ),
-            AppButton(
-              onPressed: () {
-                if (CacheHelper.getUserType() == "parent") {
-                  AppCubit.get(context).changebottomNavIndex(2);
-                  AppRouter.navigateAndFinish(context, const HomeLayout());
-                } else if (CacheHelper.getUserType() == "doctor") {
-                  AppCubit.get(context).changebottomDocNavIndex(0);
-                  AppRouter.navigateAndFinish(context, const DocHomeLayout());
-                }
-              },
-              child: AppText(
-                textAlign: TextAlign.center,
-                text: LocaleKeys.home.tr(),
-                size: 14.sp,
-                color: Colors.white,
-                family: FontFamily.poppinsBold,
-              ),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

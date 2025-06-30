@@ -23,19 +23,21 @@ class _OnBoardingState extends State<OnBoarding> {
   List pagesList = [
     {
       "image1": Assets.img.onboarding.path,
-      "title": "أنا أتعلم بطريقتي!",
+      "title": "دعم شامل لنمو الطفل",
       "desc":
-          "نساعد الأطفال على التعبير عن أنفسهم بالكلمات، الإشارات، واللعب، مهما كانت طريقتهم.",
+          "يهدف التطبيق إلى توفير بيئة تفاعلية تساعد الأطفال ذوي الاحتياجات الخاصة على تنمية مهاراتهم العقلية والاجتماعية من خلال ألعاب تعليمية، وتمارين مناسبة لقدراتهم، مما يعزز من تطورهم بشكل صحي وسليم.",
     },
     {
       "image1": Assets.img.onboarding.path,
-      "title": "كل صوت يهم!",
-      "desc": "لكل طفل صوته الخاص، ونحن هنا لنسمعه وندعمه خطوة بخطوة.",
+      "title": "تواصل بدون حواجز",
+      "desc":
+          "يتيح التطبيق وسائل تواصل مرئية وسمعية تساعد الأطفال الذين يواجهون صعوبات في النطق أو التواصل على التعبير عن مشاعرهم واحتياجاتهم بطريقة مبسطة وسهلة الفهم.",
     },
     {
       "image1": Assets.img.onboarding.path,
-      "title": "معًا نفهم بعضنا أفضل",
-      "desc": "بيئة آمنة ومحفزة لكل طفل يتعلم بطريقته – نحتفل بكل تقدم صغير.",
+      "title": "دعم الأهل والمعلمين",
+      "desc":
+          "يوفر التطبيق أدوات إرشادية ونصائح مخصصة لأولياء الأمور والمعلمين تساعدهم على فهم احتياجات الطفل والتفاعل معه بشكل فعّال، مما يسهم في خلق بيئة دعم متكاملة داخل المنزل والمدرسة.",
     },
   ];
 
@@ -73,6 +75,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 itemCount: pagesList.length,
                 itemBuilder: (context, index) {
                   return Stack(
+                    clipBehavior: Clip.none,
                     children: [
                       Container(
                         height: 434.h,
@@ -85,8 +88,8 @@ class _OnBoardingState extends State<OnBoarding> {
                         top: 150.h,
                         child: Image.asset(
                           pagesList[index]['image1'],
-                          height: 313.h,
-                          width: 300.w,
+                          // height: 313.h,
+                          // width: 300.w,
                           fit: BoxFit.cover,
                         ),
                       ),

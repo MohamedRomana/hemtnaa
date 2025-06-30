@@ -1467,6 +1467,7 @@ class AppCubit extends Cubit<AppState> {
           message: data["message"] ?? "Activity added successfully",
         ),
       );
+      getActivities();
       activityImage.clear();
     } else {
       emit(AddActivityFailure(error: data["message"] ?? "Unknown error"));

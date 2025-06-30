@@ -122,11 +122,9 @@ class CustomOnBoardingButtons extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        pageController.animateToPage(
-                          pagesList.length - 1,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeIn,
-                        );
+                        CacheHelper.setLang('ar');
+                        context.setLocale(const Locale('ar'));
+                        AppRouter.navigateAndFinish(context, const TypesView());
                       },
                       child: AppText(
                         text: LocaleKeys.skip.tr(),

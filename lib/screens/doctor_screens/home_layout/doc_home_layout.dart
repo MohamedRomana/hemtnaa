@@ -68,6 +68,7 @@ class _DocHomeLayoutState extends State<DocHomeLayout>
               context: context,
               builder:
                   (context) => AlertDialog(
+                    backgroundColor: Colors.white,
                     title: Text(
                       LocaleKeys.doYouWantToLeaveThisApp.tr(),
                       style: const TextStyle(fontWeight: FontWeight.bold),
@@ -82,11 +83,11 @@ class _DocHomeLayoutState extends State<DocHomeLayout>
                     actions: [
                       TextButton(
                         onPressed: () => SystemNavigator.pop(),
-                        child: Text(LocaleKeys.yes.tr()),
+                        child: Text(LocaleKeys.yes.tr(), style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.green),),
                       ),
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: Text(LocaleKeys.no.tr()),
+                        child: Text(LocaleKeys.no.tr(), style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.red),),
                       ),
                     ],
                   ),
