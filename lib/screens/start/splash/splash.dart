@@ -92,6 +92,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
     });
   }
 
+
   void _customAnimation() {
     _animationController = AnimationController(
       vsync: this,
