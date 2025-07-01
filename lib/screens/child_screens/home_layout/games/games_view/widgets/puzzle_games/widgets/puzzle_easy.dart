@@ -295,19 +295,15 @@ class _EasyPuzzleState extends State<EasyPuzzle> {
                           );
                         },
                         onAcceptWithDetails: (draggedIndex) {
-                          if (topGrid[index] != null)
-                            return; // تأكد من أن المكان غير مشغول
+                          if (topGrid[index] != null) return;
 
                           setState(() {
                             topGrid[index] = draggedIndex.data;
                             availablePieces.remove(draggedIndex.data);
                           });
 
-                          // تحقق بعد كل حركة إذا كل الخانات ممتلئة
                           if (!topGrid.contains(null)) {
-                            handlePuzzleCompletion(
-                              context,
-                            ); // استخدم الدالة الجديدة
+                            handlePuzzleCompletion(context);
                           }
 
                           debugPrint("TopGrid after move: $topGrid");

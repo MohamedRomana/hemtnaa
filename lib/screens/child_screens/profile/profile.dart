@@ -25,6 +25,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   @override
+
   void initState() {
     AppCubit.get(context).showUser();
     super.initState();
