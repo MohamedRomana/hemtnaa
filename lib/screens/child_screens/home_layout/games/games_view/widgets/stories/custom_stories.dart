@@ -61,7 +61,7 @@ class _CustomStoriesState extends State<CustomStories> {
                   right: 16.w,
                   left: 16.w,
                   bottom: 24.h,
-                  top: 200.h,
+                  top: 100.h,
                 ),
                 itemCount: _controller.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

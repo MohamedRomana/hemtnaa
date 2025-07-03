@@ -416,7 +416,7 @@ class AppCubit extends Cubit<AppState> {
       button: 'لعبة الالغاز',
     ),
     GamesModels(
-      title: 'عباقرة التفكير',
+      title: 'الاشكال المتطابقه',
       image: Assets.img.brain.path,
       description:
           'مرّن دماغك مع ألعاب ذكاء صُمّمت لاختبار مهاراتك في المنطق، التحليل، وسرعة البديهة. مراحل تزداد صعوبة وتحديات جديدة كل يوم!',
@@ -522,6 +522,26 @@ class AppCubit extends Cubit<AppState> {
       name: "عيد الفطر",
       video: "https://www.youtube.com/watch?v=jqVbzms4A2k",
       thumbnail: 'https://img.youtube.com/vi/jqVbzms4A2k/hqdefault.jpg',
+    ),
+    StoriesModel(
+      name: "الفيل فلفول",
+      video: "https://youtu.be/B3jiTfinrq8?si=K8WwVfl8JqHGcZZe",
+      thumbnail: 'https://img.youtube.com/vi/B3jiTfinrq8/hqdefault.jpg',
+    ),
+    StoriesModel(
+      name: "فئران",
+      video: "https://youtu.be/XROhZrS1Ol4?si=MZ0YvBUu01bqis6j",
+      thumbnail: 'https://img.youtube.com/vi/XROhZrS1Ol4/maxresdefault.jpg',
+    ),
+    StoriesModel(
+      name: "أرنوب المهمل",
+      video: "https://youtu.be/jrPGXAdvmvE?si=wm2t-5hdt_y_qhD6",
+      thumbnail: 'https://img.youtube.com/vi/jrPGXAdvmvE/maxresdefault.jpg',
+    ),
+    StoriesModel(
+      name: "الاسد والصياد",
+      video: "https://www.youtube.com/watch?v=39bnjGHM7dM",
+      thumbnail: 'https://img.youtube.com/vi/39bnjGHM7dM/maxresdefault.jpg',
     ),
   ];
 
